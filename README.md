@@ -1,5 +1,3 @@
 # LINUXPOLLS
 
 ## Readme
-
-### H3

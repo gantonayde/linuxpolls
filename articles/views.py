@@ -1,6 +1,7 @@
 from django.views import generic
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 from .models import Post
 from .forms import CommentForm
 
@@ -11,10 +12,17 @@ from polls.plots import add_figure
 
 def PostList(request):
  
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        query = str(query)
+
+    
     #plot_div = add_figure(Question.objects.get(pk=2),1)
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     
-    object_list = Post.objects.filter(status=1).order_by('-created_on')
+    object_list = get_article_queryset(query)
+    #object_list = Post.objects.filter(status=1).order_by('-created_on')
     paginator = Paginator(object_list, 3)  # 3 posts in each page
     page = request.GET.get('page')
     try:
@@ -29,7 +37,8 @@ def PostList(request):
                   'index.html',
                   {'page': page,
                    'post_list': post_list,
-                   'latest_question_list': latest_question_list},)
+                   'latest_question_list': latest_question_list,
+                   'query': query},)
 
 def Articles(request):
  
@@ -83,5 +92,19 @@ def post_detail(request, slug):
                                            'comment_form': comment_form,
                                            'latest_question_list': latest_question_list})
 
+
+def get_article_queryset(query=None):
+    print("Using get_article_queryset")
+    queryset = []
+    queries = query.split(" ")
+    for q in queries:
+        posts = Post.objects.filter(
+            Q(title__icontains=q),
+            Q(content__icontains=q)
+        ).distinct()
+
+        for post in posts:
+            queryset.append(post)
+    return list(set(queryset))
 
 

@@ -1,10 +1,6 @@
 {% load static %}
 {% block articles_list %}
-
-
-
-
-
+{% if post_list %}
     {% for post in post_list %}
 
     <div class="card mb-4">
@@ -35,8 +31,11 @@
             </div>
         </div>
     </div>
-    
+
     {% endfor %}
+{% else %}
 
+<p>No query found</p>
 
+{% endif %}
 {% endblock articles_list %}

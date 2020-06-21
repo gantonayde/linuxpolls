@@ -1,0 +1,46 @@
+{% extends "base.html" %} 
+
+{% block content_header %}
+{% include 'widgets/carousel.html' %} 
+{% endblock content_header %}
+
+{% block content %}
+
+
+<!-- Articles container -->
+<!-- <div class="container"> -->
+    <div class="row mt-3">
+      
+      <div class="col-md-9 mt-0 left">
+        <div class="title-wrap title-wrap--line">
+          <h5 class="section-title">Articles</h5>
+          <a href="{% url 'articles_list' %}" class="all-posts-url">View All</a>
+        </div>
+        {% block articles_list %}
+        {% include 'articles/list.html' %} 
+        {% endblock articles_list %}
+      </div>
+
+      <div class="col-md-3 float-right">
+        {% block sidebar %}
+        {% include 'widgets/sidebar.html' %}        
+        {% endblock sidebar %}
+      </div>
+      
+    </div>
+<!-- </div> -->
+<!-- /Articles container -->
+
+       <!-- {% if latest_question_list %}
+            <ul>
+            {% for question in latest_question_list %}
+            {% for plot in question.plot_set.all %}
+            <li>1</li>
+            {% endfor %}
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No polls are available.</p>
+        {% endif %}</p> -->
+
+{% endblock %}

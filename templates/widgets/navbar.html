@@ -1,0 +1,33 @@
+{% load static %}
+
+     <!-- Navigation -->
+        <nav class="navbar navbar-expand-sm navbar-dark deep-orange" id="mainNav">
+            <div class="container-page">
+                <img src="{% static 'img/TuxFlat.svg' %}" width="25" height="25" alt="LinuxPolls">
+                <a class="navbar-brand" href="{% url 'home' %}">LinuxPolls</a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}"><i class="fa fa-home"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'articles_list' %}">Articles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'polls:detail' 1 %}">Polls</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fa fa-search"></i></a>                   
+                        </li>   
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- End Navigation -->

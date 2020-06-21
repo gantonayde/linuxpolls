@@ -1,0 +1,23 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+<!-- Articles container -->
+<!-- <div class="container"> -->
+    <div class="row mt-3">
+      <div class="col-md-9 left">
+        {% block articles_list %}
+        {% include 'articles/list.html' %} 
+        {% endblock articles_list %}
+      </div>
+
+      <div class="col-md-3 float-right">
+        {% block sidebar %}
+        {% include 'widgets/sidebar.html' %} 
+        {% endblock sidebar %}
+      </div>
+    </div>
+<!-- </div> -->
+<!-- /Articles container -->
+
+{% endblock content %}

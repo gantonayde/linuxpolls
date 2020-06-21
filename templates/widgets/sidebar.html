@@ -4,19 +4,21 @@
     <div class="card">
         <div class="card-body">
             <!-- <h5 class="title-wrap section-title"><a>Latest Polls</a></h5> -->
-            <div class="title-wrap" >
-                <h5 class="section-title">Latest polls <hr class="rounded"></h5>
-              </div>
+            <div class="title-wrap">
+                <h5 class="section-title">Latest polls
+                    <hr class="rounded">
+                </h5>
+            </div>
             <p class="card-text">
                 {% if latest_question_list %}
-                    
-                        {% for question in latest_question_list %}
-                            <a href="{% url 'polls:detail' question.id %}" class="title-link">{{ question.question_text }}</a>
-                        {% endfor %}
-                    
+    
+                {% for question in latest_question_list %}
+                <a href="{% url 'polls:detail' question.id %}" class="title-link">{{ question.question_text }}</a>
+                {% endfor %}
+    
                 {% else %}
-                    <p>No polls are available.</p>
-                {% endif %}
+            <p>No polls are available.</p>
+            {% endif %}
             </p>
             <a href="#" class="btn btn-danger m-0">See list</a>
         </div>

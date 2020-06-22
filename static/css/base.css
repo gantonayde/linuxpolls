@@ -117,3 +117,61 @@ hr.rounded {
   border-radius: 5px;
 }
 
+/* Style buttons */
+.btn-search {
+  background-color: transparent; /* Blue background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  font-size: 16px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.btn-search:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.btn-search:focus {
+  outline: none;
+}
+
+.box-search{
+  border: 0px;
+}
+
+.box-search:active{
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25) ;
+  /* background-color: rgb(247, 247, 247); */
+}
+
+.box-search:focus{
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25) ;
+  /* background-color: rgb(247, 247, 247); */
+}
+
+.font-weight-less-bold{
+  font-weight: 500!important;
+}
+
+/* DROP DOWN SEARCH BOX */
+
+/* .bootstrap-select>.dropdown-toggle.bs-placeholder,
+.bootstrap-select>.dropdown-toggle.bs-placeholder:active,
+.bootstrap-select>.dropdown-toggle.bs-placeholder:focus, 
+.bootstrap-select>.dropdown-toggle.bs-placeholder:hover
+ {
+  color: rgb(235, 235, 235);
+}  */
+
+.dropdown-item.active, 
+.dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: rgb(126, 126, 126);
+}
+
+.form-control:focus {
+  border: 1px solid rgba(126, 126, 126, 0.5);
+
+  box-shadow: 0 0 0 0.2rem rgba(126, 126, 126, 0.25);
+}

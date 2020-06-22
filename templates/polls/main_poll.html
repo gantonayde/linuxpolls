@@ -1,0 +1,28 @@
+<!-- <div class="container">
+    <div class="row">
+      <div class="col-md-12 px-0 py-1 mt-3 left"> -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2>{{ question.question_text }}</h2>
+
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+                <form action="{% url 'polls:vote' question.id %}" method="post">
+                {% csrf_token %}
+
+                
+                  <select id="choice" name="choice" class="form-control selectpicker mb-3" data-live-search="true" data-style="btn-outline-grey my-0 mx-0 px-4">
+                      <option value="" selected disabled >Please select</option>
+                      {% for choice in question.choice_set.all %}
+                        <option id="choice{{ forloop.counter }}" value="{{ choice.id }}">{{ choice.choice_text }}</option>
+                      {% endfor %}          
+                  </select>
+                  <button type="submit" class="btn btn-deep-orange m-0">Vote</button>
+                        
+                </form>
+                
+            </div>
+        </div>
+      <!-- </div>
+    </div>
+</div> -->

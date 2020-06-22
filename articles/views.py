@@ -1,28 +1,36 @@
 from django.views import generic
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Q
+from django.db.models import F, Q
 from .models import Post
 from .forms import CommentForm
 
 from polls.models import Question, Choice
 from polls.plots import add_figure
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 
 def PostList(request):
- 
-    query = ""
-    if request.GET:
-        query = request.GET['q']
-        query = str(query)
+
+    search_terms = request.GET.get("q")
+    print(search_terms)
+   # query = ""
+   ## if request.GET:
+        
+       # query = request.GET['q']
+       # query = str(query)
 
     
     #plot_div = add_figure(Question.objects.get(pk=2),1)
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     
-    object_list = get_article_queryset(query)
-    #object_list = Post.objects.filter(status=1).order_by('-created_on')
+   # object_list = get_article_queryset(query)
+    if search_terms:
+        object_list = Post.objects.filter(Q(title__icontains=search_terms) | Q(content__icontains=search_terms)).order_by('-created_on')
+    else:
+        object_list = Post.objects.filter(status=1).order_by('-created_on')
     paginator = Paginator(object_list, 3)  # 3 posts in each page
     page = request.GET.get('page')
     try:
@@ -33,12 +41,23 @@ def PostList(request):
     except EmptyPage:
         # If page is out of range deliver last page of results
         post_list = paginator.page(paginator.num_pages)
+
+    main_question = get_object_or_404(Question, pk=1)
+    
     return render(request,
                   'index.html',
                   {'page': page,
                    'post_list': post_list,
                    'latest_question_list': latest_question_list,
-                   'query': query},)
+                   'main_question': main_question,
+        })
+
+    # return render(request,
+    #               'index.html',
+    #               {'page': page,
+    #                'post_list': post_list,
+    #                'latest_question_list': latest_question_list,
+    #                'main_question': main_question},)
 
 def Articles(request):
  
@@ -93,10 +112,13 @@ def post_detail(request, slug):
                                            'latest_question_list': latest_question_list})
 
 
+
+
 def get_article_queryset(query=None):
     print("Using get_article_queryset")
     queryset = []
     queries = query.split(" ")
+    print(queries)
     for q in queries:
         posts = Post.objects.filter(
             Q(title__icontains=q),

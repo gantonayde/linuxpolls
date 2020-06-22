@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.db.models import F
 from django.views import generic
 from .models import Question
+from polls.models import Choice
 
 
 def PollsIndex(request):
@@ -26,9 +27,12 @@ class ResultsView(generic.DetailView):
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
+    print("In vote")
     try:
+        print("Trying")
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
+        print("In except")
         # Redisplay the question voting form.
         return render(request, 'polls/index.html', {
             'question': question,

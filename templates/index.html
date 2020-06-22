@@ -5,30 +5,29 @@
 {% endblock content_header %}
 
 {% block content %}
-
-
 <!-- Articles container -->
 <!-- <div class="container"> -->
     <div class="row mt-3">
       
       <div class="col-md-9 mt-0 left">
         <div class="title-wrap title-wrap--line">
+          <h5 class="section-title">Poll of the month</h5>
+        </div>
+         {% include 'polls/main_poll.html' with question=main_question %}
+         
+        <div class="title-wrap title-wrap--line">
           <h5 class="section-title">Articles</h5>
           <a href="{% url 'articles_list' %}" class="all-posts-url">View All</a>
         </div>
         {% if post_list %}
-          {% block articles_list %}
           {% include 'articles/list.html' %} 
-          {% endblock articles_list %}
         {% else %}
           {% include 'articles/list.html' with query=query %} 
         {% endif %}
       </div>
 
       <div class="col-md-3 float-right">
-        {% block sidebar %}
         {% include 'widgets/sidebar.html' %}        
-        {% endblock sidebar %}
       </div>
       
     </div>

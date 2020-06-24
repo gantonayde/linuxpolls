@@ -24,8 +24,8 @@
                         <li class="nav-item">
                             <a class="nav-link font-weight-normal" href="{% url 'about' %}">About</a>
                         </li>
-                        <form class="form-inline my-2 mx-2 my-lg-0" method="GET" action="/">
-                            <input class="form-control mr-sm-1 box-search" name="q" type="search" placeholder="Search" aria-label="Search" >
+                        <form class="form-inline my-2 mx-2 my-lg-0" method="get" action="{% url 'search' %}">
+                            <input class="form-control mr-sm-1 box-search" name="s" type="search" placeholder="Search" aria-label="Search" >
                             <button class="btn-search " type="submit">
                                   <i class="fa fa-search" ></i>
                             </button>

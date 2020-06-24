@@ -14,21 +14,6 @@
                 <form action="{% url 'polls:vote' question.id %}" method="post">
                 {% csrf_token %}
 
-                <div id="front-page-poll">
-                  <select id="choice" name="choice" class="form-control selectpicker mb-4" data-live-search="true" data-style="btn-outline-grey my-0 mx-0 px-4">
-                      <option value="" selected disabled >Please select</option>
-                      {% for choice in question.choice_set.all %}
-                        <option id="choice{{ forloop.counter }}" value="{{ choice.id }}">{{ choice.choice_text }}</option>
-                        <!-- <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"> -->
-                        <!-- <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br> -->
-                      {% endfor %}
-                      <input type="submit" class="btn-primary" value="Vote">
-                      <!-- <option data-tokens="ubuntu">Ubuntu</option>
-                      <option data-tokens="manjaro">Manjaro</option>
-                      <option data-tokens="linuxmx">Linux MX</option> -->
-                  </select>
-                  </div>
-                  
                   
                 {% for choice in question.choice_set.all %}
                     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">

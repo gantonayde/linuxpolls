@@ -11,9 +11,10 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 
+latest_question_list = Question.objects.order_by('-pub_date')[:5]
 
 def PostList(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+
     object_list = Post.objects.filter(status=1).order_by('-created_on')
     paginator = Paginator(object_list, 3)  # 3 posts in each page
     page = request.GET.get('page')
@@ -38,7 +39,7 @@ def PostList(request):
 
 
 def Articles(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+
     object_list = Post.objects.filter(status=1).order_by('-created_on')
     paginator = Paginator(object_list, 3)  # 3 posts in each page
     page = request.GET.get('page')
@@ -57,7 +58,7 @@ def Articles(request):
                    'latest_question_list': latest_question_list},)
 
 def Search(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+
     search_terms = request.GET.get("s")
     if search_terms:
         object_list = Post.objects.filter(Q(title__icontains=search_terms) | 
@@ -89,13 +90,13 @@ def Search(request):
                    'search_terms': search_terms},)
 
 def About(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    
     return render(request,
                   'about.html',
                   {'latest_question_list': latest_question_list},)
 
 def post_detail(request, slug):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+
     template_name = 'articles/details.html'
     post = get_object_or_404(Post, slug=slug)
     comments = post.comments.filter(active=True)

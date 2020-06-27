@@ -11,17 +11,27 @@
 
                 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-                <form action="{% url 'polls:vote' question.id %}" method="post">
+                <form action="#" method="post">
                 {% csrf_token %}
 
                   
                 {% for choice in question.choice_set.all %}
-                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}"  value="{{ choice.id }}">
                     <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
                 {% endfor %}
-                <input type="submit" class="btn-primary" value="Vote">
+                <input type="submit" class="btn btn-primary" id="vote" data-catid="{{ question.id }}" value="Vote">
                 </form>
             </div>
+            
+        </div>
+        <div class="card">
+            
+          <p id="voted-text">Not voted</p>
+          <ul>
+          {% for choice in question.choice_set.all %}
+              <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+          {% endfor %}
+          </ul>
         </div>
       </div>
 
@@ -32,5 +42,9 @@
       </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+</script>
 
 {% endblock content %}

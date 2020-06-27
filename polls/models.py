@@ -10,6 +10,9 @@ class Question(models.Model):
 
     def __str__(self):
         return self.question_text
+    
+    def get_absolute_url(self):
+        return u"/polls/polls/%s/" % self.pk
 
     def was_published_recently(self):
         now = timezone.now()

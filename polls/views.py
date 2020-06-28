@@ -1,20 +1,22 @@
 from django.shortcuts import get_object_or_404, render
-from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseServerError
+from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseServerError, JsonResponse
 from django.template import loader
 from django.urls import reverse
 from django.db.models import F
 from django.views import generic
 from .models import Question
 from polls.models import Choice
+from django.forms.models import model_to_dict
 
 
 def PollsIndex(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    polls = Question.objects.all()
+    questions = Question.objects.all()
+    print(latest_question_list)
     return render(request,
                   'polls/index.html',
                   {'latest_question_list': latest_question_list,
-                  'polls': polls},)
+                  'questions': questions},)
 
 class DetailView(generic.DetailView):
     model = Question
@@ -52,6 +54,7 @@ def ajax_vote(request, question_id):
     print('starting ajax_vote')
     try:
         print('Entering try')
+        print(request.POST['choice'])
         selected_choice = p.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         print('Entering except')
@@ -59,13 +62,23 @@ def ajax_vote(request, question_id):
         #     'question': p,
         #     'error_message': "You didn't select a choice.",
         # })
+        #return HttpResponse("Choice not selected.")
         return HttpResponseServerError("You didn't select a choice.")
     else:
+        print('Entering else...success!')
         selected_choice.votes += 1
         selected_choice.save()
         p.update_figure()
-        print(p.get_absolute_url())
-        return HttpResponseRedirect(p.get_absolute_url())
+        data = list(p.choice_set.all().values('question_id', 'id', 'votes'))
+        # for plot in p.plot_set.all():
+        #     print(plot.div)
+        #     data = {}
+        #     data['div'] = plot.div
+        #     data['script'] = plot.script
+        #return JsonResponse(data)
+        return JsonResponse({'data': data})
+        #return HttpResponse("Successfully voted.")
+        #return HttpResponseRedirect(p.get_absolute_url())
 
 def greet(request, user_name):
     return HttpResponse("Greetings %s." % user_name)

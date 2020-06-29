@@ -5,9 +5,7 @@ $(document).ready(function () {
 var create_vote = function () {
     var value = $("form input[name='choice']:checked").val();
     var catid = $(this).attr("data-catid");
-    console.log('catid', catid);
     if (value !== undefined) {
-        console.log(value);
         var data = { choice: value };
         var args = { type: "POST", url: "/polls/polls/"+catid+"/ajaxvote/", data: data, success: check_date, complete: create_vote_complete };
         $.ajax(args);
@@ -22,30 +20,33 @@ var create_vote = function () {
 
 $(".js-vote").click(create_vote);
 
-var check_date = function (data) {
-    console.log(data.pub_date);
+var check_date = function (res) {
+    console.log(res.data);
   }
 
 var create_vote_complete = function (res, status) {
     if (status == "success") {
-        console.log(res.responseJSON);
         console.log(res);
+        console.log(res.responseJSON);
+        //console.log(res);
         const votes = res.responseJSON.data;
-        var catid = $(this).attr("data-catid");
-        // var plotDiv = res.responseJSON.div;
-        // var plotScript = res.responseJSON.script;
-        console.log(votes[0].question_id)
         $( '#vote'+votes[0].question_id ).removeClass('btn btn-primary'); 
         $( '#vote'+votes[0].question_id ).addClass('btn btn-success'); 
         
         document.getElementById("voted-text").innerHTML = "Voted!";
-        // document.getElementById("plot-div").innerHTML = plotDiv;
-        // document.getElementById("plot-script").innerHTML = plotScript;
         
+        document.getElementById("graph"+votes[0].question_id).innerHTML = "";
+        document.getElementById("plot-div"+votes[0].question_id).innerHTML = "";
         
-        
+        const bokehGraph = JSON.parse(res.responseJSON.graph);
+        const pltGraph = JSON.parse(res.responseJSON.plt);
+       // Plotly.plot("plotly"+votes[0].question_id, pltGraph, {});
+        var config = {responsive: true};
+        Plotly.newPlot("plotly"+votes[0].question_id, pltGraph.data, pltGraph.layout, config );
+        Bokeh.embed.embed_item(bokehGraph);
+
         for (var i = 0; i < votes.length ; i++) {
-            console.log(votes[i].votes, votes[i].id);
+            //console.log(votes[i].votes, votes[i].id);
             document.getElementById("vote-num"+votes[i].id).innerHTML = votes[i].votes;
             $('input[name="choice"]').prop('checked', false);
         }

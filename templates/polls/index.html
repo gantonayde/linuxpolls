@@ -12,10 +12,12 @@
                 {% for plot in question.plot_set.all %}
                 <div class="card my-3  px-5">
                   <div class="card-body">
+                    <embed type="image/svg+xml" src={{graph_data|safe}} style='max-width:1000px'/>
                     <h4 class="card-title text-center" id="graph-title">{{question.question_text}}</h4>
-                    <div id="plot-div">{{plot.div | safe}}</div>
+                    <div id="plot-div{{question.id}}">{{plot.div | safe}}</div>
                     <div id="plot-script">{{plot.script | safe}}</div>
-                       
+                    <div id="plotly{{question.id}}"></div>
+                    <div id="graph{{question.id}}"></div>
                   </div>
                 </div>  
                 {% endfor %}   

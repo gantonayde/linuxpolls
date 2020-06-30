@@ -24,8 +24,14 @@
                       <div class="card my-3  px-5">
                         <div class="card-body">
                           <h4 class="card-title text-center">{{question.question_text}}</h4>
-                          {{plot.div | safe}}
-                          {{plot.script | safe}}   
+                          <div id="plot-div{{question.id}}">
+                            <script>
+                              const plotlyGraph{{ question.id }} = {{ plot.div | safe }};
+                              var config = { responsive: true };
+                              Plotly.newPlot("plot-div{{question.id}}", plotlyGraph{{ question.id }}.data, plotlyGraph{{ question.id }}.layout, config);
+                              console.log("Run for {{question.id}}");
+                            </script>
+                          </div> 
                         </div>
                       </div>            
                     </div>

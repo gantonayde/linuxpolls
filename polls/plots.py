@@ -7,6 +7,7 @@ from bokeh.models import ColumnDataSource
 from bokeh.transform import factor_cmap
 import json
 import plotly
+import plotly.express as px
 
 def add_figure(question, plot_type):
     '''
@@ -21,7 +22,7 @@ def add_figure(question, plot_type):
     if plot_type == 0:
         plot_div = add_figure_scatter(question)
     elif plot_type == 1:
-        plot_div = add_figure_histogram(question)
+        plot_div = add_plotly_fig(question)
     return plot_div
 
 
@@ -97,15 +98,18 @@ def add_plotly_fig(question):
                 x_data += [choice.choice_text]
                 y_data += [choice.votes]     
 
-            data =    [go.Scatter(x=x_data, y=y_data, marker_color='#FFC37B',opacity=0.5)]
-            layout =    go.Layout(title=question.question_text, 
+            data =    [go.Bar(x=x_data, y=y_data, marker_color=px.colors.qualitative.Dark24, opacity=0.75, marker_line_color='#3288bd', marker_line_width=1.5 )]
+            layout =    go.Layout(title="", 
                                                 #autosize=True,
                                                 margin=dict(l=5, r=5, t=30, b=5),
-                                                height=250,
+                                                height=300,
+                                               # width=850,
                                                 #plot_bgcolor="#f3f3f3",
                                                 #paper_bgcolor="#d1d1d1",
+
                                                 )
             fig = go.Figure(data=data, layout=layout)
+            fig.update_layout(template="plotly_white")
 
 
             # plot_div = plot({"data": [go.Scatter(x=x_data, y=y_data, marker_color='#FFC37B',opacity=0.5)],

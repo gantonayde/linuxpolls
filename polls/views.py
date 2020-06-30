@@ -16,27 +16,11 @@ from polls.plots import add_figure_scatter, add_plotly_fig
 def PollsIndex(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     questions = Question.objects.all()
-    print(latest_question_list)
-    
-    
-    graph = pygal.Line()
-    graph.title = '% Change Coolness of programming languages over time.'
-    graph.x_labels = ['2011','2012','2013','2014','2015','2016']
-    
-    graph.add('Python',  [15, 31, 89, 200, 356, 900])
-    graph.add('Java',    [15, 45, 76, 80,  91,  95])
-
-    bar_chart = pygal.StackedBar()
-    bar_chart.add('Fibonacci', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
-    bar_chart.add('Padovan', [1, 1, 1, 2, 2, 3, 4, 5, 7, 9, 12])
-    bar_chart.render()
-    graph_data = bar_chart.render_data_uri()
-    
+    print(latest_question_list)   
     return render(request,
                   'polls/index.html',
                   {'latest_question_list': latest_question_list,
-                  'questions': questions,
-                  'graph_data': graph_data},)
+                  'questions': questions},)
 
 class DetailView(generic.DetailView):
     model = Question

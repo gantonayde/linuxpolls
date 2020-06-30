@@ -10,9 +10,6 @@ class Question(models.Model):
 
     def __str__(self):
         return self.question_text
-    
-    def get_absolute_url(self):
-        return u"/polls/polls/%s/" % self.pk
 
     def was_published_recently(self):
         now = timezone.now()
@@ -51,6 +48,7 @@ class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
+    
     def __str__(self):
         return self.choice_text
 
@@ -61,7 +59,7 @@ TYPE = (
 
 class Plot(models.Model):  
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    script = models.TextField(blank=True, default='Graph script placeholder')
+   # script = models.TextField(blank=True, default='Graph script placeholder')
     div = models.TextField(blank=True, default='Graph div placeholder')
     created_on = models.DateTimeField(auto_now_add=True)
     plot_type = models.IntegerField(choices=TYPE, default=0)
@@ -71,8 +69,8 @@ class Plot(models.Model):
         return str(self.question.question_text)
 
     def save(self, *args, **kwargs):
-        if self.script == 'Graph placeholder' or self.update == True:
-            self.script, self.div = add_figure(self.question, self.plot_type)      
+        if self.div == 'Graph div placeholder' or self.update == True:
+            self.div = str(add_figure(self.question, self.plot_type))      
         super(Plot, self).save(*args, **kwargs)
 
     

@@ -35,15 +35,15 @@ var create_vote_complete = function (res, status) {
         
         document.getElementById("voted-text").innerHTML = "Voted!";
         
-        document.getElementById("graph"+votes[0].question_id).innerHTML = "";
+        //document.getElementById("graph"+votes[0].question_id).innerHTML = "";
         document.getElementById("plot-div"+votes[0].question_id).innerHTML = "";
         
         const bokehGraph = JSON.parse(res.responseJSON.graph);
         const pltGraph = JSON.parse(res.responseJSON.plt);
        // Plotly.plot("plotly"+votes[0].question_id, pltGraph, {});
         var config = {responsive: true};
-        Plotly.newPlot("plotly"+votes[0].question_id, pltGraph.data, pltGraph.layout, config );
-        Bokeh.embed.embed_item(bokehGraph);
+        Plotly.newPlot("plot-div"+votes[0].question_id, pltGraph.data, pltGraph.layout, config );
+       // Bokeh.embed.embed_item(bokehGraph);
 
         for (var i = 0; i < votes.length ; i++) {
             //console.log(votes[i].votes, votes[i].id);
@@ -91,3 +91,43 @@ $.ajaxSetup({
         }
     }
 });
+
+
+// Poll page buttons
+
+function expandCollapseSwitch() {
+
+    if ($(this).data("closedAll")) {
+        $(".accordion-collapse").collapse("show");
+        $("#expandCollapseSwitch").text("Collapse All");
+    }
+    else {
+        $(".accordion-collapse").collapse("hide");
+        $("#expandCollapseSwitch").text("Expand All");
+    }
+    // save last state
+    $(this).data("closedAll", !$(this).data("closedAll"));
+};
+
+function resultPollSwitch() {
+
+    if (!$(this).data("resultsShown")) {
+        $("#pills-poll-tab").removeClass("active");
+        $("#pills-poll").removeClass("show active");
+        $("#pills-results-tab").addClass("active");
+        $("#pills-results").addClass("show active");
+        $("#resultPollSwitch").text("Show Poll");
+    }
+    else {
+        $("#pills-results-tab").removeClass("active");
+        $("#pills-results").removeClass("show active");
+        $("#pills-poll-tab").addClass("active");
+        $("#pills-poll").addClass("show active");
+        $("#resultPollSwitch").text("Show Results");
+    }
+    // save last state
+    $(this).data("resultsShown", !$(this).data("resultsShown"));
+}
+
+$("#expandCollapseSwitch").click(expandCollapseSwitch);
+$("#resultPollSwitch").click(resultPollSwitch);   

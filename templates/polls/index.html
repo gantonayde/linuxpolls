@@ -2,22 +2,69 @@
 
 {% block content %}
 
+
+<div class="container">
+  <button type="button" class="btn btn-primary" id="expandCollapseSwitch">Expand All</button>
+  <button type="button" class="btn btn-secondary" id="resultPollSwitch">Show Results</button>
+  <div class="row">
+      <div id="accordion" style="width: 100%;">
+        {% for question in questions %}
+          <div class="card" >
+            <div class="card-header" id="heading{{question.id}}">
+              <div class="title-wrap mb-0">
+                <h3 class="mb-0 font-weight-less-bold">
+                  <div style="cursor: pointer;" data-toggle="collapse" data-target="#collapse{{question.id}}" aria-expanded="true"
+                    aria-controls="collapse{{question.id}}">
+                    {{ question.question_text }}
+                </div>
+                </h3>
+              </div>
+            </div>
+            
+            {% if forloop.counter == 1 %}
+            <div id="collapse{{question.id}}" class="collapse show accordion-collapse" style="width: 100%;" aria-labelledby="heading{{question.id}}">
+            {% else %}
+            <div id="collapse{{question.id}}" class="collapse accordion-collapse"  aria-labelledby="heading{{question.id}}">
+            {% endif %}
+
+              <div class="card-body">
+                <div id="plot-div{{question.id}}">
+                  <script>
+                    console.log("Hi");
+                   // const plotlyGraph{{ question.id }} = {{ plot.div | safe }};
+                   // var config = { responsive: true };
+                   // Plotly.newPlot("plot-div{{question.id}}", plotlyGraph{{ question.id }}.data, plotlyGraph{{ question.id }}.layout, config);
+                  </script>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+  </div>
+</div>
+
+
 <div class="container">
     <div class="row">
       <div class="col-md-9 mt-3 left">
         {% for question in questions %}
         <div class="card mb-4">
-            <div class="card-body">
+            <div class="card-body p-0">
                 <h1>{{ question.question_text }}</h1>
                 {% for plot in question.plot_set.all %}
-                <div class="card my-3  px-5">
-                  <div class="card-body">
-                    <embed type="image/svg+xml" src={{graph_data|safe}} style='max-width:1000px'/>
+                <div class="card my-3">
+                  <div class="card-body p-0">
+                    
                     <h4 class="card-title text-center" id="graph-title">{{question.question_text}}</h4>
-                    <div id="plot-div{{question.id}}">{{plot.div | safe}}</div>
-                    <div id="plot-script">{{plot.script | safe}}</div>
-                    <div id="plotly{{question.id}}"></div>
-                    <div id="graph{{question.id}}"></div>
+                    <div id="plot-div1{{question.id}}">
+                      <script>
+                        const plotlyGraph{{ question.id }} = {{ plot.div | safe }};
+                        var config = { responsive: true };
+                        Plotly.newPlot("plot-div{{question.id}}", plotlyGraph{{ question.id }}.data, plotlyGraph{{ question.id }}.layout, config);
+                      </script>
+                    </div>
+
                   </div>
                 </div>  
                 {% endfor %}   
@@ -51,17 +98,9 @@
       </div>
 
       <div class="col-md-3 float-right">
-
         {% include 'widgets/sidebar.html' %} 
-
       </div>
     </div>
 </div>
-
-<script type="text/javascript">
-
-    var a = "{{ question.question_text }}";
-
-</script>
 
 {% endblock content %}

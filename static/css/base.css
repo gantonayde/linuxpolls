@@ -202,3 +202,11 @@ hr.rounded {
   position: relative;
   width: 100% !important;
 }
+
+.carousal-controls-style{
+  background-color: #ff5722;
+}
+
+.carousel-indicators li{
+  background-color: #ff5722;
+}

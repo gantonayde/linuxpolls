@@ -3,11 +3,12 @@ $(document).ready(function () {
 });
 
 var create_vote = function () {
-    var value = $("form input[name='choice']:checked").val();
     var catid = $(this).attr("data-catid");
-    if (value !== undefined) {
+    //var value = $(`#form${catid} input[name='choice']:checked`).val();  
+    var value = $(`#form${catid} option:selected`).val();    
+    if (value !== "") {
         var data = { choice: value };
-        var args = { type: "POST", url: "/polls/polls/"+catid+"/ajaxvote/", data: data, success: check_date, complete: create_vote_complete };
+        var args = { type: "POST", url: `/polls/${catid}/vote/`, data: data, success: check_date, complete: create_vote_complete };
         $.ajax(args);
     }
     else {
@@ -33,7 +34,7 @@ var create_vote_complete = function (res, status) {
         $( '#vote'+votes[0].question_id ).removeClass('btn btn-primary'); 
         $( '#vote'+votes[0].question_id ).addClass('btn btn-success'); 
         
-        document.getElementById("voted-text").innerHTML = "Voted!";
+       // document.getElementById("voted-text").innerHTML = "Voted!";
         
         //document.getElementById("graph"+votes[0].question_id).innerHTML = "";
         document.getElementById("plot-div"+votes[0].question_id).innerHTML = "";
@@ -47,9 +48,9 @@ var create_vote_complete = function (res, status) {
 
         for (var i = 0; i < votes.length ; i++) {
             //console.log(votes[i].votes, votes[i].id);
-            document.getElementById("vote-num"+votes[i].id).innerHTML = votes[i].votes;
-            $('input[name="choice"]').prop('checked', false);
-        }
+           // document.getElementById("vote-num"+votes[i].id).innerHTML = votes[i].votes;
+          //  $('input[name="choice"]').prop('checked', false);
+        };
     }
     else {
         console.log('Error in else statement');
@@ -98,36 +99,37 @@ $.ajaxSetup({
 function expandCollapseSwitch() {
 
     if ($(this).data("closedAll")) {
-        $(".accordion-collapse").collapse("show");
+        $(".js-accordion-collapse").collapse("show");
         $("#expandCollapseSwitch").text("Collapse All");
+
     }
     else {
-        $(".accordion-collapse").collapse("hide");
+        $(".js-accordion-collapse").collapse("hide");
         $("#expandCollapseSwitch").text("Expand All");
     }
     // save last state
     $(this).data("closedAll", !$(this).data("closedAll"));
 };
 
-function resultPollSwitch() {
+function resultsShowSwitch() {
 
     if (!$(this).data("resultsShown")) {
-        $("#pills-poll-tab").removeClass("active");
-        $("#pills-poll").removeClass("show active");
-        $("#pills-results-tab").addClass("active");
-        $("#pills-results").addClass("show active");
-        $("#resultPollSwitch").text("Show Poll");
+        $('.js-plotly-plot').hide();
+        $("#resultsShowSwitch").text("Show Plots");
     }
     else {
-        $("#pills-results-tab").removeClass("active");
-        $("#pills-results").removeClass("show active");
-        $("#pills-poll-tab").addClass("active");
-        $("#pills-poll").addClass("show active");
-        $("#resultPollSwitch").text("Show Results");
+        $('.js-plotly-plot').show();
+        $("#resultsShowSwitch").text("Hide Plots");
     }
     // save last state
     $(this).data("resultsShown", !$(this).data("resultsShown"));
 }
 
+
 $("#expandCollapseSwitch").click(expandCollapseSwitch);
-$("#resultPollSwitch").click(resultPollSwitch);   
+$("#resultsShowSwitch").click(resultsShowSwitch);   
+
+
+$(document).ready(function() {
+    $('.js-select2').select2();
+  });

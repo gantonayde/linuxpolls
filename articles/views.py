@@ -13,8 +13,9 @@ from django.urls import reverse
 
 latest_question_list = Question.objects.order_by('-pub_date')[:5]
 
-def PostList(request):
 
+def Index(request):
+    polls_on_focus = Question.objects.order_by('-pub_date')[:5]
     object_list = Post.objects.filter(status=1).order_by('-created_on')
     paginator = Paginator(object_list, 3)  # 3 posts in each page
     page = request.GET.get('page')
@@ -26,15 +27,13 @@ def PostList(request):
     except EmptyPage:
         # If page is out of range deliver last page of results
         post_list = paginator.page(paginator.num_pages)
-
-    main_question = get_object_or_404(Question, pk=1)
     
     return render(request,
                   'index.html',
                   {'page': page,
                    'post_list': post_list,
                    'latest_question_list': latest_question_list,
-                   'main_question': main_question,
+                   'polls_on_focus': polls_on_focus,
         })
 
 

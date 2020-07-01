@@ -103,7 +103,7 @@ def add_plotly_fig(question):
                                                 #autosize=True,
                                                 margin=dict(l=5, r=5, t=30, b=5),
                                                 height=300,
-                                               # width=850,
+                                               # width=785,
                                                 #plot_bgcolor="#f3f3f3",
                                                 #paper_bgcolor="#d1d1d1",
 

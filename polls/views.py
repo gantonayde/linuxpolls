@@ -9,14 +9,20 @@ from polls.models import Choice
 from django.forms.models import model_to_dict
 from .plots import add_bokeh_figure
 from django.core import serializers
-import pygal
 from polls.plots import add_figure_scatter, add_plotly_fig
+from .forms import VotingForm, QForm
+from polls.forms import AnswerFormSet, QuestionFormSet
 
 
 def PollsIndex(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     questions = Question.objects.all()
-    print(latest_question_list)   
+    p = get_object_or_404(Question, pk=1)
+   # form = VotingForm()
+    #form = QForm()
+   # form.fields['qs'].queryset = Question.objects.filter(question__pk=2)
+    #form = AnswerFormSet(instance=p)
+    #print(form)
     return render(request,
                   'polls/index.html',
                   {'latest_question_list': latest_question_list,
@@ -31,27 +37,27 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = 'results.html'
 
-def vote(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    print("In vote")
-    try:
-        print("Trying")
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        print("In except")
-        # Redisplay the question voting form.
-        return render(request, 'polls/index.html', {
-            'question': question,
-            'error_message': "You didn't select a choice.",
-        })
-    else:
-        selected_choice.votes = F('votes') + 1
-        selected_choice.save()
-        question.update_figure()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+# def vote(request, question_id):
+#     question = get_object_or_404(Question, pk=question_id)
+#     print("In vote")
+#     try:
+#         print("Trying")
+#         selected_choice = question.choice_set.get(pk=request.POST['choice'])
+#     except (KeyError, Choice.DoesNotExist):
+#         print("In except")
+#         # Redisplay the question voting form.
+#         return render(request, 'polls/index.html', {
+#             'question': question,
+#             'error_message': "You didn't select a choice.",
+#         })
+#     else:
+#         selected_choice.votes = F('votes') + 1
+#         selected_choice.save()
+#         question.update_figure()
+#         # Always return an HttpResponseRedirect after successfully dealing
+#         # with POST data. This prevents data from being posted twice if a
+#         # user hits the Back button.
+#         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 def ajax_vote(request, question_id):
     p = get_object_or_404(Question, pk=question_id)

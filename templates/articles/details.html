@@ -40,16 +40,16 @@
     <div class="col-md-8 card mb-4  mt-3 ">
       <div class="card-body">
         {% if new_comment %}
-        <div class="alert alert-success" role="alert">
-          Your comment is awaiting moderation
-        </div>
+          <div class="alert alert-success" role="alert">
+            Your comment is awaiting moderation
+          </div>
         {% else %}
-        <h3>Leave a comment</h3>
-        <form method="post" style="margin-top: 1.3em;">
-          {{ comment_form }}
-          {% csrf_token %}
-          <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
-        </form>
+          <h3>Leave a comment</h3>
+          <form method="post" style="margin-top: 1.3em;">
+            {% csrf_token %}
+            {{ comment_form }}
+            <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+          </form>
         {% endif %}
       </div>
     </div>

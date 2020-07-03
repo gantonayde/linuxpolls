@@ -15,8 +15,9 @@
             aria-labelledby="heading{{question.id}}">
     
             <div class="card-body">
-    
-                <form action="{% url 'polls:vote' question.id %}" method="post" id="form{{question.id}}">
+                <div id="js-vote-successful{{question.id}}"></div>
+
+                <form  method="post" id="form{{question.id}}">
                     {% csrf_token %}
                     <div class="row mx-0">
                         <div class="col-md-8 mb-3">
@@ -24,7 +25,7 @@
                                 data-style="btn-outline-grey border-1 my-0 mx-0 px-4">
                                 <option value="" selected disabled>Please select an option</option>
                                 {% for choice in question.choice_set.all %}
-                                <option id="choice{{ forloop.counter }}" value="{{ choice.id }}">{{ choice.choice_text }}
+                                   <option id="choice{{ forloop.counter }}" value="{{ choice.id }}">{{ choice.choice_text }}
                                 </option>
                                 {% endfor %}
                             </select>
@@ -40,13 +41,13 @@
                 </form>
     
     
-                <div id="plot-div{{question.id}}">
+                <div id="plot-div{{question.id}}" class="js-show-toggle">
                     {% for plot in question.plot_set.all %}
-                    <script>
-                        const plotlyGraph{{ question.id }} = {{ plot.div | safe }};
-                        var config = { responsive: true };
-                        Plotly.newPlot("plot-div{{question.id}}", plotlyGraph{{ question.id }}.data, plotlyGraph{{ question.id }}.layout, config);
-                    </script>
+                        <script>
+                            const plotlyGraph{{ question.id }} = {{ plot.figure | safe }};
+                            var config = { responsive: true };
+                            Plotly.newPlot("plot-div{{question.id}}", plotlyGraph{{ question.id }}.data, plotlyGraph{{ question.id }}.layout, config);
+                        </script>
                     {% endfor %}
                 </div>
     

@@ -4,16 +4,17 @@ $(document).ready(function () {
 
 var create_vote = function () {
     var catid = $(this).attr("data-catid");
-    //var value = $(`#form${catid} input[name='choice']:checked`).val();  
-    var value = $(`#form${catid} option:selected`).val();    
+    var value = $(`#form${catid} option:selected`).val(); 
+    console.log(value);   
     if (value !== "") {
         var data = { choice: value };
-        var args = { type: "POST", url: `/polls/${catid}/vote/`, data: data, success: check_date, complete: create_vote_complete };
+        var args = { type: "POST", url: `/polls/${catid}/vote/`, data: data, complete: create_vote_complete };
         $.ajax(args);
     }
     else {
-        console.log('create_vote else statement, radio button not selected, value is undefined');
-        document.getElementById("voted-text").innerHTML = "Please select an option!";
+        //alert("Please select a choice")
+        display_danger_message("Please select an option", $("#js-vote-successful"+catid));
+        console.log('choice not selected, ajax call not triggered');
         // We should display a helpful error message
     }
     return false; // stops djangos httprespone and allows ajax to take over
@@ -21,46 +22,35 @@ var create_vote = function () {
 
 $(".js-vote").click(create_vote);
 
-var check_date = function (res) {
-    console.log(res.data);
-  }
 
 var create_vote_complete = function (res, status) {
     if (status == "success") {
-        console.log(res);
-        console.log(res.responseJSON);
-        //console.log(res);
-        const votes = res.responseJSON.data;
-        $( '#vote'+votes[0].question_id ).removeClass('btn btn-primary'); 
-        $( '#vote'+votes[0].question_id ).addClass('btn btn-success'); 
-        
-       // document.getElementById("voted-text").innerHTML = "Voted!";
-        
-        //document.getElementById("graph"+votes[0].question_id).innerHTML = "";
-        document.getElementById("plot-div"+votes[0].question_id).innerHTML = "";
-        
-        const bokehGraph = JSON.parse(res.responseJSON.graph);
-        const pltGraph = JSON.parse(res.responseJSON.plt);
-       // Plotly.plot("plotly"+votes[0].question_id, pltGraph, {});
-        var config = {responsive: true};
-        Plotly.newPlot("plot-div"+votes[0].question_id, pltGraph.data, pltGraph.layout, config );
-       // Bokeh.embed.embed_item(bokehGraph);
+        const idData = res.responseJSON.id_data;
+        var questionId = idData[0].question_id;
 
-        for (var i = 0; i < votes.length ; i++) {
-            //console.log(votes[i].votes, votes[i].id);
-           // document.getElementById("vote-num"+votes[i].id).innerHTML = votes[i].votes;
-          //  $('input[name="choice"]').prop('checked', false);
-        };
+        //document.getElementById("form"+questionId).innerHTML = "Thanks for voting!";
+        display_message("Thank you for voting!", $("#js-vote-successful"+questionId));
+        $("#form"+questionId).remove();
+
+        const pltGraph = JSON.parse(res.responseJSON.plotly_plot);
+        var config = {responsive: true};
+        Plotly.newPlot("plot-div"+questionId, pltGraph.data, pltGraph.layout, config );
+
     }
     else {
-        console.log('Error in else statement');
+        console.log('Voting not successful');
         console.log(res.responseText);
-        display_message(res.responseText, $(".js-message"));
+        display_message(res.responseText, $("#js-vote-successful"+questionId));
     }
 }
 var display_message = function (msg, elem) {
-    var msg_div = $('<div><p>' + msg + '</p></div>');
+    var msg_div = $('<div class="alert alert-success" role="alert"><h4 class="mb-0">' + msg + '</h4></div>');
     elem.append(msg_div).fadeIn('slow').animate({ opacity: 1.0 }, 7000).fadeOut('slow', function () { msg_div.remove(); });
+};
+
+var display_danger_message = function (msg, elem) {
+    var msg_div = $('<div class="alert alert-danger" role="alert"><h4 class="mb-0">' + msg + '</h4></div>');
+    elem.append(msg_div).fadeIn('slow').animate({ opacity: 1.0 }, 3000).fadeOut('slow', function () { msg_div.remove(); });
 };
 
 function getCookie(name) {
@@ -114,11 +104,11 @@ function expandCollapseSwitch() {
 function resultsShowSwitch() {
 
     if (!$(this).data("resultsShown")) {
-        $('.js-plotly-plot').hide();
+        $('.js-show-toggle').hide();
         $("#resultsShowSwitch").text("Show Plots");
     }
     else {
-        $('.js-plotly-plot').show();
+        $('.js-show-toggle').show();
         $("#resultsShowSwitch").text("Hide Plots");
     }
     // save last state
@@ -129,6 +119,7 @@ function resultsShowSwitch() {
 $("#expandCollapseSwitch").click(expandCollapseSwitch);
 $("#resultsShowSwitch").click(resultsShowSwitch);   
 
+$("#id_choice_text").addClass("selectpicker");
 
 $(document).ready(function() {
     $('.js-select2').select2();

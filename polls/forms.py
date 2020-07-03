@@ -1,19 +1,39 @@
 from .models import Question, Choice
 from django import forms
 from django_select2 import forms as s2forms
-from django.forms import modelformset_factory
+from django.forms import modelformset_factory, widgets
 from django.forms.models import inlineformset_factory
 
+
+class QChoicesForm(forms.ModelForm):
+    class Meta:
+        model = Choice
+        exclude = ('__all__',)
 class QuestionWidget(s2forms.ModelSelect2Widget):
     search_fields = [
         "question_text__icontains",     
     ]
 
-# class VotingForm(forms.ModelForm):
-#     #question = forms.ModelChoiceField(queryset=Question.objects.filter(id=1))
-#     class Meta:
-#         model = Choice
-#         fields = '__all__'
+class QuestionForm(forms.ModelForm):
+    #choice_text =  forms.ModelChoiceField(queryset=Choice.objects.all(),
+                                                         #     empty_label=None,
+                                                        #      widget=widgets.Select)
+    class Meta:
+        model = Choice
+        fields = ('id','choice_text',)        
+    #question = forms.ModelChoiceField(queryset=Question.objects.all())
+class ChoiceForm(forms.ModelForm):
+     #question = forms.ModelChoiceField(queryset=Question.objects.filter(id=1))
+     
+    class Meta:
+         model = Choice
+         fields = ["question", "choice_text",]
+        
+    choice_text =  forms.ModelChoiceField(queryset=Choice.objects.none(),
+                                                              empty_label=None,
+                                                              widget=widgets.Select)
+    
+    question =  forms.ModelChoiceField(queryset=Question.objects.none())
 
 QuestionFormSet = modelformset_factory(Choice, fields=('__all__'))
 
@@ -52,3 +72,4 @@ class VotingForm(forms.Form):
    #      super().__init__(*args, **kwargs)
     #     unique_books_names = Vote.objects.order_by('book_name').values_list('book_name', flat=True).distinct()
    #      self.fields['chosen_books_options'].choices = [(book_name, book_name) for book_name in unique_books_names]
+

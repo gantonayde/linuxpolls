@@ -60,7 +60,7 @@ TYPE = (
 class Plot(models.Model):  
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
    # script = models.TextField(blank=True, default='Graph script placeholder')
-    div = models.TextField(blank=True, default='Graph div placeholder')
+    figure = models.TextField(blank=True, default='Figure placeholder')
     created_on = models.DateTimeField(auto_now_add=True)
     plot_type = models.IntegerField(choices=TYPE, default=0)
     update = models.BooleanField(default=False)
@@ -69,8 +69,8 @@ class Plot(models.Model):
         return str(self.question.question_text)
 
     def save(self, *args, **kwargs):
-        if self.div == 'Graph div placeholder' or self.update == True:
-            self.div = str(add_figure(self.question, self.plot_type))      
+        if self.figure == 'Figure placeholder' or self.update == True:
+            self.figure = str(add_figure(self.question, self.plot_type))      
         super(Plot, self).save(*args, **kwargs)
 
     

@@ -96,7 +96,11 @@ def add_plotly_fig(question):
             y_data = []
             for choice in choices:
                 x_data += [choice.choice_text]
-                y_data += [choice.votes]     
+                y_data += [choice.votes]
+
+            total_votes = sum(y_data)
+            for i in range(len(y_data)):   
+                y_data[i] = y_data[i]/total_votes   
 
             data =    [go.Bar(x=x_data, y=y_data, marker_color=px.colors.qualitative.Dark24, opacity=0.75, marker_line_color='#3288bd', marker_line_width=1.5 )]
             layout =    go.Layout(title="", 

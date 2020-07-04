@@ -13,7 +13,7 @@ var create_vote = function () {
     }
     else {
         //alert("Please select a choice")
-        display_danger_message("Please select an option", $("#js-vote-successful"+catid));
+        display_danger_message("Please select an option", $("#js-vote-msg"+catid));
         console.log('choice not selected, ajax call not triggered');
         // We should display a helpful error message
     }
@@ -29,7 +29,7 @@ var create_vote_complete = function (res, status) {
         var questionId = idData[0].question_id;
 
         //document.getElementById("form"+questionId).innerHTML = "Thanks for voting!";
-        display_message("Thank you for voting!", $("#js-vote-successful"+questionId));
+        display_message("Thank you for voting!", $("#js-vote-msg"+questionId));
         $("#form"+questionId).remove();
 
         const pltGraph = JSON.parse(res.responseJSON.plotly_plot);
@@ -40,7 +40,7 @@ var create_vote_complete = function (res, status) {
     else {
         console.log('Voting not successful');
         console.log(res.responseText);
-        display_message(res.responseText, $("#js-vote-successful"+questionId));
+        display_message(res.responseText, $("#js-vote-msg"+questionId));
     }
 }
 var display_message = function (msg, elem) {

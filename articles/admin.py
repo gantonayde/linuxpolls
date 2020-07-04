@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Comment
+from .models import Post, Comment, FAQs
 
 admin.site.site_header = 'LinuxPolls Admin Panel'
 
@@ -31,3 +31,8 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ['title', 'content']
     prepopulated_fields = {'slug': ('title',)}
     inlines = [CommAd]
+
+@admin.register(FAQs)
+class FAQAdmin(admin.ModelAdmin):
+    list_display = ('title', 'body')
+    search_fields = ['title', 'body']

@@ -1,56 +1,15 @@
 {% for question in questions %}
+
     <div class="card">
-        <div class="card-header bg-white" id="heading{{question.id}}">
-            <div class="title-wrap mb-0">
-                <h3 class="mb-0 font-weight-less-bold">
-                    <div style="cursor: pointer;" data-toggle="collapse" data-target="#collapse{{question.id}}"
-                        aria-expanded="true" aria-controls="collapse{{question.id}}">
-                        {{ question.question_text }}
-                    </div>
-                </h3>
-            </div>
-        </div>
+        {% include 'widgets/poll_header.html' %}
     
         <div id="collapse{{question.id}}" class="collapse show js-accordion-collapse" style="width: 100%;"
-            aria-labelledby="heading{{question.id}}">
-    
+            aria-labelledby="heading{{question.id}}">  
             <div class="card-body">
-                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                <form action="{% url 'polls:vote' question.id %}" method="post" id="form{{question.id}}">
-                    {% csrf_token %}
-                    <div class="row mx-0">
-                        <div class="col-md-8 mb-3">
-                            <select id="choice" name="choice" class="form-control selectpicker" data-live-search="true"
-                                data-style="btn-outline-grey border-1 my-0 mx-0 px-4">
-                                <option value="" selected disabled>Please select an option</option>
-                                {% for choice in question.choice_set.all %}
-                                <option id="choice{{ forloop.counter }}" value="{{ choice.id }}">{{ choice.choice_text }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-    
-                        <div class="col-md-4 pb-3 d-flex justify-content-center">
-                            <div class="btn-group">
-                                <button type="submit" class="btn btn-deep-orange js-vote m-0 ml-3"
-                                    id="vote{{ question.id }}" data-catid="{{ question.id }}">Vote</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-    
-    
-                <!-- <div id="plot-div{{question.id}}">
-                    {% for plot in question.plot_set.all %}
-                    <script>
-                        const plotlyGraph{{ question.id }} = {{ plot.div | safe }};
-                        var config = { responsive: true };
-                        Plotly.newPlot("plot-div{{question.id}}", plotlyGraph{{ question.id }}.data, plotlyGraph{{ question.id }}.layout, config);
-                    </script>
-                    {% endfor %}
-                </div> -->
-    
+                <div id="js-vote-msg{{question.id}}"></div>
+                {% include 'widgets/poll_form.html' with question=question %}
             </div>
         </div>
+
     </div>
 {% endfor %}

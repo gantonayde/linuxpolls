@@ -9,8 +9,6 @@ class PlotAdmin(admin.ModelAdmin):
     list_display = ('question', 'plot_type','created_on','update')
     list_filter = ("plot_type",)
 
-
-
 class AlwaysChangedModelForm(ModelForm):
     def has_changed(self):
         """ Should returns True if data differs from initial. 
@@ -22,6 +20,7 @@ class Figureinline(admin.StackedInline):
     extra = 0
     form = AlwaysChangedModelForm
     #exclude = ['graph']
+
 class ChoiceInline(admin.StackedInline):
     model = Choice
     extra = 1
@@ -30,6 +29,7 @@ class ChoiceInline(admin.StackedInline):
     
     #fieldsets = [ (None,  {'fields': ['choice_text', 'votes']}) ]
 
+@admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Question',               {'fields': ['question_text']}),
@@ -50,4 +50,3 @@ class QuestionAdmin(admin.ModelAdmin):
         for question in queryset:
             question.update_figure()
 
-admin.site.register(Question,QuestionAdmin)

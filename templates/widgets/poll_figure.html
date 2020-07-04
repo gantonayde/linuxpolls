@@ -1,0 +1,9 @@
+<div id="plot-div{{question.id}}" class="js-show-toggle">
+    {% for plot in question.plot_set.all %}
+        <script>
+            const plotlyGraph{{ question.id }} = {{ plot.figure | safe }};
+            var config = { responsive: true };
+            Plotly.newPlot("plot-div{{question.id}}", plotlyGraph{{ question.id }}.data, plotlyGraph{{ question.id }}.layout, config);
+        </script>
+    {% endfor %}
+</div>

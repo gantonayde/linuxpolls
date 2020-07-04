@@ -114,7 +114,7 @@ def add_plotly_fig(question):
                                                 )
             fig = go.Figure(data=data, layout=layout)
             fig.update_layout(template="plotly_white")
-
+            fig.to_plotly_json()
 
             # plot_div = plot({"data": [go.Scatter(x=x_data, y=y_data, marker_color='#FFC37B',opacity=0.5)],
             #                 "layout" : go.Layout(title=question.question_text, 

@@ -1,0 +1,32 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 mt-3 left">
+        <div class="card">
+            <div class="card-header bg-white" id="heading{{question.id}}">
+                <div class="title-wrap mb-0">
+                    <h3 class="mb-0 font-weight-slightly-bold">
+                        {{ question.question_text }}    
+                    <a href="{% url  'polls:index' %}" class="all-posts-url">View All Polls</a>
+                    </h3>
+                </div>
+            </div>    
+
+            <div class="card-body">
+                <div id="js-vote-msg{{question.id}}"></div>
+                {% include 'widgets/poll_form.html' with question=question %}  
+                {% include 'widgets/poll_figure.html' with question=question %}    
+            </div>
+            
+        </div>
+    </div>
+   
+    </div>
+  </div>
+
+
+{% endblock content %}

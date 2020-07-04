@@ -3,6 +3,7 @@
 {% block content %}
 
 {% include 'widgets/controls.html' %}
+
 <div class="container">
   <div class="row">
     <div class="col-md-12 mt-3 left">
@@ -10,14 +11,11 @@
         {% include 'polls/list.html' with questions=questions %}
       </div>
     </div>
-    <div class="col-md-0 mt-2 ">
-        
-    </div>
    
     </div>
   </div>
-</div>
-<!-- Workaround for Plotly not scaling graph which are not rendered on initial load -->
+
+<!-- Workaround for Plotly responsive scaling -->
 <script>
 var collapse = document.getElementsByClassName("js-accordion-collapse");
 for (var i=0; i < collapse.length; i++){

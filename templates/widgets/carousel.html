@@ -15,26 +15,29 @@
         
                 <div class="carousel-inner" role="listbox" >
                   {% for question in latest_question_list %}
-                  {% for plot in question.plot_set.all %}
-                  <div class="carousel-item active" id="car{{ forloop.parentloop.counter }}">
-                    <div class="col-md" >
-                      <div class="card my-3  px-5">
-                        <div class="card-body">
-                          <h2 class="card-title text-center">{{question.question_text}}</h2>
-                          <div id="plot-car{{question.id}}">
-                            <script>
-                              const plotlyGraphCar{{ question.id }} = {{ plot.div | safe }};
-                              var config = { responsive: true };
-                              Plotly.newPlot("plot-car{{question.id}}", plotlyGraphCar{{ question.id }}.data, plotlyGraphCar{{ question.id }}.layout, config);                      
-                            </script>
-                          </div> 
+                    {% for plot in question.plot_set.all %}
+                      <div class="carousel-item active" id="car{{ forloop.parentloop.counter }}">
+                        <div class="col-md" >
+                          <div class="card my-3  px-5">
+                            <div class="card-body">
+                              <h2 class="card-title text-center">{{question.question_text}}</h2>
+                              <div id="plot-car{{question.id}}">
+                                <script>
+                                  const plotlyGraphCar{{ question.id }} = {{ plot.figure | safe }};
+                                  var config = { responsive: true };
+                                  //var scriptTag = document.scripts[document.scripts.length - 1];
+                                  //var parentTag = scriptTag.parentNode;
+                                  //console.log(parentTag.id);
+                                  Plotly.newPlot("plot-car{{question.id}}", plotlyGraphCar{{ question.id }}.data, plotlyGraphCar{{ question.id }}.layout, config);                      
+                                </script>
+                              </div> 
+                            </div>
+                          </div>            
                         </div>
-                      </div>            
-                    </div>
-                  </div>
+                      </div>
+                    {% endfor %}
                   {% endfor %}
-                  {% endfor %}
-                <!-- Workaround for Plotly not scaling graph which are not rendered on initial load -->
+                <!-- Workaround for Plotly responsive scaling -->
                 <script>
                   for (var i = 1; i < 6; i++) {
                     if (i != 1) {

@@ -23,9 +23,11 @@
                                 <p class="card-text text-muted mb-0">{{ post.created_on.date}}</p>
                             </div>
                             <div class="col right">
-                                {% with total=post.comments.count %}
-                                <p class="text-right font-weight-bold mb-0"> {{ total }} Comment{{ total|pluralize }} </p>
-                                {% endwith %}
+                                <a href="{% url 'post_detail' post.slug  %}#comments" class="title-link">
+                                    {% with total=post.comments.count %}
+                                    <p class="text-right font-weight-bold mb-0 "> {{ total }} Comment{{ total|pluralize }} </p>
+                                    {% endwith %}
+                                </a>
                             </div>
                         </div>
                     </div>

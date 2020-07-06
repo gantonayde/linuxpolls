@@ -10,11 +10,14 @@
     <div class="row mt-3">
       
       <div class="col-md-9 mt-0 left">
-        <div class="title-wrap title-wrap--line">
-          <h5 class="section-title">Polls on focus</h5>
-        </div>
-         {% include 'polls/polls_on_focus.html' with questions=polls_on_focus %}
-      
+        {% if polls_on_focus %}
+          <div id="polls-on-focus">
+            <div class="title-wrap title-wrap--line">
+              <h5 class="section-title">Polls on focus</h5>
+            </div>
+            {% include 'polls/polls_on_focus.html' with questions=polls_on_focus %}
+          </div>    
+        {% endif %}
          
         <div class="title-wrap title-wrap--line">
           <h5 class="section-title">Articles</h5>

@@ -34,6 +34,7 @@ class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Question',               {'fields': ['question_text']}),
         ('Date information', {'fields': ['pub_date']}),
+        ('Poll on focus', {'fields': ['on_focus']}),
     ]
     inlines = [ChoiceInline, Figureinline]
     list_display = ('question_text', 'pub_date', 'was_published_recently', )

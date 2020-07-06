@@ -2,20 +2,31 @@ from django.views import generic
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import F, Q
-from .models import Post
+from .models import Post, FAQs
 from .forms import CommentForm
 
 from polls.models import Question, Choice
 from polls.plots import add_figure
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+import urllib
+import json
 
 
 latest_question_list = Question.objects.order_by('-pub_date')[:5]
 
 
 def Index(request):
-    polls_on_focus = Question.objects.order_by('-pub_date')[:5]
+
+    polls_on_focus = Question.objects.filter(on_focus=True)
+    if request.COOKIES.get('q_voted'):
+        cookie_value = urllib.parse.unquote_plus(request.COOKIES['q_voted'])
+        cookie_value = json.loads(cookie_value)
+        answered_polls = [q_id for q_id in cookie_value['question_id']]
+    else:
+        answered_polls = []
+    polls_on_focus = polls_on_focus.exclude(id__in=answered_polls)
+
     object_list = Post.objects.filter(status=1).order_by('-created_on')
     paginator = Paginator(object_list, 3)  # 3 posts in each page
     page = request.GET.get('page')
@@ -65,14 +76,11 @@ def Search(request):
         if not object_list:
             print("No matches")
     else:
-        print("else")
         object_list = Post.objects.none()
-    print(search_terms)
     paginator = Paginator(object_list, 3)  # 3 posts in each page
     page = request.GET.get('page')
     try:
         post_list = paginator.page(page)
-        print(post_list)
     except PageNotAnInteger:
             # If page is not an integer deliver the first page
         post_list = paginator.page(1)
@@ -89,10 +97,11 @@ def Search(request):
                    'search_terms': search_terms},)
 
 def About(request):
-    
+    frequently_asked_questions = FAQs.objects.all()  
     return render(request,
                   'about.html',
-                  {'latest_question_list': latest_question_list},)
+                  {'latest_question_list': latest_question_list,
+                  'faqs': frequently_asked_questions},)
 
 def post_detail(request, slug):
 
@@ -116,7 +125,7 @@ def post_detail(request, slug):
                                            'comments': comments,
                                            'new_comment': new_comment,
                                            'comment_form': comment_form,
-                                           'latest_question_list': latest_question_list})
+                                           'latest_question_list': latest_question_list,})
 
 
 

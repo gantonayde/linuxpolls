@@ -1,6 +1,7 @@
+
 {% for question in questions %}
 
-    <div class="card">
+    <div class="card" id="poll{{question.id}}">
         {% include 'widgets/poll_header.html' %}
     
         <div id="collapse{{question.id}}" class="collapse show js-accordion-collapse" style="width: 100%;"
@@ -8,7 +9,9 @@
     
             <div class="card-body">
                 <div id="js-vote-msg{{question.id}}"></div>
-                {% include 'widgets/poll_form.html' %}  
+                {% if not question.id in answered_polls %}
+                    {% include 'widgets/poll_form.html' %} 
+                {% endif %}
                 {% include 'widgets/poll_figure.html' %}    
             </div>
         </div>

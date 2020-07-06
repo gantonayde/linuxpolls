@@ -1,59 +1,81 @@
 {% extends 'base.html' %} 
+{% load static %}
 {% block content %}
 
-<!-- <div class="container"> -->
-  <div class="row">
 
-    <div class="col-md-9 card mb-4  mt-3 left  top">
+<div class="row">
+  <div class="col">
+    <!-- Title -->
+    <h2 class="mt-4 mb-3 font-weight-slightly-bold ">{{ post.title }}</h2>
+    <p class="lead">{{ post.summary }}</p>
+    <hr>
+    <!-- Date -->
+    <!-- <p class="card-text text-muted mb-4">{{ post.created_on.date|date:"D d M Y" }}, updated {{ post.updated_on|timesince }} ago </p> -->
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-9">
+    <div class="row m-0 p-0">
+      <div class="col-auto mr-auto m-0 p-0">
+        <p class="card-text text-muted mb-3">{{ post.created_on|date:"D d M Y" }}</p>
+      </div>
+      <div class="col-auto m-0 p-0 ">
+        {% if post.updated_on.date != post.created_on.date %}
+        <p class="card-text text-muted mb-3">updated {{ post.updated_on|timesince }} ago </p>
+        {% endif %}
+      </div>    
+  </div>
+</div>
+</div>
+
+  <div class="row">
+     <!-- Post Content Column -->
+     <div class="col-md-9"> 
+      <!-- Preview Image -->
+        <img class="img-fluid mb-3" src="{% static 'img/placeholder.jpg' %}" alt="">
+      <div class="row m-0 p-0">
+        <div class="col-auto mr-auto m-0 p-0">
+          {% include 'widgets/social_share_buttons.html' %}
+        </div>
+        <div class="col-auto m-0 p-0 ">
+          <a href="#comments" class="fa fa-comments go2comments-button px-2" title="View Comments"><span class="ml-2">{{ comments.count }}</span></a>
+        </div>
+      </div>
+      
+      <hr>
+      <!-- Post Content -->
+      {{ post.content | safe }}
+      <hr>
+
+    </div>
+    <!-- <div class="col-md-9 card mb-4  mt-3 left  top">
       <div class="card-body">
         <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
         <p class=" text-muted">{{ post.author }} | {{ post.created_on }}</p>
         <p class="card-text ">{{ post.content | safe }}</p>
       </div>
     </div>
-    
+     -->
     <div class="col-md-3 float-right">
-      {% block sidebar %} 
-      {% include 'widgets/sidebar.html' %} 
-      {% endblock sidebar %}
+      {% include 'widgets/sidebar.html' %}
     </div>
 
-    <div class="col-md-9 card mb-4 mt-3 ">
-        <div class="card-body">
-          <!-- comments -->
-          <h2>{{ comments.count }} comments</h2>
-  
-          {% for comment in comments %}
-          <div class="comments" style="padding: 10px;">
-            <p class="font-weight-bold">
-              {{ comment.name }}
-              <span class=" text-muted font-weight-normal">
-                {{ comment.created_on }}
-              </span>
-            </p>
-            {{ comment.body | linebreaks }}
-          </div>
-          {% endfor %}
-        </div>
+    <div id="comments" class="col-md-9 card mb-4  mt-3 ">
+      Comments placeholder
     </div>
 
-    <div class="col-md-9 card mb-4  mt-3 ">
-      <div class="card-body">
-        {% if new_comment %}
-          <div class="alert alert-success" role="alert">
-            Your comment is awaiting moderation
-          </div>
-        {% else %}
-          <h3>Leave a comment</h3>
-          <form method="post" style="margin-top: 1.3em;">
-            {% csrf_token %}
-            {{ comment_form }}
-            <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
-          </form>
-        {% endif %}
-      </div>
-    </div>
-<!-- </form> -->
+
+
+
+
+
+
+
+
+    <!-- Comments -->
+
+
   </div>
 <!-- </div> -->
 

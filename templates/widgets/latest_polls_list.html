@@ -1,0 +1,21 @@
+<div class="card mb-4">
+    <div class="card-body p-0">
+        <div class="title-wrap title-wrap--line">
+            <h5 class="section-title">Latest polls</h5>
+            <a href="{% url  'polls:index' %}" class="all-posts-url">View All</a>
+        </div>
+        <p class="card-text">
+            {% if latest_question_list %}
+                <ul class="list-unstyled components mb-3 pl-2">
+                    {% for question in latest_question_list %}
+                        <li class="mb-2">
+                            <a href="{% url 'polls:detail' question.id %}" class="title-link">{{ question.question_text }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No polls are available.</p>
+            {% endif %}
+        </p>
+    </div>
+</div>

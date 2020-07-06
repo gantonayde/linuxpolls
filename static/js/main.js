@@ -31,6 +31,7 @@ var create_vote_complete = function (res, status) {
         //document.getElementById("form"+questionId).innerHTML = "Thanks for voting!";
         display_message("Thank you for voting!", $("#js-vote-msg"+questionId));
         $("#form"+questionId).remove();
+        
 
         const pltGraph = JSON.parse(res.responseJSON.plotly_plot);
         var config = {responsive: true};
@@ -38,14 +39,16 @@ var create_vote_complete = function (res, status) {
 
     }
     else {
+        const idData = res.responseJSON.id_data;
+        var questionId = idData[0].question_id;
         console.log('Voting not successful');
-        console.log(res.responseText);
-        display_message(res.responseText, $("#js-vote-msg"+questionId));
+        display_danger_message("You have already voted!", $("#js-vote-msg"+questionId));
+        $("#form"+questionId).remove();
     }
 }
 var display_message = function (msg, elem) {
     var msg_div = $('<div class="alert alert-success" role="alert"><h4 class="mb-0">' + msg + '</h4></div>');
-    elem.append(msg_div).fadeIn('slow').animate({ opacity: 1.0 }, 7000).fadeOut('slow', function () { msg_div.remove(); });
+    elem.append(msg_div).fadeIn('slow').animate({ opacity: 1.0 }, 3000).fadeOut('slow', function () { msg_div.remove(); });
 };
 
 var display_danger_message = function (msg, elem) {
@@ -121,6 +124,3 @@ $("#resultsShowSwitch").click(resultsShowSwitch);
 
 $("#id_choice_text").addClass("selectpicker");
 
-$(document).ready(function() {
-    $('.js-select2').select2();
-  });

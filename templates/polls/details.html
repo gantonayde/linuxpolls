@@ -18,7 +18,9 @@
 
             <div class="card-body">
                 <div id="js-vote-msg{{question.id}}"></div>
-                {% include 'widgets/poll_form.html' with question=question %}  
+                {% if not question.id in answered_polls %}
+                    {% include 'widgets/poll_form.html' with question=question %} 
+                {% endif %}
                 {% include 'widgets/poll_figure.html' with question=question %}    
             </div>
             

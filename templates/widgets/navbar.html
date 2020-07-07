@@ -12,20 +12,20 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
+                        <li class="nav-item my-auto">
                             <a class="nav-link" href="{% url 'home' %}"><i class="fa fa-home"></i></a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item my-auto">
                             <a class="nav-link font-weight-normal" href="{% url 'articles_list' %}">Articles</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item my-auto">
                             <a class="nav-link font-weight-normal" href="{% url 'polls:index' %}">Polls</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item my-auto">
                             <a class="nav-link font-weight-normal" href="{% url 'about' %}">About</a>
                         </li>
-                        <form class="form-inline my-2 mx-2 my-lg-0" method="get" action="{% url 'search' %}">
-                            <input class="form-control mr-sm-1 box-search" name="s" type="search" placeholder="Search" aria-label="Search" >
+                        <form class="form-inline my-2 mx-2" method="get" action="{% url 'search' %}">
+                            <input class="form-control box-search" name="s" type="search" placeholder="Search" aria-label="Search" >
                             <button class="btn-search " type="submit">
                                   <i class="fa fa-search" ></i>
                             </button>

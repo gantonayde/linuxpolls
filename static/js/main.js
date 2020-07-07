@@ -26,17 +26,25 @@ $(".js-vote").click(create_vote);
 var create_vote_complete = function (res, status) {
     if (status == "success") {
         const idData = res.responseJSON.id_data;
+        const pltGraph = JSON.parse(res.responseJSON.plotly_plot);
         var questionId = idData[0].question_id;
-
-        //document.getElementById("form"+questionId).innerHTML = "Thanks for voting!";
+        var pltConfig = {responsive: true};
         display_message("Thank you for voting!", $("#js-vote-msg"+questionId));
         $("#form"+questionId).remove();
-        
 
-        const pltGraph = JSON.parse(res.responseJSON.plotly_plot);
-        var config = {responsive: true};
-        Plotly.newPlot("plot-div"+questionId, pltGraph.data, pltGraph.layout, config );
-
+        if ($("#polls-on-focus").length > 0) {
+           // Plotly.newPlot("plot-car"+questionId, pltGraph.data, pltGraph.layout, config );
+            if ($("[id^=form]").length > 0){
+             //   setTimeout(function() { $("#heading"+questionId).remove(); }, 3500);
+                setTimeout(function() { $("#collapse"+questionId).remove(); }, 3500);
+            }
+            else {
+                setTimeout(function() { $("#polls-on-focus").remove(); }, 3500);
+            }
+        }
+        else {
+            Plotly.newPlot("plot-div"+questionId, pltGraph.data, pltGraph.layout, pltConfig );
+        }
     }
     else {
         const idData = res.responseJSON.id_data;
@@ -55,6 +63,7 @@ var display_danger_message = function (msg, elem) {
     var msg_div = $('<div class="alert alert-danger" role="alert"><h4 class="mb-0">' + msg + '</h4></div>');
     elem.append(msg_div).fadeIn('slow').animate({ opacity: 1.0 }, 3000).fadeOut('slow', function () { msg_div.remove(); });
 };
+
 
 function getCookie(name) {
     var cookieValue = null;

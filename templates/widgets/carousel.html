@@ -20,7 +20,7 @@
                         <div class="col-md" >
                           <div class="card my-3  px-5">
                             <div class="card-body">
-                              <h2 class="card-title text-center">{{question.question_text}}</h2>
+                              <h2 class="card-title text-center title-wrap--line">{{question.question_text}}</h2>
                               <div id="plot-car{{question.id}}">
                                 <script>
                                   const plotlyGraphCar{{ question.id }} = {{ plot.figure | safe }};

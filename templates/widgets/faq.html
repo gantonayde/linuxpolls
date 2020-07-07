@@ -1,0 +1,29 @@
+
+{% for faq in faqs %}
+
+<div class="card" id="card-faq{{faq.id}}">
+    <div class="card-header bg-white" id="heading{{faq.id}}">
+        <div class="title-wrap mb-0">
+            <h3 class="mb-0 font-weight-slightly-bold">
+                <div style="cursor: pointer;" data-toggle="collapse" data-target="#clp-faq{{faq.id}}"
+                    aria-expanded="true" aria-controls="clp-faq{{faq.id}}">
+                    {{ faq.title }}
+                </div>
+            </h3>
+        </div>
+    </div>
+    {% if forloop.counter == 1 %}
+        <div id="clp-faq{{faq.id}}" class="collapse show js-accordion-collapse" style="width: 100%;"
+            aria-labelledby="h-faq{{faq.id}}">
+    {% else %}
+        <div id="clp-faq{{faq.id}}" class="collapse js-accordion-collapse" style="width: 100%;"
+        aria-labelledby="h-faq{{faq.id}}">
+    {% endif %}
+        <div class="card-body">
+            {{ faq.body | safe }}
+        </div>
+    </div>
+</div>
+    
+{% endfor %}
+

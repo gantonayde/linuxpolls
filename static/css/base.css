@@ -1,5 +1,6 @@
 :root{
   --main-color: #fb3;
+  --grey-color: #f8f8f8;
 }
 
 * {
@@ -26,7 +27,7 @@ body {
 } */
 
 .side-background-color {
-  background-color: #f8f8f8;
+  background-color: var(--grey-color);
 }
 
 .card {
@@ -43,7 +44,14 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: box-shadow 250ms ease-in;
 }
+
+.card-img-top:hover
+{
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+}
+
 
 .article-body{
   flex: 1 1 auto;
@@ -85,8 +93,11 @@ a.title-link:hover, .all-posts-url:hover{
 
 .title-wrap--line {
     /* border-bottom: 3px solid var(--gray); */
-    padding-top: 0px;
-    border-bottom: var(--main-color) solid 5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    /* padding-left: 10px;
+    padding-right: 10px; */
+    border-bottom: 2px solid var(--main-color) ;
 }
 
 .all-posts-url {
@@ -214,32 +225,29 @@ hr.rounded {
 /* SOCIAL MEDIA SHARE BUTTONS */
 
 .social-share-button {
-  padding: 5px;
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 40px;
   width: 40px;
-  line-height: inherit;
+  height: 40px;
   text-align: center;
-  text-decoration: none;
   margin: 5px 2px;
 }
 
 .social-follow-button {
-  padding: 5px;
-  font-size: 28.8px;
-  width: 53.3px;
-  line-height: inherit;
+  font-size: 28px;
+  line-height: 48px;
+  width: 48px;
+  height: 48px;
   text-align: center;
-  text-decoration: none;
   margin: 5px 2px;
 }
 
 .go2comments-button {
-  padding: 5px;
-  font-size: 20px;
-  line-height: inherit;
+  font-size: 18px;
+  line-height: 40px;
+  height: 40px;
   text-align: center;
-  text-decoration: none;
-  margin: 5px 2px;
+  margin: 5px 0px;
 }
 
 
@@ -248,16 +256,17 @@ hr.rounded {
     color: white;
 }
 
-.fa-facebook {
+.fa-facebook-bg {
   background: #3B5998;
   color: white;
 }
 
-.fa-twitter {
+.fa-twitter-bg {
   background: #55ACEE;
   color: white;
 }
-.fa-reddit {
+
+.fa-reddit-bg {
   background: #ff5700;
   color: white;
 }
@@ -267,7 +276,179 @@ hr.rounded {
   color: white;
 }
 
-.fa-instagram {
+.fa-instagram-bg {
   color: white;
   background: radial-gradient(circle at 33% 100%, #fed373 4%, #f15245 30%, #d92e7f 62%, #9b36b7 85%, #515ecf);
+}
+
+
+
+
+.site-footer
+{
+  background-color:#26272b;
+  padding:35px 0 20px;
+  font-size:15px;
+  line-height:24px;
+  color:var(--grey-color);
+}
+.site-footer hr
+{
+  border-top-color:#bbb;
+  opacity:0.5
+}
+.site-footer hr.small
+{
+  margin:20px 0
+}
+.site-footer h6
+{
+  color:#fff;
+  font-size:16px;
+  text-transform:uppercase;
+  margin-top:5px;
+  letter-spacing:2px
+}
+.site-footer a
+{
+  color: var(--grey-color);
+}
+.site-footer a:hover
+{
+  color:white;
+  text-decoration:none;
+}
+.footer-links
+{
+  padding-left:0;
+  list-style:none
+}
+.footer-links li
+{
+  display:block
+}
+.footer-links a
+{
+  color:var(--grey-color)
+}
+.footer-links a:active,.footer-links a:focus,.footer-links a:hover
+{
+  color: white;
+  text-decoration:none;
+}
+.footer-links.inline li
+{
+  display:inline-block
+}
+.site-footer .social-icons
+{
+  text-align:right
+}
+.site-footer .social-icons a
+{
+  width:40px;
+  height:40px;
+  line-height:40px;
+  margin-left:6px;
+  margin-right:0;
+  border-radius:100%;
+  background-color:#33353d
+}
+.copyright-text
+{
+  margin:0
+}
+@media (max-width:991px)
+{
+  .site-footer [class^=col-]
+  {
+    margin-bottom:30px
+  }
+}
+@media (max-width:767px)
+{
+  .site-footer
+  {
+    padding-bottom:0
+  }
+  .site-footer .copyright-text,.site-footer .social-icons
+  {
+    text-align:center
+  }
+}
+.social-icons
+{
+  padding-left:0;
+  margin-bottom:0;
+  list-style:none
+}
+.social-icons li
+{
+  display:inline-block;
+  margin-bottom:4px
+}
+.social-icons li.title
+{
+  margin-right:15px;
+  text-transform:uppercase;
+  color:#96a2b2;
+  font-weight:700;
+  font-size:13px
+}
+.social-icons a{
+  /* background-color:#eceeef;
+  color:#818a91; */
+  font-size:16px;
+  display:inline-block;
+  line-height:44px;
+  width:44px;
+  height:44px;
+  text-align:center;
+  margin-right:8px;
+  border-radius:100%;
+  -webkit-transition:all .2s linear;
+  -o-transition:all .2s linear;
+  transition:all .2s linear
+}
+.social-icons a:active,.social-icons a:focus,.social-icons a:hover
+{
+  color:#fff;
+  background-color:#29aafe
+}
+.social-icons.size-sm a
+{
+  line-height:34px;
+  height:34px;
+  width:34px;
+  font-size:14px
+}
+
+.social-icons .fa-facebook:hover, .social-icons .fa-twitter:hover, .social-icons .fa-reddit:hover {
+  opacity: 1.0;
+}
+
+.social-icons a.facebook:hover
+{
+  background-color:#3b5998
+}
+.social-icons a.twitter:hover
+{
+  background-color:#55ACEE;
+}
+.social-icons a.reddit:hover
+{
+  background-color:#ff5700;
+}
+.social-icons a.instagram:hover
+{
+  background: radial-gradient(circle at 33% 100%, #fed373 4%, #f15245 30%, #d92e7f 62%, #9b36b7 85%, #515ecf);
+}
+@media (max-width:767px)
+{
+  .social-icons li.title
+  {
+    display:block;
+    margin-right:0;
+    font-weight:600
+  }
 }

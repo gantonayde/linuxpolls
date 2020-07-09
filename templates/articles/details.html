@@ -33,7 +33,9 @@
      <!-- Post Content Column -->
      <div class="col-md-9"> 
       <!-- Preview Image -->
-        <img class="img-fluid mb-3" src="{% static 'img/placeholder.jpg' %}" alt="">
+      {% if post.image %}
+        <img class="img-fluid mb-3" src="{{post.image.url}}" alt="">
+      {% endif %}
       <div class="row m-0 p-0">
         <div class="col-auto mr-auto m-0 p-0">
           {% include 'widgets/social_share_buttons.html' %}

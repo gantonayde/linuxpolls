@@ -8,7 +8,9 @@
             <div class="row no-gutters">
                 <div class="col-md-5 ">
                     <a href="{% url 'post_detail' post.slug  %}">
-                        <img src="{% static 'img/placeholder.jpg' %}" class="card-img-top" alt="...">  
+                        {% if post.image %}
+                        <img src="{{post.image.url}}" class="card-img-top" alt="...">  
+                        {% endif %}
                     </a>
                 </div>
                 <div class="col-md">

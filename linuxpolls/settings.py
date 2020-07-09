@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import environ
+
+# Load linuxpolls/.env
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*6ldj&)m7#8_^=pd_^9em@v58*m=^#4-1#i&2!92owjhkh*t)p'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -96,13 +101,12 @@ DATABASES = {
 
 # DATABASES = {
 #      'default': {
-#          'ENGINE': 'django.db.backends.postgresql',
-#          'NAME': 'aoxsfifm',
-#          'USER': 'aoxsfifm',
-#          'PASSWORD': 'Ekcj27NK2jfOqYosvaU4uIjs3dpTzXJt' ,
-#          'HOST': 'kandula.db.elephantsql.com',
-#          'PORT': 5432,
-#      }
+#         'NAME': env("DATABASE_NAME"),
+#         'USER': env("DATABASE_USER"),
+#         'PASSWORD': env("DATABASE_PASSWORD"),
+#         'HOST': env("DATABASE_HOST"),
+#         'PORT': env("DATABASE_PORT"),
+#       }
 # }
 
 
@@ -128,7 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-gb'
 
 TIME_ZONE = 'UTC'
 
@@ -141,11 +145,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
 STATIC_URL = '/static/'
-
 #Location of static files
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 # staticfiles or static
 STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles')
 
+# Base url to serve media files
+MEDIA_URL = '/media/'
+
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')

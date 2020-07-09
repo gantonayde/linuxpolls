@@ -1,7 +1,15 @@
 :root{
-  --main-color: #fb3;
-  --secondary-color: red;
-  --grey-color: #f8f8f8;
+  --main-color: hsl(208, 100%, 32%);
+  --main-color-darker: hsl(208, 100%, 28%);
+  --main-color-hover:hsl(208, 100%, 24%);
+  --main-color-transparent: hsla(208, 100%, 32%, 0.1);
+  --secondary-color: hsl(104, 57%, 44%);
+  --secondary-color-darker: hsl(104, 57%, 40%);
+  --secondary-color-hover: hsl(104, 57%, 36%);
+  --secondary-color-transparent: hsla(104, 57%, 44%, 0.1);
+  --grey-color: #f7f8ff;
+  --main-color-hover:hsl(208, 100%, 24%);
+  
 }
 
 * {
@@ -26,6 +34,10 @@ body {
   margin-top: -20px;
   z-index: -1;
 } */
+
+.bg-main-color{
+  background-color: var(--main-color)!important;
+}
 
 .side-background-color {
   background-color: var(--grey-color);
@@ -98,7 +110,7 @@ a.title-link:hover, .all-posts-url:hover{
     padding-bottom: 6px;
     /* padding-left: 10px;
     padding-right: 10px; */
-    border-bottom: 2px solid var(--secondary-color) ;
+    border-bottom: 1.5px solid var(--secondary-color) ;
 }
 
 .all-posts-url {

@@ -1,10 +1,10 @@
 {% load static %}
 
      <!-- Navigation -->
-        <nav class="navbar navbar-expand-sm navbar-dark deep-orange py-2" id="mainNav">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-main-color py-2" id="mainNav">
             <div class="container-page">
-                <img src="{% static 'img/TuxFlat.svg' %}" width="25" height="25" alt="LinuxPolls">
-                <a class="navbar-brand font-weight-normal" href="{% url 'home' %}">LinuxPolls</a>
+                <!-- <img src="{% static 'img/TuxFlat.svg' %}" width="25" height="25" alt="LinuxPolls"> -->
+                <a class="navbar-brand font-weight-slightly-bold" href="{% url 'home' %}">LinuxPolls</a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                     data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -16,13 +16,13 @@
                             <a class="nav-link" href="{% url 'home' %}"><i class="fa fa-home"></i></a>
                         </li>
                         <li class="nav-item my-auto">
-                            <a class="nav-link font-weight-normal" href="{% url 'articles_list' %}">Articles</a>
+                            <a class="nav-link font-weight-slightly-bold" href="{% url 'articles_list' %}">Articles</a>
                         </li>
                         <li class="nav-item my-auto">
-                            <a class="nav-link font-weight-normal" href="{% url 'polls:index' %}">Polls</a>
+                            <a class="nav-link font-weight-slightly-bold" href="{% url 'polls:index' %}">Polls</a>
                         </li>
                         <li class="nav-item my-auto">
-                            <a class="nav-link font-weight-normal" href="{% url 'about' %}">About</a>
+                            <a class="nav-link font-weight-slightly-bold" href="{% url 'about' %}">About</a>
                         </li>
                         <form class="form-inline my-2 mx-2" method="get" action="{% url 'search' %}">
                             <input class="form-control box-search" name="s" type="search" placeholder="Search" aria-label="Search" >

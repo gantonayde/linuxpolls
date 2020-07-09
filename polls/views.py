@@ -116,16 +116,23 @@ def ajax_vote(request, question_id):
 
     try:
         print('Entering try...selecting choice')
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+        selected_choice = question.choice_set.filter(pk=request.POST['choice'])
+        print(selected_choice)
     except (KeyError, Choice.DoesNotExist):
         print('Entering except...choice does not exist')
         return JsonResponse("Choice does not exist.", safe=False, status=400)
     else:
         print('Entering else...success!')
-        selected_choice.votes = F('votes') + 1
-        selected_choice.save()
+        selected_choice.update(votes=F('votes') + 1)
+        #selected_choice.votes = F('votes') + 1
+        #selected_choice.votes += 1
+        print('votes updated')
+        #selected_choice.save()
+        print('votes saved')
         question.update_figure()
+        print('Before Plot')
         plot = question.plot_set.get(question_id=question_id)
+        print('After Plot')
         plotly_plot = plot.figure
         
         # Set to True to enable cookies

@@ -13,11 +13,10 @@ import urllib
 import json
 
 
-latest_question_list = Question.objects.order_by('-pub_date')[:5]
 
 
 def Index(request):
-
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
     polls_on_focus = Question.objects.filter(on_focus=True)
     if request.COOKIES.get('q_voted'):
         cookie_value = urllib.parse.unquote_plus(request.COOKIES['q_voted'])
@@ -49,7 +48,7 @@ def Index(request):
 
 
 def Articles(request):
-
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
     object_list = Post.objects.filter(status=1).order_by('-created_on')
     paginator = Paginator(object_list, 3)  # 3 posts in each page
     page = request.GET.get('page')
@@ -68,7 +67,7 @@ def Articles(request):
                    'latest_question_list': latest_question_list},)
 
 def Search(request):
-
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
     search_terms = request.GET.get("s")
     if search_terms:
         object_list = Post.objects.filter(Q(title__icontains=search_terms) | 
@@ -97,6 +96,7 @@ def Search(request):
                    'search_terms': search_terms},)
 
 def About(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
     frequently_asked_questions = FAQs.objects.all()  
     return render(request,
                   'about.html',
@@ -104,7 +104,7 @@ def About(request):
                   'faqs': frequently_asked_questions},)
 
 def post_detail(request, slug):
-
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
     template_name = 'articles/details.html'
     post = get_object_or_404(Post, slug=slug)
     comments = post.comments.filter(active=True)

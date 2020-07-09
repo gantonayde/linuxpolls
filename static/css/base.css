@@ -1,5 +1,6 @@
 :root{
   --main-color: #fb3;
+  --secondary-color: red;
   --grey-color: #f8f8f8;
 }
 
@@ -73,7 +74,7 @@ a.title-link{
 }
 
 a.title-link:hover, .all-posts-url:hover{
-  color: var(--main-color);
+  color: var(--secondary-color);
 }
 
 .section-title {
@@ -97,7 +98,7 @@ a.title-link:hover, .all-posts-url:hover{
     padding-bottom: 6px;
     /* padding-left: 10px;
     padding-right: 10px; */
-    border-bottom: 2px solid var(--main-color) ;
+    border-bottom: 2px solid var(--secondary-color) ;
 }
 
 .all-posts-url {
@@ -215,11 +216,11 @@ hr.rounded {
 }
 
 .carousal-controls-style{
-  background-color: #ff5722;
+  background-color: var(--main-color);
 }
 
 .carousel-indicators li{
-  background-color: #ff5722;
+  background-color: var(--main-color);
 }
 
 /* SOCIAL MEDIA SHARE BUTTONS */
@@ -272,7 +273,7 @@ hr.rounded {
 }
 
 .fa-comments {
-  background: var(--main-color);
+  background: var(--secondary-color);
   color: white;
 }
 

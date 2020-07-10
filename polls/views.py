@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.db.models import F
 from django.views import generic
 from .models import Question
-from polls.models import Choice
+from polls.models import Choice, Vote
 from django.forms.models import model_to_dict, modelformset_factory
 from .plots import add_bokeh_figure
 from django.core import serializers
@@ -17,6 +17,8 @@ from django.forms import widgets
 import json
 import urllib
 from .tools import get_answered_polls, last_day_of_month
+from _datetime import datetime
+from django.utils import timezone
 
 def PollsIndex(request):
     questions = Question.objects.all()
@@ -44,61 +46,6 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = 'results.html'
 
-
-def form_vote(request, question_id):
-    p = get_object_or_404(Question, pk=question_id)
-    print('starting form_vote')
-
-    if request.method == 'POST':
-        print("Checking request")
-        voting_form = QuestionForm(data=request.POST)
-        print(voting_form)
-        if voting_form.is_valid():
-            print("Valid voting form found")
-            selected_choice = p.choice_set.get(pk=request.POST['choice_text'])
-            print("selected_choice:", selected_choice)
-            print("selected_choice votes:", selected_choice.votes)
-
-    
-        
-        # if form.is_valid():
-        #     pk = form.cleaned_data['choice_text']
-        #     selected_choice = p.choice_set.get(pk=pk)
-        #     selected_choice.votes += 1
-        #     selected_choice.save()
-    try:
-        print('Entering try')
-        print(request.POST['choice_text'])
-        selected_choice = p.choice_set.get(pk=request.POST['choice_text'])
-    except (KeyError, Choice.DoesNotExist):
-        print('Entering except')
-        # return render(request, 'polls/index.html', {
-        #     'question': p,
-        #     'error_message': "You didn't select a choice.",
-        # })
-        #return HttpResponse("Choice not selected.")
-        return HttpResponseServerError("You didn't select a choice.")
-    else:
-        print('Entering else...success!')
-        selected_choice.votes += 1
-        selected_choice.save()
-        p.update_figure()
-        data = list(p.choice_set.all().values('question_id', 'id', 'votes'))
-        graph = add_bokeh_figure(p)
-        graph1 = add_figure_scatter(p)
-        graph3 = add_plotly_fig(p)
-        
-        #print(graph)
-        #for plot in p.plot_set.all():
-        #     print(plot.div)
-        #     data = {}
-        #     data['div'] = plot.div
-        #     data['script'] = plot.script
-       # return JsonResponse(data)
-        return JsonResponse({'graph': graph, 'data': data, 'plt': graph3})
-        #return HttpResponse("Successfully voted.")
-        #return HttpResponseRedirect(p.get_absolute_url())
-
 def ajax_vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     id_data = list(question.choice_set.all().values('question_id', 'id'))
@@ -116,25 +63,29 @@ def ajax_vote(request, question_id):
 
     try:
         print('Entering try...selecting choice')
-        selected_choice = question.choice_set.filter(pk=request.POST['choice'])
-        print(selected_choice)
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         print('Entering except...choice does not exist')
         return JsonResponse("Choice does not exist.", safe=False, status=400)
     else:
         print('Entering else...success!')
-        selected_choice.update(votes=F('votes') + 1)
-        #selected_choice.votes = F('votes') + 1
+        #selected_choice.update(votes=F('votes') + 1)
+        selected_choice.votes = F('votes') + 1
         #selected_choice.votes += 1
-        print('votes updated')
-        #selected_choice.save()
-        print('votes saved')
+        selected_choice.save()
+
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ipaddress = x_forwarded_for.split(',')[-1].strip()
+        else:
+            ipaddress = request.META.get('REMOTE_ADDR')
+        new_vote = Vote(question=question, choice=selected_choice, voted_on=timezone.now(), ip_address=ipaddress)
+        new_vote.save()
+
         question.update_figure()
-        print('Before Plot')
         plot = question.plot_set.get(question_id=question_id)
-        print('After Plot')
         plotly_plot = plot.figure
-        
+
         # Set to True to enable cookies
         enable_cookie = False
         if enable_cookie:

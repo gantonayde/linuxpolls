@@ -8,6 +8,7 @@ class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
     on_focus = models.BooleanField(default=False)
+    carousel = models.BooleanField(default=False)
 
     def __str__(self):
         return self.question_text
@@ -17,7 +18,7 @@ class Question(models.Model):
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
     
     def make_copy(self):
-        choices = self.choice_set.all() #Choice.objects.filter(question_id=self.id)
+        choices = self.choice_set.all() 
         self.pk = None
         self.save()
         for choice in choices:
@@ -30,7 +31,7 @@ class Question(models.Model):
         self.save()
 
     def reset_votes(self):
-        choices = self.choice_set.all() #Choice.objects.filter(question_id=self.id)
+        choices = self.choice_set.all()
         for choice in choices:
             choice.votes = 0
             choice.save()
@@ -52,6 +53,13 @@ class Choice(models.Model):
     
     def __str__(self):
         return self.choice_text
+
+class Vote(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    voted_on = models.DateTimeField('date voted')
+    ip_address = models.GenericIPAddressField(verbose_name="IP address", blank=True, null=True)
+
 
 TYPE = (
     (0,"Linear"),

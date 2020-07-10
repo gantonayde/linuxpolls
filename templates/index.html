@@ -7,21 +7,21 @@
 {% block content %}
 <!-- Articles container -->
 <!-- <div class="container"> -->
-    <div class="row mt-3">
+    <div class="row">
       
       <div class="col-md-9 mt-0 left">
         {% if polls_on_focus %}
-          <div id="polls-on-focus">
-            <div class="title-wrap title-wrap--line">
-              <h5 class="section-title">Polls on focus</h5>
+          <div class="mb-3" id="polls-on-focus">
+            <div class="title-wrap lp-title-wrap--line">
+              <h4 class="lp-section-title">Polls <span class="lp-section-title-secondary">on focus</span> </h4>
             </div>
             {% include 'polls/polls_on_focus.html' with questions=polls_on_focus %}
           </div>    
         {% endif %}
          
-        <div class="title-wrap title-wrap--line">
-          <h5 class="section-title">Articles</h5>
-          <a href="{% url 'articles_list' %}" class="all-posts-url">View All</a>
+        <div class="title-wrap lp-title-wrap--line ">
+          <h4 class="lp-section-title">Articles</h4>
+          <a href="{% url 'articles_list' %}" class="all-posts-url">View All</a>          
         </div>
           {% include 'articles/list.html' %} 
       </div>

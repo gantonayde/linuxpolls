@@ -1,8 +1,8 @@
 {% load static %}
 
      <!-- Navigation -->
-        <nav class="navbar navbar-expand-sm navbar-dark bg-main-color py-2" id="mainNav">
-            <div class="container-page">
+        <nav class="navbar navbar-expand-sm navbar-dark lp-main-color py-0" id="mainNav">
+            <div class="container-page py-2">
                 <!-- <img src="{% static 'img/TuxFlat.svg' %}" width="25" height="25" alt="LinuxPolls"> -->
                 <a class="navbar-brand font-weight-slightly-bold" href="{% url 'home' %}">LinuxPolls</a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -11,10 +11,21 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
+
+
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item my-auto">
+                        <!-- <li class="nav-item my-auto">
                             <a class="nav-link" href="{% url 'home' %}"><i class="fa fa-home"></i></a>
-                        </li>
+                        </li> -->
+                        <form class="form-inline" method="get" action="{% url 'search' %}">
+                            <div class="input-group">
+                            <input class="form-control lp-form-control font-weight-slightly-bold" name="s" type="search" autocomplete="off" placeholder="Search" aria-label="Search" >
+                            <button class="lp-btn-search p-0 ml-0 mr-2" type="submit">
+                                  <i class="fa fa-search" ></i>
+                            </button>
+                        </div>
+                        </form>
+
                         <li class="nav-item my-auto">
                             <a class="nav-link font-weight-slightly-bold" href="{% url 'articles_list' %}">Articles</a>
                         </li>
@@ -24,15 +35,12 @@
                         <li class="nav-item my-auto">
                             <a class="nav-link font-weight-slightly-bold" href="{% url 'about' %}">About</a>
                         </li>
-                        <form class="form-inline my-2 mx-2" method="get" action="{% url 'search' %}">
-                            <input class="form-control box-search" name="s" type="search" placeholder="Search" aria-label="Search" >
-                            <button class="btn-search " type="submit">
-                                  <i class="fa fa-search" ></i>
-                            </button>
-                        </form>
+                    </ul>
+ 
+                    
 
                 
-                    </ul>
+                    
                 </div>
             </div>
         </nav>

@@ -5,7 +5,7 @@ from django.db.models import F, Q
 from .models import Post, FAQs
 from .forms import CommentForm
 
-from polls.models import Question, Choice
+from polls.models import Choice, Question, Vote
 from polls.plots import add_figure
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -17,6 +17,7 @@ import json
 
 def Index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    carousel_questions = Question.objects.filter(carousel=True)[:5]
     polls_on_focus = Question.objects.filter(on_focus=True)
     if request.COOKIES.get('q_voted'):
         cookie_value = urllib.parse.unquote_plus(request.COOKIES['q_voted'])
@@ -44,6 +45,7 @@ def Index(request):
                    'post_list': post_list,
                    'latest_question_list': latest_question_list,
                    'polls_on_focus': polls_on_focus,
+                   'carousel_questions': carousel_questions,
         })
 
 

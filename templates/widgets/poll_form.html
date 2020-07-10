@@ -4,7 +4,7 @@
     <div class="row mx-0">
         <div class="col-md-8 mb-3">
             <select id="choice" name="choice" class="form-control selectpicker" data-live-search="true"
-                data-style="btn-outline-grey border-1 my-0 mx-0 px-4">
+                data-style="lp-btn-form-control border-1 my-0 mx-0 px-4">
                 <option value="" selected disabled>Please select an option</option>
                 {% for choice in question.choice_set.all %}
                 <option id="choice{{ forloop.counter }}" value="{{ choice.id }}">{{ choice.choice_text }}
@@ -15,7 +15,7 @@
 
         <div class="col-md-4 pb-3 d-flex justify-content-center">
             <div class="btn-group">
-                <button type="submit" class="btn btn-primary js-vote m-0 ml-3"
+                <button type="submit" class="btn lp-btn-vote js-vote m-0 ml-3"
                     id="vote{{ question.id }}" data-catid="{{ question.id }}">Vote</button>
             </div>
         </div>

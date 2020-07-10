@@ -1,8 +1,14 @@
 from django.contrib import admin
 from django.forms.models import BaseInlineFormSet, ModelForm
 # Register your models here.
-from .models import Question, Choice, Plot
+from .models import Question, Choice, Plot, Vote
 from django.utils import timezone 
+
+
+@admin.register(Vote) 
+class VoteAdmin(admin.ModelAdmin):
+    list_display = ('question', 'choice','voted_on','ip_address')
+    list_filter = ("question",)
 
 @admin.register(Plot) 
 class PlotAdmin(admin.ModelAdmin):
@@ -35,6 +41,7 @@ class QuestionAdmin(admin.ModelAdmin):
         ('Question',               {'fields': ['question_text']}),
         ('Date information', {'fields': ['pub_date']}),
         ('Poll on focus', {'fields': ['on_focus']}),
+        ('Poll in carousel', {'fields': ['carousel']})
     ]
     inlines = [ChoiceInline, Figureinline]
     list_display = ('question_text', 'pub_date', 'was_published_recently', )

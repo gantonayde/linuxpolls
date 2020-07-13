@@ -2,10 +2,10 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
-from .plots import add_figure
-from polls.geolocator import download_ip2location_database
+from toolbox.plots import add_figure
+from toolbox.geolocator import download_ip2location_database
 
-# Create your models here.
+
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
@@ -69,24 +69,6 @@ class Vote(models.Model):
        ordering = ['-voted_on']
 
 
-class IP2LocationDBUpdate(models.Model):
-    db_code = models.CharField(verbose_name='Database code', max_length=20 , blank=True, default=getattr(settings, "IP2LOCATION_DBCODE"))
-    updated_on = models.DateTimeField(auto_now=True)
-    created_on = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField(verbose_name='Last Update Status', default=False)
-
-    class Meta :
-       ordering = ['-updated_on']
-       verbose_name = 'IP2Location database'
-       verbose_name_plural = 'IP2Location databases'
-
-    def __str__(self):
-        return self.db_code
-    
-    def save(self, *args, **kwargs):
-        self.db_code, self.status = download_ip2location_database()     
-        super(IP2LocationDBUpdate, self).save(*args, **kwargs)
-
 TYPE = (
     (0,"Linear"),
     (1,"Histogram")
@@ -94,7 +76,6 @@ TYPE = (
 
 class Plot(models.Model):  
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-   # script = models.TextField(blank=True, default='Graph script placeholder')
     figure = models.TextField(blank=True, default='Figure placeholder')
     created_on = models.DateTimeField(auto_now_add=True)
     plot_type = models.IntegerField(choices=TYPE, default=1)

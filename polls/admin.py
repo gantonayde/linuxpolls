@@ -1,14 +1,7 @@
 from django.contrib import admin
 from django.forms.models import BaseInlineFormSet, ModelForm
-# Register your models here.
-from .models import Question, Choice, Plot, Vote, IP2LocationDBUpdate
-from django.utils import timezone 
+from polls.models import Question, Choice, Plot, Vote
 
-
-@admin.register(IP2LocationDBUpdate) 
-class IP2LocationDBUpdate(admin.ModelAdmin):
-    list_display = ('db_code', 'created_on', 'updated_on', 'status')
-    #list_filter = ("question",)
 
 @admin.register(Vote) 
 class VoteAdmin(admin.ModelAdmin):
@@ -55,7 +48,6 @@ class QuestionAdmin(admin.ModelAdmin):
     actions = ['reset_poll_votes','update_figure']
 
     def reset_poll_votes(self, request, queryset):
-        #queryset.update(pub_date=timezone.now())
        for question in queryset:
            question.reset_votes()
 

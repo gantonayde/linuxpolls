@@ -1,26 +1,15 @@
-from django.shortcuts import get_object_or_404, render
-from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseServerError, JsonResponse
-from django.template import loader
-from django.urls import reverse
-from django.db.models import F
-from django.views import generic
-from .models import Question
-from polls.models import Choice, Vote
-from django.forms.models import model_to_dict, modelformset_factory
-from .plots import add_bokeh_figure
-from django.core import serializers
-from polls.plots import add_figure_scatter, add_plotly_fig
-from .forms import VotingForm, QForm
-from polls.forms import AnswerFormSet, ChoiceForm, QChoicesForm, QuestionForm, QuestionFormSet
-from django import forms
-from django.forms import widgets
 import json
 import urllib
-from .tools import get_answered_polls, last_day_of_month
-from _datetime import datetime
-from django.utils import timezone
-from polls.geolocator import get_geodata, measure
-from polls.tools import get_ipaddress
+from django.db.models import F
+from django.shortcuts import get_object_or_404, render
+from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseServerError, JsonResponse
+
+from polls.models import Question, Choice, Vote
+from toolbox.tools import get_answered_polls, last_day_of_month, get_ipaddress
+from toolbox.geolocator import get_geodata 
+
+
+
 
 def PollsIndex(request):
     questions = Question.objects.all()
@@ -38,15 +27,6 @@ def PollDetails(request, question_id):
     context = {'question': question,
                'answered_polls': answered_polls}
     return render(request, template, context)
-
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = 'polls/index.html'
-
-
-class ResultsView(generic.DetailView):
-    model = Question
-    template_name = 'results.html'
 
 def ajax_vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -81,7 +61,7 @@ def ajax_vote(request, question_id):
         country_code, country_name, city = get_geodata(ipaddress)
 
         #print(request.ipinfo.all)
-        new_vote = Vote(question=question, choice=selected_choice, voted_on=timezone.now(),
+        new_vote = Vote(question=question, choice=selected_choice,
                    ip_address=ipaddress, country_code=country_code, country_name=country_name, city=city)
        
         new_vote.save()

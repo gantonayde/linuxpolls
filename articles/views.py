@@ -1,17 +1,14 @@
-from django.views import generic
+import json
+import urllib
+from django.db.models import F, Q
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import F, Q
-from .models import Post, FAQs
-from .forms import CommentForm
 
 from polls.models import Choice, Question, Vote
-from polls.plots import add_figure
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-import urllib
-import json
-from polls.geolocator import get_geodata
+from articles.models import Post
+from articles.forms import CommentForm
+from toolbox.models import FAQs
+from toolbox.geolocator import get_geodata
 
 
 
@@ -129,22 +126,5 @@ def post_detail(request, slug):
                                            'comment_form': comment_form,
                                            'latest_question_list': latest_question_list,})
 
-
-
-
-def get_article_queryset(query=None):
-    print("Using get_article_queryset")
-    queryset = []
-    queries = query.split(" ")
-    print(queries)
-    for q in queries:
-        posts = Post.objects.filter(
-            Q(title__icontains=q),
-            Q(content__icontains=q)
-        ).distinct()
-
-        for post in posts:
-            queryset.append(post)
-    return list(set(queryset))
 
 

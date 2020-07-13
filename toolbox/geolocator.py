@@ -3,7 +3,7 @@ import urllib.request
 from django.conf import settings
 from IP2Location import IP2Location
 from zipfile import ZipFile
-from .tools import measure
+from toolbox.tools import measure
 
 ip2location_path = getattr(settings, "IP2LOCATION_PATH")
 ip2location_token = getattr(settings, "IP2LOCATION_TOKEN")
@@ -46,7 +46,7 @@ def download_ip2location_database():
     try:
         urllib.request.urlretrieve(url, db_name)
     except:
-        print("Could not download database.")
+        print("Could not download IP2Location LITE database.")
         update_successful = False
     else:
         try:
@@ -54,6 +54,7 @@ def download_ip2location_database():
             zf.extractall(ip2location_path)
             zf.close()  
         except:
+            print("Corrupted IP2Location LITE ZipFile. Please check IP2Location download TOKEN")
             update_successful = False
         else:
             files = os.listdir(ip2location_path)

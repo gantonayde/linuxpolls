@@ -1,14 +1,10 @@
-from plotly.offline import plot
-import plotly.graph_objs as go
-from bokeh.palettes import Spectral6
-from bokeh.plotting import figure, output_file, show
-from bokeh.embed import components, json_item
-from bokeh.models import ColumnDataSource
-from bokeh.transform import factor_cmap
 import json
 import plotly
 import plotly.express as px
-from .tools import measure
+import plotly.graph_objs as go
+from plotly.offline import plot
+
+from toolbox.tools import measure
 
 def add_figure(question, plot_type):
     '''
@@ -25,48 +21,6 @@ def add_figure(question, plot_type):
     elif plot_type == 1:
         plot_div = add_plotly_fig(question)
     return plot_div
-
-
-def add_bokeh_figure(question):
-            '''
-             Plot poll results.
-            '''
-            
-            choices = question.choice_set.all()
-            x_data = []
-            y_data = []
-            for choice in choices:
-                x_data += [choice.choice_text]
-                y_data += [choice.votes]  
-            source = ColumnDataSource(data=dict(x_data=x_data, y_data=y_data))
-            p = figure(x_range=x_data,
-                        tools="pan,box_zoom,reset,save",                        
-                        x_axis_label='sections', y_axis_label='particles', sizing_mode = 'stretch_width', height=300,
-                        )        
-            p.vbar(x='x_data', top='y_data', width=0.9, source=source, fill_color=factor_cmap('x_data', palette=Spectral6, factors=x_data)) 
-            id_num = 'graph'+str(question.id)
-            graph = json.dumps(json_item(p, id_num))
-            return graph
-
-def add_figure_histogram(question):
-            '''
-             Plot poll results.
-            '''
-            choices = question.choice_set.all()
-            x_data = []
-            y_data = []
-            for choice in choices:
-                x_data += [choice.choice_text]
-                y_data += [choice.votes]  
-            source = ColumnDataSource(data=dict(x_data=x_data, y_data=y_data))
-            p = figure(x_range=x_data,
-                        tools="pan,box_zoom,reset,save",                        
-                        x_axis_label='sections', y_axis_label='particles', sizing_mode = 'stretch_width', height=300,
-                        )        
-            p.vbar(x='x_data', top='y_data', width=0.9, source=source, fill_color=factor_cmap('x_data', palette=Spectral6, factors=x_data)) 
-
-            script, div = components(p)
-            return script, div
 
 def add_figure_scatter(question):
             '''

@@ -41,16 +41,3 @@ class Comment(models.Model):
             comment_body = self.body
         return f'Comment {comment_body} by {self.name}'
 
-class FAQs(models.Model):
-    title = models.CharField(max_length=200, help_text='Enter question title')
-    body = models.TextField()
-    created_on = models.DateTimeField(auto_now_add=True)
-   
-    class Meta :
-       ordering = ['-created_on']
-       verbose_name = 'FAQ'
-       verbose_name_plural = 'FAQs'
-       
-
-    def __str__(self):
-       return self.title

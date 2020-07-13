@@ -57,7 +57,7 @@ def add_plotly_fig(question):
             total_votes = sum(y_data)
             if total_votes != 0:
                 for i in range(len(y_data)): 
-                    y_data[i] = y_data[i]/total_votes
+                    y_data[i] = round((y_data[i]/total_votes)*100, 1)
                    
 
             data =    [go.Bar(x=x_data, y=y_data, marker_color=px.colors.qualitative.Dark24, 
@@ -72,6 +72,7 @@ def add_plotly_fig(question):
                                                 )
             fig = go.Figure(data=data, layout=layout)
             fig.update_layout(template="plotly_white")
+            fig.update_yaxes(range=[0, 100])
             fig.to_plotly_json()
 
             return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)

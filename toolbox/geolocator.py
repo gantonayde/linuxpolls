@@ -65,7 +65,6 @@ def download_ip2location_database():
             update_successful = True
     return ip2location_dbcode, update_successful
 
-@measure
 def get_geodata(ip_address):
     try:  
         with IP2Location(ip2location_db) as geo_db:

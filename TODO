@@ -1,14 +1,4 @@
-Polls index template
-|_ collapsables which has tabs for poll and results
-Polls html template
-Ajax submission
-check if the user has voted
-Article html template
-
-FAQ page
-Disqus integration
-database integration
-
-
-AJAX workflow -> Click on a button -> Activate JS function with url -> url calls python view.py function ->
--> view.py function returns json data -> json data is used by JS to update the template
+Hyvor Text integration
+Pagination
+WISIWYG Content
+Comments sidebar

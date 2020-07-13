@@ -93,20 +93,21 @@ WSGI_APPLICATION = 'linuxpolls.wsgi.application'
 #  }
 
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-     }
+      'default': {
+          'ENGINE': 'django.db.backends.sqlite3',
+          'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+      }
  }
 
 # DATABASES = {
-#      'default': {
-#         'NAME': env("DATABASE_NAME"),
-#         'USER': env("DATABASE_USER"),
-#         'PASSWORD': env("DATABASE_PASSWORD"),
-#         'HOST': env("DATABASE_HOST"),
-#         'PORT': env("DATABASE_PORT"),
-#       }
+#       'default': {
+#          'ENGINE': 'django.db.backends.postgresql',
+#          'NAME': env("DATABASE_NAME"),
+#          'USER': env("DATABASE_USER"),
+#          'PASSWORD': env("DATABASE_PASSWORD"),
+#          'HOST': env("DATABASE_HOST"),
+#          'PORT': env("DATABASE_PORT"),
+#        }
 # }
 
 
@@ -156,3 +157,7 @@ MEDIA_URL = '/media/'
 
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
+IP2LOCATION_PATH = os.path.join(BASE_DIR, 'ip2location')
+IP2LOCATION_DBCODE = 'DB3LITEBINIPV6'
+IP2LOCATION_TOKEN = env("IP2LOCATION_TOKEN")

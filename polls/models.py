@@ -1,7 +1,9 @@
 import datetime
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 from .plots import add_figure
+from polls.geolocator import download_ip2location_database
 
 # Create your models here.
 class Question(models.Model):
@@ -57,9 +59,33 @@ class Choice(models.Model):
 class Vote(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
-    voted_on = models.DateTimeField('date voted')
+    voted_on = models.DateTimeField(auto_now_add=True)
     ip_address = models.GenericIPAddressField(verbose_name="IP address", blank=True, null=True)
+    country_code = models.CharField(max_length=2 , blank=True, null=True)
+    country_name = models.CharField(max_length=200 , blank=True, null=True)
+    city = models.CharField(max_length=200 , blank=True, null=True)
 
+    class Meta :
+       ordering = ['-voted_on']
+
+
+class IP2LocationDBUpdate(models.Model):
+    db_code = models.CharField(verbose_name='Database code', max_length=20 , blank=True, default=getattr(settings, "IP2LOCATION_DBCODE"))
+    updated_on = models.DateTimeField(auto_now=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(verbose_name='Last Update Status', default=False)
+
+    class Meta :
+       ordering = ['-updated_on']
+       verbose_name = 'IP2Location database'
+       verbose_name_plural = 'IP2Location databases'
+
+    def __str__(self):
+        return self.db_code
+    
+    def save(self, *args, **kwargs):
+        self.db_code, self.status = download_ip2location_database()     
+        super(IP2LocationDBUpdate, self).save(*args, **kwargs)
 
 TYPE = (
     (0,"Linear"),
@@ -71,14 +97,14 @@ class Plot(models.Model):
    # script = models.TextField(blank=True, default='Graph script placeholder')
     figure = models.TextField(blank=True, default='Figure placeholder')
     created_on = models.DateTimeField(auto_now_add=True)
-    plot_type = models.IntegerField(choices=TYPE, default=0)
-    update = models.BooleanField(default=False)
+    plot_type = models.IntegerField(choices=TYPE, default=1)
+    allow_updates = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.question.question_text)
 
     def save(self, *args, **kwargs):
-        if self.figure == 'Figure placeholder' or self.update == True:
+        if self.figure == 'Figure placeholder' or self.allow_updates == True:
             self.figure = str(add_figure(self.question, self.plot_type))      
         super(Plot, self).save(*args, **kwargs)
 

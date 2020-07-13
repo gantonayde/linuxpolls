@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 import urllib
 import json
-
+from polls.geolocator import get_geodata
 
 
 

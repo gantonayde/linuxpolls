@@ -1,18 +1,23 @@
 from django.contrib import admin
 from django.forms.models import BaseInlineFormSet, ModelForm
 # Register your models here.
-from .models import Question, Choice, Plot, Vote
+from .models import Question, Choice, Plot, Vote, IP2LocationDBUpdate
 from django.utils import timezone 
 
 
+@admin.register(IP2LocationDBUpdate) 
+class IP2LocationDBUpdate(admin.ModelAdmin):
+    list_display = ('db_code', 'created_on', 'updated_on', 'status')
+    #list_filter = ("question",)
+
 @admin.register(Vote) 
 class VoteAdmin(admin.ModelAdmin):
-    list_display = ('question', 'choice','voted_on','ip_address')
+    list_display = ('question', 'choice', 'voted_on', 'ip_address', 'country_code', 'city')
     list_filter = ("question",)
 
 @admin.register(Plot) 
 class PlotAdmin(admin.ModelAdmin):
-    list_display = ('question', 'plot_type','created_on','update')
+    list_display = ('question', 'plot_type','created_on','allow_updates')
     list_filter = ("plot_type",)
 
 class AlwaysChangedModelForm(ModelForm):
@@ -38,7 +43,7 @@ class ChoiceInline(admin.StackedInline):
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('Question',               {'fields': ['question_text']}),
+        ('Question', {'fields': ['question_text']}),
         ('Date information', {'fields': ['pub_date']}),
         ('Poll on focus', {'fields': ['on_focus']}),
         ('Poll in carousel', {'fields': ['carousel']})

@@ -19,6 +19,8 @@ import urllib
 from .tools import get_answered_polls, last_day_of_month
 from _datetime import datetime
 from django.utils import timezone
+from polls.geolocator import get_geodata, measure
+from polls.tools import get_ipaddress
 
 def PollsIndex(request):
     questions = Question.objects.all()
@@ -74,14 +76,16 @@ def ajax_vote(request, question_id):
         #selected_choice.votes += 1
         selected_choice.save()
 
-        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ipaddress = x_forwarded_for.split(',')[-1].strip()
-        else:
-            ipaddress = request.META.get('REMOTE_ADDR')
-        new_vote = Vote(question=question, choice=selected_choice, voted_on=timezone.now(), ip_address=ipaddress)
-        new_vote.save()
+        ipaddress = get_ipaddress(request)
+        #ipaddress = '8.8.8.8'
+        country_code, country_name, city = get_geodata(ipaddress)
 
+        #print(request.ipinfo.all)
+        new_vote = Vote(question=question, choice=selected_choice, voted_on=timezone.now(),
+                   ip_address=ipaddress, country_code=country_code, country_name=country_name, city=city)
+       
+        new_vote.save()
+        
         question.update_figure()
         plot = question.plot_set.get(question_id=question_id)
         plotly_plot = plot.figure

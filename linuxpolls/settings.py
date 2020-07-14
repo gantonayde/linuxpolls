@@ -36,15 +36,21 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Linuxpolls apps
     'articles',
     'polls',
     'toolbox',
+
+    # Default apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Addon apps
+    'django_summernote',
 ]
 
 MIDDLEWARE = [
@@ -147,18 +153,34 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
 #Location of static files
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 # staticfiles or static
-STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles/')
 
 # Base url to serve media files
-MEDIA_URL = '/media/'
+#MEDIA_URL = '/media/'
 
 # Path where media is stored
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles/')
 
 IP2LOCATION_PATH = os.path.join(BASE_DIR, 'ip2location')
 IP2LOCATION_DBCODE = 'DB3LITEBINIPV6'
 IP2LOCATION_TOKEN = env("IP2LOCATION_TOKEN")
+
+# Required by django-summernote
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+# Google Cloud Storage Test
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'lp_example'
+
+
+from google.oauth2 import service_account
+
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(os.path.join(BASE_DIR, "linuxpolls/credentials.json"))
+# STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/static/'
+#MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/media/'

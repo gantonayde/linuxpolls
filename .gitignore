@@ -1,5 +1,5 @@
 .env
 ip2location/*
-
+credentials.json
 # Byte-compiled / optimized / DLL files
 *.pyc

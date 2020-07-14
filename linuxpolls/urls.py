@@ -21,7 +21,8 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('articles.urls')),
-    path('polls/', include('polls.urls')),  
+    path('polls/', include('polls.urls')),
+    path('summernote/', include('django_summernote.urls')),  
 ]
 
 if settings.DEBUG:

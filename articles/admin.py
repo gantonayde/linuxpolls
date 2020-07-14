@@ -1,5 +1,6 @@
 from django.contrib import admin
 from articles.models import Post, Comment
+from django_summernote.admin import SummernoteModelAdmin
 
 admin.site.site_header = 'LinuxPolls Admin Panel'
 
@@ -13,7 +14,7 @@ class CommentAdmin(admin.ModelAdmin):
     def approve_comments(self, request, queryset):
         queryset.update(active=True)
 
-class CommAd(admin.TabularInline):
+class CommentsInline(admin.TabularInline):
     model = Comment
     extra = 0
     list_display = ('name', 'body', 'post', 'created_on', 'active')
@@ -25,10 +26,11 @@ class CommAd(admin.TabularInline):
         queryset.update(active=True)
 
 @admin.register(Post) 
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(SummernoteModelAdmin):
     list_display = ('title', 'slug', 'status','created_on')
     list_filter = ("status",)
     search_fields = ['title', 'content']
     prepopulated_fields = {'slug': ('title',)}
-    inlines = [CommAd]
+    inlines = [CommentsInline]
+    summernote_fields = ('content',)
 

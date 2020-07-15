@@ -99,23 +99,24 @@ WSGI_APPLICATION = 'linuxpolls.wsgi.application'
 #      }
 #  }
 
-DATABASES = {
-      'default': {
-          'ENGINE': 'django.db.backends.sqlite3',
-          'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-      }
- }
-
-# DATABASES = {
-#       'default': {
-#          'ENGINE': 'django.db.backends.postgresql',
-#          'NAME': env("DATABASE_NAME"),
-#          'USER': env("DATABASE_USER"),
-#          'PASSWORD': env("DATABASE_PASSWORD"),
-#          'HOST': env("DATABASE_HOST"),
-#          'PORT': env("DATABASE_PORT"),
-#        }
-# }
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': env("DATABASE_NAME"),
+            'USER': env("DATABASE_USER"),
+            'PASSWORD': env("DATABASE_PASSWORD"),
+            'HOST': env("DATABASE_HOST"),
+            'PORT': env("DATABASE_PORT"),
+            }
+    }
 
 
 # Password validation
@@ -153,14 +154,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-#STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 #Location of static files
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 # staticfiles or static
 STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles/')
 
 # Base url to serve media files
-#MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
 
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles/')
@@ -174,13 +175,15 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Google Cloud Storage Test
 
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'lp_example'
+# DEFAULT_FILE_STORAGE = 'linuxpolls.gcloud.GoogleCloudMediaFileStorage'
+# STATICFILES_STORAGE = 'linuxpolls.gcloud.GoogleCloudStaticFileStorage'
+# GS_BUCKET_NAME = 'lp_example'
 
+# GS_STATIC_BUCKET_NAME = 'lp_static/static'
+# GS_MEDIA_BUCKET_NAME = 'lp_media'
 
-from google.oauth2 import service_account
+# from google.oauth2 import service_account
 
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(os.path.join(BASE_DIR, "linuxpolls/credentials.json"))
-# STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/static/'
-#MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/media/'
+# GS_CREDENTIALS = service_account.Credentials.from_service_account_file(os.path.join(BASE_DIR, "linuxpolls/credentials.json"))
+# STATIC_URL = f'https://storage.googleapis.com/{GS_STATIC_BUCKET_NAME}/'
+# MEDIA_URL = f'https://storage.googleapis.com/{GS_MEDIA_BUCKET_NAME}/media/'

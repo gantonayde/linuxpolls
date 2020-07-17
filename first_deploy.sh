@@ -25,15 +25,17 @@ python manage.py migrate
 
 # Gunicorn setup
 sudo mkdir /var/log/gunicorn
-sudo PROJECT_DIR=${PROJECT_DIR} PROJECT_NAME=${PROJECT_NAME} VENV_NAME=${VENV_NAME} NWORKERS=${NWORKERS} envsubst < deploy/gunicorn.service > /etc/systemd/system/gunicorn.service
+sudo PROJECT_DIR=${PROJECT_DIR} PROJECT_NAME=${PROJECT_NAME} VENV_NAME=${VENV_NAME} NWORKERS=${NWORKERS} envsubst < deploy/gunicorn.service > gunicorn.service
+sudo mv gunicorn.service /etc/systemd/system/gunicorn.service
 sudo systemctl start gunicorn
 sudo systemctl enable gunicorn
 
 # Nginx setup
-sudo apt install nginx
+sudo apt install nginx -y
 sudo adduser $USER www-data
 python manage.py collectstatic
-sudo PROJECT_NAME=${PROJECT_NAME} DOMAIN=${DOMAIN} SERVER_IP=${SERVER_IP} envsubst < deploy/nginx.conf > /etc/nginx/sites-available/${PROJECT_NAME}
+PROJECT_NAME=${PROJECT_NAME} DOMAIN=${DOMAIN} SERVER_IP=${SERVER_IP} envsubst < deploy/nginx.conf > nginx.conf
+sudo mv nginx.conf /etc/nginx/sites-available/${PROJECT_NAME}
 sudo ln -s /etc/nginx/sites-available/${PROJECT_NAME} /etc/nginx/sites-enabled
 sudo systemctl restart nginx
 sudo ufw allow 'Nginx Full'

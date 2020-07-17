@@ -41,7 +41,7 @@ sudo systemctl restart nginx
 sudo ufw allow 'Nginx Full'
 
 # Allow HTTPS traffic and add SSL certificate with certbot
-sudo apt install certbot python3-certbot-nginx
+sudo apt install certbot python3-certbot-nginx -y
 sudo ufw allow ssh
 sudo ufw enable -y
 sudo ufw allow 'Nginx Full'

@@ -6,12 +6,11 @@ VENV_NAME='django_env'
 NWORKERS=3
 
 DOMAIN='me'
-SERVER_IP=''
 
 # Update system
 sudo apt update
 sudo apt upgrade -y
-sudo apt-get install postgresql postgresql-contrib libpq-dev build-essential python3-dev python3-venv -y
+sudo apt-get install postgresql postgresql-contrib libpq-dev build-essential nginx python3-dev python3-venv certbot python3-certbot-nginx -y
 
 # Install virtual environment and requirements
 python3 -m venv ../${VENV_NAME}
@@ -31,19 +30,19 @@ sudo systemctl start gunicorn
 sudo systemctl enable gunicorn
 
 # Nginx setup
-sudo apt install nginx -y
 #sudo adduser $USER www-data  
 sudo ../${VENV_NAME}/bin/python manage.py collectstatic 
-PROJECT_NAME=${PROJECT_NAME} DOMAIN=${DOMAIN} SERVER_IP=${SERVER_IP} envsubst < deploy/nginx.conf > nginx.conf
+PROJECT_NAME=${PROJECT_NAME} DOMAIN=${DOMAIN} envsubst < deploy/nginx.conf > nginx.conf
 sudo mv nginx.conf /etc/nginx/sites-available/${PROJECT_NAME}
 sudo ln -s /etc/nginx/sites-available/${PROJECT_NAME} /etc/nginx/sites-enabled
-sudo systemctl restart nginx
-sudo ufw allow 'Nginx Full'
+#sudo systemctl restart nginx
+#sudo ufw allow 'Nginx Full'
 
 # Allow HTTPS traffic and add SSL certificate with certbot
-sudo apt install certbot python3-certbot-nginx -y
 sudo ufw allow ssh
 sudo ufw enable
 sudo ufw allow 'Nginx Full'
 sudo ufw delete allow 'Nginx HTTP'
 sudo certbot --nginx -d ${PROJECT_NAME}.${DOMAIN} -d www.${PROJECT_NAME}.${DOMAIN}
+sudo systemctl restart gunicorn
+sudo systemctl restart nginx

@@ -2,10 +2,19 @@
 
 PROJECT_NAME='linuxpolls'
 PROJECT_DIR=`pwd`
-VENV_NAME='django_env'
+VENV_NAME='django_venv'
 NWORKERS=3
-
 DOMAIN='me'
+
+# Check if .env and credentials.json exist
+LP_ENV=${PROJECT_DIR}/${PROJECT_NAME}/.env
+GSA_CRED=${PROJECT_DIR}/${PROJECT_NAME}/credentials.json
+if [ -f "$LP_ENV" -a -f "$GSA_CRED" ]; then
+    echo ""$LP_ENV" and "$GSA_CRED" found."
+else 
+    echo ""$LP_ENV" and/or "$GSA_CRED" do not exist."
+    exit 0
+fi
 
 # Update system
 sudo apt update
@@ -19,8 +28,9 @@ pip install --upgrade wheel
 pip install gunicorn psycopg2-binary
 pip install -r requirements.txt
 
-# Migrate project database
+# Migrate project database and collect static files
 python manage.py migrate 
+python manage.py collectstatic 
 
 # Gunicorn setup
 sudo mkdir /var/log/gunicorn
@@ -29,14 +39,10 @@ sudo mv gunicorn.service /etc/systemd/system/gunicorn.service
 sudo systemctl start gunicorn
 sudo systemctl enable gunicorn
 
-# Nginx setup
-#sudo adduser $USER www-data  
-sudo ../${VENV_NAME}/bin/python manage.py collectstatic 
-PROJECT_NAME=${PROJECT_NAME} DOMAIN=${DOMAIN} envsubst < deploy/nginx.conf > nginx.conf
+# Nginx setup 
+PROJECT_NAME=${PROJECT_NAME} PROJECT_DIR=${PROJECT_DIR} DOMAIN=${DOMAIN} envsubst < deploy/nginx.conf > nginx.conf
 sudo mv nginx.conf /etc/nginx/sites-available/${PROJECT_NAME}
 sudo ln -s /etc/nginx/sites-available/${PROJECT_NAME} /etc/nginx/sites-enabled
-#sudo systemctl restart nginx
-#sudo ufw allow 'Nginx Full'
 
 # Allow HTTPS traffic and add SSL certificate with certbot
 sudo ufw allow ssh
@@ -44,5 +50,7 @@ sudo ufw enable
 sudo ufw allow 'Nginx Full'
 sudo ufw delete allow 'Nginx HTTP'
 sudo certbot --nginx -d ${PROJECT_NAME}.${DOMAIN} -d www.${PROJECT_NAME}.${DOMAIN}
+
+# Restart Gunicorn and Nginx
 sudo systemctl restart gunicorn
 sudo systemctl restart nginx

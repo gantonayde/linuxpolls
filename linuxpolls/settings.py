@@ -162,23 +162,16 @@ IP2LOCATION_TOKEN = env("IP2LOCATION_TOKEN")
 
 # Tell Django where static files are when running 'collectstatic'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
-
+STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles/static/')
 STATIC_URL = '/static/'
-if DEBUG:
-    STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles/')
-elif WHITENOISE:
-    STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles/')
+if WHITENOISE:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
     MIDDLEWARE.insert(1,'whitenoise.middleware.WhiteNoiseMiddleware')
-else:
-    STATIC_ROOT = '/var/www/static'
-    # Set location in nginx as follows:
-    # server { location /static/ { root /var/www; } }
 
 # Media files settings
 if DEBUG:
     MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles/')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'staticfiles/media/')
 else:
     # Serve media files from Google Cloud Storage
     GS_CREDENTIALS_JSON = env('GS_CREDENTIALS_JSON')

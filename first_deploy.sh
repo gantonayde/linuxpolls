@@ -32,8 +32,8 @@ sudo systemctl enable gunicorn
 
 # Nginx setup
 sudo apt install nginx -y
-sudo adduser $USER www-data
-python manage.py collectstatic
+#sudo adduser $USER www-data  
+sudo ../${VENV_NAME}/bin/python manage.py collectstatic 
 PROJECT_NAME=${PROJECT_NAME} DOMAIN=${DOMAIN} SERVER_IP=${SERVER_IP} envsubst < deploy/nginx.conf > nginx.conf
 sudo mv nginx.conf /etc/nginx/sites-available/${PROJECT_NAME}
 sudo ln -s /etc/nginx/sites-available/${PROJECT_NAME} /etc/nginx/sites-enabled
@@ -43,7 +43,7 @@ sudo ufw allow 'Nginx Full'
 # Allow HTTPS traffic and add SSL certificate with certbot
 sudo apt install certbot python3-certbot-nginx -y
 sudo ufw allow ssh
-sudo ufw enable -y
+sudo ufw enable
 sudo ufw allow 'Nginx Full'
 sudo ufw delete allow 'Nginx HTTP'
 sudo certbot --nginx -d ${PROJECT_NAME}.${DOMAIN} -d www.${PROJECT_NAME}.${DOMAIN}

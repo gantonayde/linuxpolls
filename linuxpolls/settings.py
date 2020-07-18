@@ -33,7 +33,7 @@ DEBUG = True
 # Use whitenoise to serve static files
 WHITENOISE = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [

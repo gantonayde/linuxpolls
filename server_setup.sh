@@ -16,10 +16,10 @@ else
     exit 0
 fi
 
-# Update system
+# Update system postgresql postgresql-contrib  build-essential
 sudo apt update
 sudo apt upgrade -y
-sudo apt-get install postgresql postgresql-contrib libpq-dev build-essential nginx python3-dev python3-venv certbot python3-certbot-nginx -y
+sudo apt-get install nginx libpq-dev python3-dev python3-venv certbot python3-certbot-nginx -y
 
 # Install virtual environment and requirements
 python3 -m venv ../${VENV_NAME}
@@ -46,7 +46,7 @@ sudo ln -s /etc/nginx/sites-available/${PROJECT_NAME} /etc/nginx/sites-enabled
 
 # Allow HTTPS traffic and add SSL certificate with certbot
 sudo ufw allow ssh
-sudo ufw enable
+sudo ufw enable -y
 sudo ufw allow 'Nginx Full'
 sudo ufw delete allow 'Nginx HTTP'
 sudo certbot --nginx -d ${PROJECT_NAME}.${DOMAIN} -d www.${PROJECT_NAME}.${DOMAIN}

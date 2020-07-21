@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'linuxpolls.wsgi.application'
 #       }
 #  }
 
-if DEBUG:
+if not DEBUG:
      DATABASES = {
          'default': {
              'ENGINE': 'django.db.backends.sqlite3',
@@ -154,7 +154,7 @@ IP2LOCATION_TOKEN = env("IP2LOCATION_TOKEN")
 
 
 # Required by django-summernote
-#X_FRAME_OPTIONS = 'SAMEORIGIN'
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 
 # Static files (CSS, JavaScript, Images)

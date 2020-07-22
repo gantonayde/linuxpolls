@@ -28,6 +28,9 @@
     /* box-shadow: none !important; */
   }
 
+body {
+  /* font-family: sans-serif; */
+}
 
   .navbar-dark .navbar-nav .nav-link {
     color: white;

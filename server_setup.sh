@@ -4,7 +4,7 @@ PROJECT_NAME='linuxpolls'
 PROJECT_DIR=`pwd`
 VENV_NAME='django_venv'
 NWORKERS=3
-DOMAIN='me'
+DOMAIN='com'
 
 # Check if .env and credentials.json exist
 LP_ENV=${PROJECT_DIR}/${PROJECT_NAME}/.env
@@ -16,10 +16,10 @@ else
     exit 0
 fi
 
-# Update system postgresql postgresql-contrib  build-essential
+# Update system postgresql postgresql-contrib  
 sudo apt update
 sudo apt upgrade -y
-sudo apt-get install nginx libpq-dev python3-dev python3-venv certbot python3-certbot-nginx -y
+sudo apt-get install nginx libpq-dev build-essential python3-dev python3-venv certbot python3-certbot-nginx -y
 
 # Install virtual environment and requirements
 python3 -m venv ../${VENV_NAME}
@@ -46,7 +46,7 @@ sudo ln -s /etc/nginx/sites-available/${PROJECT_NAME} /etc/nginx/sites-enabled
 
 # Allow HTTPS traffic and add SSL certificate with certbot
 sudo ufw allow ssh
-sudo ufw enable -y
+sudo ufw enable 
 sudo ufw allow 'Nginx Full'
 sudo ufw delete allow 'Nginx HTTP'
 sudo certbot --nginx -d ${PROJECT_NAME}.${DOMAIN} -d www.${PROJECT_NAME}.${DOMAIN}

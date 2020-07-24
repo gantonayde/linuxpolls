@@ -28,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Use whitenoise to serve static files
 WHITENOISE = False
@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'linuxpolls.wsgi.application'
 #       }
 #  }
 
-if not DEBUG:
+if DEBUG:
      DATABASES = {
          'default': {
              'ENGINE': 'django.db.backends.sqlite3',
@@ -162,7 +162,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Tell Django where static files are when running 'collectstatic'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
-STATIC_ROOT  = os.path.join(BASE_DIR, 'staticfiles/static/')
+STATIC_ROOT  = os.path.join(BASE_DIR, 'public/static/')
 STATIC_URL = '/static/'
 if WHITENOISE:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
@@ -171,7 +171,7 @@ if WHITENOISE:
 # Media files settings
 if DEBUG:
     MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'staticfiles/media/')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'public/media/')
 else:
     # Serve media files from Google Cloud Storage
     GS_CREDENTIALS_JSON = env('GS_CREDENTIALS_JSON')

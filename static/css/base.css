@@ -6,11 +6,11 @@
   --main-color-transparent30: hsla(208, 100%, 32%, 0.3);
   --main-color-transparent60: hsla(208, 100%, 32%, 0.6);
   --main-color-transparent80: hsla(208, 100%, 32%, 0.8); 
-  --secondary-color: hsl(104, 57%, 44%);
-  --secondary-color-lighter: hsl(104, 57%, 56%);
-  --secondary-color-darker: hsl(104, 57%, 40%);
-  --secondary-color-hover: hsl(104, 57%, 36%);
-  --secondary-color-transparent30: hsla(104, 57%, 44%, 0.3);
+  --secondary-color: hsl(104, 80%, 44%);
+  --secondary-color-lighter: hsl(104, 80%, 56%);
+  --secondary-color-darker: hsl(104, 80%, 40%);
+  --secondary-color-hover: hsl(104, 80%, 36%);
+  --secondary-color-transparent30: hsla(104, 80%, 44%, 0.3);
   --light-grey-color-blue-tint: rgba(255, 255, 255, 0.95);
   --grey-color: hsl(208, 0%, 32%);
   --grey-color-lighter: hsl(208, 00%, 44%);

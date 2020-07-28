@@ -40,3 +40,5 @@ These commands are helpful for picking up changes as you adjust your configurati
 
 ### Analysis
 https://goaccess.io/
+goaccess /var/log/nginx/access.log -c
+goaccess /var/log/nginx/access.log -o /var/www/html/report.html --log-format=COMBINED --real-time-html

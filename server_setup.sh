@@ -19,7 +19,7 @@ fi
 # Update system postgresql postgresql-contrib  
 sudo apt update
 sudo apt upgrade -y
-sudo apt-get install nginx libpq-dev build-essential python3-dev python3-venv certbot python3-certbot-nginx -y
+sudo apt-get install nginx libpq-dev build-essential ufw python3-dev python3-venv certbot python3-certbot-nginx -y
 
 # Install virtual environment and requirements
 python3 -m venv ../${VENV_NAME}
@@ -31,6 +31,7 @@ pip install -r requirements.txt
 # Migrate project database and collect static files
 python manage.py migrate 
 python manage.py collectstatic 
+mkdir ip2location
 
 # Gunicorn setup
 sudo mkdir /var/log/gunicorn

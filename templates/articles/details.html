@@ -3,14 +3,13 @@
 {% block content %}
 
 
+
 <div class="row">
   <div class="col">
     <!-- Title -->
     <h2 class="mt-4 mb-3 font-weight-slightly-bold ">{{ post.title }}</h2>
     <p class="lead">{{ post.summary }}</p>
     <hr>
-    <!-- Date -->
-    <!-- <p class="card-text text-muted mb-4">{{ post.created_on.date|date:"D d M Y" }}, updated {{ post.updated_on|timesince }} ago </p> -->
   </div>
 </div>
 
@@ -41,7 +40,9 @@
           {% include 'widgets/social_share_buttons.html' %}
         </div>
         <div class="col-auto m-0 p-0 ">
-          <a href="#comments" class="fa fa-comments lp-social-button lp-go2comments-button px-2" title="View Comments"><span class="ml-2">{{ comments.count }}</span></a>
+          <a href="#comments" class="fa fa-comments lp-social-button lp-go2comments-button px-2" title="View Comments">
+            <span class="ml-2" data-talk-id="post.{{post.id}}" data-talk-mode="number"></span>
+          </a>
         </div>
       </div>
       
@@ -51,34 +52,30 @@
       <hr>
 
     </div>
-    <!-- <div class="col-md-9 card mb-4  mt-3 left  top">
-      <div class="card-body">
-        <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
-        <p class=" text-muted">{{ post.author }} | {{ post.created_on }}</p>
-        <p class="card-text ">{{ post.content | safe }}</p>
-      </div>
-    </div>
-     -->
+
     <div class="col-md-3 float-right">
       {% include 'widgets/sidebar.html' %}
     </div>
 
-    <div id="comments" class="col-md-9 card mb-4  mt-3 ">
-      Comments placeholder
-    </div>
-
-
-
-
-
-
-
-
-
     <!-- Comments -->
-
-
+    <div id="comments" class="col-md-9 card mb-4 mt-3" style="padding: 0 5px">
+      <div id="hyvor-talk-view"></div>
+    </div>
+    <!-- Comments -->
   </div>
 <!-- </div> -->
+
+
+  <script type="text/javascript">
+    var HYVOR_TALK_CONFIG = {
+      url: "{{ request.scheme }}://{{ request.get_host }}{% url 'post_detail' post.slug  %}",
+      id: "post.{{post.id}}",
+      title: "{{post.title}}",
+      loadMode: "scroll"
+    };
+  </script>
+  <script src="{% static 'js/hyvortalk/websiteID.js' %}"></script>
+  <script async type="text/javascript" src="//talk.hyvor.com/web-api/embed"></script>
+  <script async type="text/javascript" src="//talk.hyvor.com/web-api/count/"></script>
 
 {% endblock content %}

@@ -1,21 +1,31 @@
+{% load static %}
+
 <div class="card mb-4">
     <div class="card-body p-0">
         <div class="title-wrap lp-title-wrap--line">
             <h5 class="lp-section-title">Latest <span class="lp-section-title-secondary">polls</span></h5>
             <a href="{% url  'polls:index' %}" class="all-posts-url">View All</a>
         </div>
-        <p class="card-text">
+        
             {% if latest_question_list %}
-                <ul class="list-unstyled components mb-3 pl-2">
+                <ul class="list-unstyled components mb-3">
                     {% for question in latest_question_list %}
-                        <li class="mb-2">
-                            <a href="{% url 'polls:detail' question.id %}" class="title-link">{{ question.question_text }}</a>
-                        </li>
+                        
+                            <div class="row mb-3 no-gutters">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <a href="{% url 'polls:detail' question.id %}">
+                                <img src="{% static 'img/question.png' %}" height="48" title="{{ question.question_text }}"></div>
+                                </a>
+                            <div class="col-9 pl-1">
+                            <a href="{% url 'polls:detail' question.id %}" class="title-link font-weight-slightly-bold">{{ question.question_text }}</a>
+                        </div>
+                    </div>
+                        
                     {% endfor %}
                 </ul>
             {% else %}
                 <p>No polls are available.</p>
             {% endif %}
-        </p>
+        
     </div>
 </div>

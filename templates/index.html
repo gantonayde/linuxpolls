@@ -13,7 +13,7 @@
         {% if polls_on_focus %}
           <div class="mb-3" id="polls-on-focus">
             <div class="title-wrap lp-title-wrap--line">
-              <h4 class="lp-section-title">Polls <span class="lp-section-title-secondary">on focus</span> </h4>
+              <h4 class="lp-section-title">Poll{{ polls_on_focus.count|pluralize }} <span class="lp-section-title-secondary">on focus</span> </h4>
             </div>
             {% include 'polls/polls_on_focus.html' with questions=polls_on_focus %}
           </div>    

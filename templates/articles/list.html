@@ -24,20 +24,22 @@
                             <div class="col">
                                 <p class="card-text text-muted mb-0">{{ post.created_on.date}}</p>
                             </div>
-                            <div class="col right">
-                                <a href="{% url 'post_detail' post.slug  %}#comments" class="title-link">
-                                    <p class="text-right font-weight-bold mb-0 "> 
-                                        <span class="ml-2" data-talk-id="post.{{post.id}}" ></span>
-                                    </p>                                   
-                                </a>
-                            </div>
+                            {% if post.enable_comments %}
+                                <div class="col right">
+                                    <a href="{% url 'post_detail' post.slug  %}#comments" class="title-link">
+                                        <p class="text-right font-weight-bold mb-0 "> 
+                                            <span class="ml-2" data-talk-id="post.{{post.id}}" ></span>
+                                        </p>                                   
+                                    </a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     {% endfor %}
-
+        
     <!-- Hyvor-talk comments counter -->
     <script src="{% static 'js/hyvortalk/websiteID.js' %}"></script>
     <script async type="text/javascript" src="//talk.hyvor.com/web-api/count/"></script>

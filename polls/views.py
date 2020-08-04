@@ -1,22 +1,20 @@
 import json
 import urllib
+
 from django.db.models import F
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
-from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseServerError, JsonResponse
 
-from polls.models import Question, Choice, Vote
-from toolbox.tools import get_answered_polls, last_day_of_month, get_ipaddress
-from toolbox.geolocator import get_geodata 
-
-
+from polls.models import Choice, Question, Vote
+from toolbox.geolocator import get_geodata
+from toolbox.tools import get_answered_polls, get_ipaddress, last_day_of_month
 
 
 def PollsIndex(request):
     questions = Question.objects.all()
     answered_polls = get_answered_polls(request)
     template = 'polls/index.html'
-    context = {'questions': questions,
-               'answered_polls': answered_polls}
+    context = {'questions': questions, 'answered_polls': answered_polls}
     return render(request, template, context)
 
 
@@ -24,9 +22,9 @@ def PollDetails(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     answered_polls = get_answered_polls(request)
     template = 'polls/details.html'
-    context = {'question': question,
-               'answered_polls': answered_polls}
+    context = {'question': question, 'answered_polls': answered_polls}
     return render(request, template, context)
+
 
 def ajax_vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -36,10 +34,10 @@ def ajax_vote(request, question_id):
     if request.COOKIES.get('q_voted'):
         value = urllib.parse.unquote_plus(request.COOKIES['q_voted'])
         cookie_value = json.loads(value)
-        print(cookie_value)   
+        print(cookie_value)
         for q_id in cookie_value['question_id']:
             if q_id == question_id:
-                return JsonResponse({'id_data': id_data}, status=400)   
+                return JsonResponse({'id_data': id_data}, status=400)
     else:
         cookie_value = {'question_id': []}
 
@@ -61,11 +59,15 @@ def ajax_vote(request, question_id):
         country_code, country_name, city = get_geodata(ipaddress)
 
         #print(request.ipinfo.all)
-        new_vote = Vote(question=question, choice=selected_choice,
-                   ip_address=ipaddress, country_code=country_code, country_name=country_name, city=city)
-       
+        new_vote = Vote(question=question,
+                        choice=selected_choice,
+                        ip_address=ipaddress,
+                        country_code=country_code,
+                        country_name=country_name,
+                        city=city)
+
         new_vote.save()
-        
+
         question.update_figure()
         plot = question.plot_set.get(question_id=question_id)
         plotly_plot = plot.figure
@@ -73,12 +75,21 @@ def ajax_vote(request, question_id):
         # Set to True to enable cookies
         enable_cookie = False
         if enable_cookie:
-            response = JsonResponse({'id_data': id_data, 'plotly_plot': plotly_plot})
+            response = JsonResponse({
+                'id_data': id_data,
+                'plotly_plot': plotly_plot
+            })
             cookie_value['question_id'].append(question_id)
-            response.set_cookie("q_voted", value=json.dumps(cookie_value), expires=last_day_of_month())
+            response.set_cookie("q_voted",
+                                value=json.dumps(cookie_value),
+                                expires=last_day_of_month())
             return response
         else:
-            return JsonResponse({'id_data': id_data, 'plotly_plot': plotly_plot})
+            return JsonResponse({
+                'id_data': id_data,
+                'plotly_plot': plotly_plot
+            })
+
 
 def greet(request, user_name):
     return HttpResponse("Greetings %s." % user_name)

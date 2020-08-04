@@ -1,20 +1,21 @@
 import json
 import urllib
-from django.db.models import F, Q
-from django.shortcuts import render, get_object_or_404
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from polls.models import Choice, Question, Vote
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import get_object_or_404, render
+
 from articles.models import Post
-from articles.forms import CommentForm
+from polls.models import Question
 from toolbox.models import FAQs
-from toolbox.geolocator import get_geodata
-
+from toolbox.tools import get_popular
 
 
 def Index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     carousel_questions = Question.objects.filter(carousel=True)[:5]
+    popular_articles = get_popular(Post, days=7, obj_number=5)
+
     polls_on_focus = Question.objects.filter(on_focus=True)
     if request.COOKIES.get('q_voted'):
         cookie_value = urllib.parse.unquote_plus(request.COOKIES['q_voted'])
@@ -25,106 +26,81 @@ def Index(request):
     polls_on_focus = polls_on_focus.exclude(id__in=answered_polls)
 
     object_list = Post.objects.filter(status=1).order_by('-created_on')
-    paginator = Paginator(object_list, 3)  # 3 posts in each page
-    page = request.GET.get('page')
-    try:
-        post_list = paginator.page(page)
-    except PageNotAnInteger:
-            # If page is not an integer deliver the first page
-        post_list = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range deliver last page of results
-        post_list = paginator.page(paginator.num_pages)
-    
+    paginator = Paginator(object_list, 7)
+    page_number = request.GET.get('page')
+    post_list = paginator.get_page(page_number)
+
     return render(request,
                   'index.html',
-                  {'page': page,
+                  {'page': page_number,
                    'post_list': post_list,
-                   'latest_question_list': latest_question_list,
                    'polls_on_focus': polls_on_focus,
                    'carousel_questions': carousel_questions,
-        })
+                   'latest_question_list': latest_question_list,
+                   'popular_articles': popular_articles,
+                   })
 
 
 def Articles(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    popular_articles = get_popular(Post, days=7, obj_number=5)
     object_list = Post.objects.filter(status=1).order_by('-created_on')
-    paginator = Paginator(object_list, 3)  # 3 posts in each page
-    page = request.GET.get('page')
-    try:
-        post_list = paginator.page(page)
-    except PageNotAnInteger:
-            # If page is not an integer deliver the first page
-        post_list = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range deliver last page of results
-        post_list = paginator.page(paginator.num_pages)
+    paginator = Paginator(object_list, 10)
+    page_number = request.GET.get('page')
+    post_list = paginator.get_page(page_number)
     return render(request,
                   'articles/index.html',
-                  {'page': page,
+                  {'page': page_number,
                    'post_list': post_list,
-                   'latest_question_list': latest_question_list},)
+                   'latest_question_list': latest_question_list,
+                   'popular_articles': popular_articles, })
+
 
 def Search(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    popular_articles = get_popular(Post, days=7, obj_number=5)
     search_terms = request.GET.get("s")
     if search_terms:
-        object_list = Post.objects.filter(Q(title__icontains=search_terms) | 
-                                          Q(content__icontains=search_terms)).order_by('-created_on')
+        object_list = Post.objects.filter(Q(title__icontains=search_terms) |
+                                          Q(content__icontains=search_terms)
+                                          ).order_by('-created_on')
         if not object_list:
             print("No matches")
     else:
         object_list = Post.objects.none()
-    paginator = Paginator(object_list, 3)  # 3 posts in each page
-    page = request.GET.get('page')
-    try:
-        post_list = paginator.page(page)
-    except PageNotAnInteger:
-            # If page is not an integer deliver the first page
-        post_list = paginator.page(1)
-        for i in post_list:
-            print(i,post_list)
-    except EmptyPage:
-        # If page is out of range deliver last page of results
-        post_list = paginator.page(paginator.num_pages)
+
+    paginator = Paginator(object_list, 10)  # 3 posts in each page
+    page_number = request.GET.get('page')
+    post_list = paginator.get_page(page_number)
+
     return render(request,
                   'search.html',
-                  {'page': page,
+                  {'page': page_number,
                    'post_list': post_list,
                    'latest_question_list': latest_question_list,
+                   'popular_articles': popular_articles,
                    'search_terms': search_terms},)
+
 
 def About(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    frequently_asked_questions = FAQs.objects.all()  
+    popular_articles = get_popular(Post, days=7, obj_number=5)
+    frequently_asked_questions = FAQs.objects.all()
     return render(request,
                   'about.html',
                   {'latest_question_list': latest_question_list,
-                  'faqs': frequently_asked_questions},)
+                   'popular_articles': popular_articles,
+                   'faqs': frequently_asked_questions},)
+
 
 def post_detail(request, slug):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    popular_articles = get_popular(Post, days=7, obj_number=5)
     template_name = 'articles/details.html'
     post = get_object_or_404(Post, slug=slug)
-    comments = post.comments.filter(active=True)
-    new_comment = None
-    # Comment posted
-    if request.method == 'POST':
-        comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid():
-            # Create Comment object but don't save to database yet
-            new_comment = comment_form.save(commit=False)
-            # Assign the current post to the comment
-            new_comment.post = post
-            # Save the comment to the database
-            new_comment.save()
-    else:
-        comment_form = CommentForm()
-    return render(request, template_name, {'post': post,
-                                           'comments': comments,
-                                           'new_comment': new_comment,
-                                           'comment_form': comment_form,
-                                           'latest_question_list': latest_question_list,})
-
-
-
+    context = {
+        'post': post,
+        'latest_question_list': latest_question_list,
+        'popular_articles': popular_articles,
+    }
+    return render(request, template_name, context)

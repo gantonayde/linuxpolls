@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     # Addon apps
     'django_summernote',
+    'hitcount',
 ]
 
 MIDDLEWARE = [
@@ -100,14 +101,14 @@ WSGI_APPLICATION = 'linuxpolls.wsgi.application'
 #  }
 
 if DEBUG:
-     DATABASES = {
+    DATABASES = {
          'default': {
              'ENGINE': 'django.db.backends.sqlite3',
              'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
          }
      }
 else:
-     DATABASES = {
+    DATABASES = {
          'default': {
              'ENGINE': 'django.db.backends.postgresql',
              'NAME': env("DATABASE_NAME"),
@@ -152,6 +153,10 @@ IP2LOCATION_PATH = os.path.join(BASE_DIR, env('IP2LOCATION_DIR'))
 IP2LOCATION_DBCODE = env('IP2LOCATION_DBCODE')
 IP2LOCATION_TOKEN = env("IP2LOCATION_TOKEN")
 
+# Hitcount settings
+HITCOUNT_HITS_PER_IP_LIMIT = 0
+HITCOUNT_KEEP_HIT_ACTIVE = {'days': 7}
+HITCOUNT_KEEP_HIT_IN_DATABASE = {'days': 30}
 
 # Required by django-summernote
 X_FRAME_OPTIONS = 'SAMEORIGIN'
@@ -162,11 +167,11 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Tell Django where static files are when running 'collectstatic'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
-STATIC_ROOT  = os.path.join(BASE_DIR, 'public/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'public/static/')
 STATIC_URL = '/static/'
 if WHITENOISE:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-    MIDDLEWARE.insert(1,'whitenoise.middleware.WhiteNoiseMiddleware')
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 # Media files settings
 if DEBUG:
@@ -179,4 +184,3 @@ else:
     DEFAULT_FILE_STORAGE = 'linuxpolls.gcloud.GoogleCloudMediaFileStorage'
     GS_MEDIA_BUCKET_NAME = env('GS_MEDIA_BUCKET_NAME')
     MEDIA_URL = f'https://storage.googleapis.com/{GS_MEDIA_BUCKET_NAME}/'
-

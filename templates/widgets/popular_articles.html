@@ -1,33 +1,31 @@
-{% if post_list %}
-<div class="card mb-4">
-    <div class="card-body p-0">
-        <div class="title-wrap lp-title-wrap--line">
-            <h5 class="lp-section-title">Popular <span class="lp-section-title-secondary"> articles</span></h5>
-            <a href="{% url 'articles_list' %}" class="all-posts-url">View All</a>
-        </div>
-    
-    {% for post in post_list %}
-        <div class="card mb-4">
-            <div class="row no-gutters">
-                <div class="col-md-auto ">
-                    <a href="{% url 'post_detail' post.slug  %}">
-                        {% if post.image %}
-                        <img src="{{post.image.url}}" class="sidebar-img">  
-                        {% endif %}
-                    </a>
-                </div>
-                <div class="col-md">
-                    <div class="card-body py-0 pl-2 pr-0">
-                        <a href="{% url 'post_detail' post.slug  %}" class="text-decoration-none title-link font-weight-slightly-bold"> 
-                            {{ post.title }}
-                        </a>
-                        
-            
+{% if popular_articles %}
+    <div class="card mb-4">
+        <div class="card-body p-0">
+            <div class="title-wrap lp-title-wrap--line">
+                <h5 class="lp-section-title">Popular <span class="lp-section-title-secondary"> articles</span></h5>
+                <a href="{% url 'articles_list' %}" class="all-posts-url">View All</a>
+            </div>
+        
+            {% for post in popular_articles %}
+                <div class="card mb-4">
+                    <div class="row no-gutters">
+                        <div class="col-md-auto ">
+                            <a href="{% url 'post_detail' post.slug  %}">
+                                {% if post.image %}
+                                <img src="{{post.image.url}}" class="sidebar-img">  
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="col-md">
+                            <div class="card-body py-0 pl-2 pr-0">
+                                <a href="{% url 'post_detail' post.slug  %}" class="text-decoration-none title-link font-weight-slightly-bold"> 
+                                    {{ post.title }}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
-    {% endfor %}
-  </div>
-</div>
+    </div>
 {% endif %}

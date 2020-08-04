@@ -630,3 +630,30 @@ input[type="search"]::-webkit-search-cancel-button {
     font-weight:600
   }
 }
+
+/* Pagination */
+
+.lp-pagination-link {
+  color: var(--grey-color-darker);
+  padding-bottom: 6.5px;
+  border: none;
+  border-bottom: 1.5px solid var(--grey-color-transparent30);
+  transition: all ease 0.2s;
+}
+
+.lp-pagination-link:hover {
+  color: white;
+  background-color: var(--grey-color-lighter);
+  border-color: var(--grey-color-hover);
+}
+
+.lp-pagination-link:focus {
+  box-shadow: none;
+}
+
+.page-item.active .lp-pagination-link {
+  z-index: 3;
+  color: white;
+  background-color: var(--grey-color-lighter);
+  border-color: var(--grey-color-hover);
+}

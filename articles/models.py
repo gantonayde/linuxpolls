@@ -1,13 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from hitcount.models import HitCountMixin, HitCount
+from django.contrib.contenttypes.fields import GenericRelation
 
 STATUS = (
     (0,"Draft"),
     (1,"Publish")
 )
 
-class Post(models.Model):
+
+class Post(models.Model, HitCountMixin):
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(User, on_delete= models.CASCADE, related_name='blog_posts')
@@ -18,6 +20,8 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
     enable_comments = models.BooleanField(default=True)
+    hitcount = GenericRelation(HitCount, object_id_field='object_pk')
+
 
     class Meta:
         ordering = ['-created_on']
@@ -26,7 +30,7 @@ class Post(models.Model):
         return self.title
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post,on_delete=models.CASCADE, related_name='comments')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     name = models.CharField(max_length=80, default='Anonymous')
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)

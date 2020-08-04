@@ -1,14 +1,14 @@
 {% extends 'base.html' %} 
 {% load static %}
+{% load hitcount_tags %}
 {% block content %}
-
-
 
 <div class="row">
   <div class="col">
     <!-- Title -->
     <h2 class="mt-4 mb-3 font-weight-slightly-bold ">{{ post.title }}</h2>
     <p class="lead">{{ post.summary }}</p>
+    
     <hr>
   </div>
 </div>
@@ -21,8 +21,9 @@
       </div>
       <div class="col-auto m-0 p-0 ">
         {% if post.updated_on.date != post.created_on.date %}
-        <p class="card-text text-muted mb-3">updated {{ post.updated_on|timesince }} ago </p>
+          <p class="card-text text-muted mb-3">updated {{ post.updated_on|timesince }} ago </p>
         {% endif %}
+        </span>
       </div>    
   </div>
 </div>
@@ -81,5 +82,24 @@
   <script src="{% static 'js/hyvortalk/websiteID.js' %}"></script>
   <script async type="text/javascript" src="//talk.hyvor.com/web-api/embed"></script>
   <script async type="text/javascript" src="//talk.hyvor.com/web-api/count/"></script>
-  {% endif %}
+{% endif %}
+
+
+
+<script src="{% static 'hitcount/jquery.postcsrf.js' %}"></script>
+{% get_hit_count_js_variables for post as hitcount %}
+<script type="text/javascript" >
+$(document).ready(function($) {
+  // use the template tags in our JavaScript call
+  $.postCSRF("{{ hitcount.ajax_url }}", { hitcountPK : "{{ hitcount.pk }}" })
+    .done(function(data){
+      $('<i />').text(data.hit_counted).attr('id','hit-counted-value').appendTo('#hit-counted');
+      $('#hit-response').text(data.hit_message);
+  }).fail(function(data){
+      console.log('POST failed');
+      console.log(data);
+  });
+});
+</script>
+
 {% endblock content %}

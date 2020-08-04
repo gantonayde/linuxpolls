@@ -14,7 +14,7 @@
                 <div class="carousel-inner" role="listbox" >
                   {% for question in carousel_questions %}
                     {% for plot in question.plot_set.all %}
-                      <div class="carousel-item active" id="car{{ forloop.parentloop.counter }}">
+                      <div class="carousel-item active" id="car{{ forloop.parentloop.counter0 }}">
                         <div class="col-md" >
                           <div class="card px-0 pb-2">
                             <div class="card-body">
@@ -39,8 +39,8 @@
                   {% endfor %}
                 <!-- Workaround for Plotly responsive scaling -->
                 <script>
-                  for (var i = 1; i < 6; i++) {
-                    if (i != 1) {
+                  for (var i = 0; i < {{carousel_questions|length}}; i++) {
+                    if (i != 0) {
                       var element = document.getElementById(`car${i}`);
                       element.classList.remove("active");
                     }
@@ -63,3 +63,8 @@
       </div>
       <!-- </div> -->
     {% endif %}
+
+    {% block inline_javascript %}
+
+  
+    {% endblock inline_javascript %}

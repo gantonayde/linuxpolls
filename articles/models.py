@@ -3,16 +3,15 @@ from django.contrib.auth.models import User
 from hitcount.models import HitCountMixin, HitCount
 from django.contrib.contenttypes.fields import GenericRelation
 
-STATUS = (
-    (0,"Draft"),
-    (1,"Publish")
-)
+STATUS = ((0, "Draft"), (1, "Publish"))
 
 
 class Post(models.Model, HitCountMixin):
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
-    author = models.ForeignKey(User, on_delete= models.CASCADE, related_name='blog_posts')
+    author = models.ForeignKey(User,
+                               on_delete=models.CASCADE,
+                               related_name='blog_posts')
     updated_on = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='postimages', blank=True)
     summary = models.CharField(max_length=400, blank=True)
@@ -22,15 +21,17 @@ class Post(models.Model, HitCountMixin):
     enable_comments = models.BooleanField(default=True)
     hitcount = GenericRelation(HitCount, object_id_field='object_pk')
 
-
     class Meta:
         ordering = ['-created_on']
 
     def __str__(self):
         return self.title
 
+
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    post = models.ForeignKey(Post,
+                             on_delete=models.CASCADE,
+                             related_name='comments')
     name = models.CharField(max_length=80, default='Anonymous')
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
@@ -45,4 +46,3 @@ class Comment(models.Model):
         else:
             comment_body = self.body
         return f'Comment {comment_body} by {self.name}'
-

@@ -5,10 +5,8 @@
 {% endblock content_header %}
 
 {% block content %}
-<!-- Articles container -->
-<!-- <div class="container"> -->
+
     <div class="row">
-      
       <div class="col-md-9 mt-0 left">
         {% if polls_on_focus %}
           <div class="mb-3" id="polls-on-focus">
@@ -28,22 +26,7 @@
 
       <div class="col-md-3 float-right">
         {% include 'widgets/sidebar.html' %}        
-      </div>
-      
+      </div>  
     </div>
-<!-- </div> -->
-<!-- /Articles container -->
-
-       <!-- {% if latest_question_list %}
-            <ul>
-            {% for question in latest_question_list %}
-            {% for plot in question.plot_set.all %}
-            <li>1</li>
-            {% endfor %}
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>No polls are available.</p>
-        {% endif %}</p> -->
 
 {% endblock %}

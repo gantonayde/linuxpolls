@@ -52,7 +52,12 @@ def get_ipaddress(request):
 
 def get_popular(model_object, days=7, obj_number=5):
     period = timezone.now() - timedelta(days=days)
-    popular_objects = (model_object.objects.filter(
-        hitcount__hit__created__gte=period).annotate(
-            counts=Count("hitcount__hit")).order_by("-counts")[:obj_number])
-    return popular_objects
+    try:
+        popular_objects = (model_object.objects.filter(
+            hitcount__hit__created__gte=period).annotate(
+                counts=Count("hitcount__hit")).order_by("-counts")[:obj_number])
+        return popular_objects
+    except:
+        print("Object does not have an associated hitcount")
+        popular_objects = ()
+        return popular_objects

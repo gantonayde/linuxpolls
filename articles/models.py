@@ -3,15 +3,32 @@ from django.contrib.auth.models import User
 from hitcount.models import HitCountMixin, HitCount
 from django.contrib.contenttypes.fields import GenericRelation
 
+
+class Category(models.Model):
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+        ordering = ['title']
+
+    def __str__(self):
+        return self.title
+
+
 STATUS = ((0, "Draft"), (1, "Publish"))
 
 
 class Post(models.Model, HitCountMixin):
+    category = models.ForeignKey(Category,
+                                 on_delete=models.SET_NULL,
+                                 blank=False, null=True)
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(User,
-                               on_delete=models.CASCADE,
-                               related_name='blog_posts')
+                               on_delete=models.CASCADE)
     updated_on = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='postimages', blank=True)
     summary = models.CharField(max_length=400, blank=True)

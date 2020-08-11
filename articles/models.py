@@ -1,22 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from categories.models import Category
 from hitcount.models import HitCountMixin, HitCount
 from django.contrib.contenttypes.fields import GenericRelation
-
-
-class Category(models.Model):
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-    title = models.CharField(max_length=255)
-
-    class Meta:
-        verbose_name = "Category"
-        verbose_name_plural = "Categories"
-        ordering = ['title']
-
-    def __str__(self):
-        return self.title
-
 
 STATUS = ((0, "Draft"), (1, "Publish"))
 
@@ -24,7 +10,7 @@ STATUS = ((0, "Draft"), (1, "Publish"))
 class Post(models.Model, HitCountMixin):
     category = models.ForeignKey(Category,
                                  on_delete=models.SET_NULL,
-                                 blank=False, null=True)
+                                 blank=True, null=True)
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(User,
@@ -37,6 +23,7 @@ class Post(models.Model, HitCountMixin):
     status = models.IntegerField(choices=STATUS, default=0)
     enable_comments = models.BooleanField(default=True)
     hitcount = GenericRelation(HitCount, object_id_field='object_pk')
+    carousel = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-created_on']
@@ -45,6 +32,7 @@ class Post(models.Model, HitCountMixin):
         return self.title
 
 
+# Will use HyvorTalk for the time being
 class Comment(models.Model):
     post = models.ForeignKey(Post,
                              on_delete=models.CASCADE,

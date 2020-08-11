@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
-from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
@@ -24,7 +23,7 @@ urlpatterns = [
     path('', include('articles.urls')),
     path('polls/', include('polls.urls')),
     path('summernote/', include('django_summernote.urls')),
-    url('hitcount/', include('hitcount.urls', namespace='hitcount')),
+    path('hitcount/', include('hitcount.urls', namespace='hitcount')),
 ]
 
 if settings.DEBUG:

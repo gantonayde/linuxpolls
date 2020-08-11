@@ -8,16 +8,15 @@ from toolbox.plots import add_figure
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
+    created_on = models.DateTimeField(auto_now_add=True)
     on_focus = models.BooleanField(default=False)
-    carousel = models.BooleanField(default=False)
 
     def __str__(self):
         return self.question_text
 
     def was_published_recently(self):
         now = timezone.now()
-        return now - datetime.timedelta(days=1) <= self.pub_date <= now
+        return now - datetime.timedelta(days=6) <= self.created_on <= now
 
     def make_copy(self):
         choices = self.choice_set.all()
@@ -28,8 +27,8 @@ class Question(models.Model):
             choice.pk = None
             choice.save()
 
-    def update_pub_date(self):
-        self.pub_date = timezone.now()
+    def update_created_on(self):
+        self.created_on = timezone.now()
         self.save()
 
     def reset_votes(self):
@@ -44,7 +43,7 @@ class Question(models.Model):
             # figure.graph = add_figure(self, figure.plot_type)
             figure.save()
 
-    was_published_recently.admin_order_field = 'pub_date'
+    was_published_recently.admin_order_field = 'created_on'
     was_published_recently.boolean = True
     was_published_recently.short_description = 'Published recently?'
 
@@ -82,11 +81,12 @@ class Plot(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     plot_type = models.IntegerField(choices=TYPE, default=1)
     allow_updates = models.BooleanField(default=True)
+    carousel = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.question.question_text)
 
     def save(self, *args, **kwargs):
-        if self.figure == 'Figure placeholder' or self.allow_updates == True:
+        if self.figure == 'Figure placeholder' or self.allow_updates:
             self.figure = str(add_figure(self.question, self.plot_type))
         super(Plot, self).save(*args, **kwargs)

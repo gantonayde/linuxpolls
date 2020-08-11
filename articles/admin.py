@@ -1,44 +1,49 @@
+from categories.admin import CategoryAdmin as BaseCategoryAdmin
+from categories.models import Category
 from django.contrib import admin
 from django.db.models import Count
 from django_summernote.admin import SummernoteModelAdmin
 
-from articles.models import Category, Comment, Post
+from articles.models import Post
 
 admin.site.site_header = 'LinuxPolls Admin Panel'
-
-
-@admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'body', 'post', 'created_on', 'active')
-    list_filter = ('active', 'created_on')
-    search_fields = ('name', 'body')
-    actions = ['approve_comments']
-
-    def approve_comments(self, request, queryset):
-        queryset.update(active=True)
-
-
-class CommentsInline(admin.TabularInline):
-    model = Comment
-    extra = 0
-    list_display = ('name', 'body', 'post', 'created_on', 'active')
-    list_filter = ('active', 'created_on')
-    search_fields = ('name', 'body')
-    actions = ['approve_comments']
-
-    def approve_comments(self, request, queryset):
-        queryset.update(active=True)
 
 
 @admin.register(Post)
 class PostAdmin(SummernoteModelAdmin):
     list_display = ('title', 'category', 'slug', 'status', 'created_on',
-                    'enable_comments')
+                    'enable_comments', 'carousel')
     list_filter = ('status', 'category')
     search_fields = ['title', 'content']
     prepopulated_fields = {'slug': ('title', )}
-    inlines = [CommentsInline]
     summernote_fields = ('content', )
+
+    actions = ['add_to_carousel', 'remove_from_carousel',
+               'allow_comments', 'disable_comments']
+
+    def add_to_carousel(self, request, queryset):
+        for post in queryset:
+            if not post.carousel:
+                post.carousel = True
+                post.save()
+
+    def remove_from_carousel(self, request, queryset):
+        for post in queryset:
+            if post.carousel:
+                post.carousel = False
+                post.save()
+
+    def allow_comments(self, request, queryset):
+        for post in queryset:
+            if not post.enable_comments:
+                post.enable_comments = True
+                post.save()
+
+    def disable_comments(self, request, queryset):
+        for post in queryset:
+            if post.enable_comments:
+                post.enable_comments = False
+                post.save()
 
 
 class PostsInline(admin.TabularInline):
@@ -53,17 +58,23 @@ class PostsInline(admin.TabularInline):
     def has_add_permission(self, request, queryset):
         return False
 
+    def has_delete_permission(self, request, queryset):
+        return False
 
+
+admin.site.unregister(Category)
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created_on', 'updated_on', 'post_count')
-    list_filter = ('title', 'created_on', 'updated_on',)
+class CategoryAdmin(BaseCategoryAdmin):
+    list_display = ('name', 'alternate_title', 'active',
+                    'post_count')
     inlines = [PostsInline]
 
     def get_queryset(self, request):
-        queryset = super(CategoryAdmin, self).get_queryset(request)
+        queryset = super(BaseCategoryAdmin, self).get_queryset(request)
         queryset = queryset.annotate(post_count=Count("post"))
         return queryset
 
     def post_count(self, obj):
         return obj.post_count
+
+    post_count.admin_order_field = 'post_count'

@@ -17,7 +17,7 @@
                             <h3 class="card-title">{{ post.title }}</h3>
                         </a>
                         <!-- <p class="card-text text-muted h6">{{ post.author }} | {{ post.created_on}}</p> -->
-                        <p class="card-text">{{ post.summary|safe|slice:":200" }}</p>
+                        <p class="card-text">{{ post.summary|safe|truncatechars:200 }}</p>
                         <div class="row">
                             <div class="col">
                                 <p class="card-text text-muted mb-0">{{ post.created_on.date}}</p>

@@ -6,14 +6,15 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 
 from articles.models import Post
-from polls.models import Question
+from polls.models import Question, Plot
 from toolbox.models import FAQs
 from toolbox.tools import get_popular
 
 
 def Index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    carousel_questions = Question.objects.filter(carousel=True)[:5]
+    latest_question_list = Question.objects.order_by('-created_on')[:5]
+    carousel_articles = Post.objects.filter(status=1, carousel=True).order_by('-created_on')[:4]
+    carousel_plots = Plot.objects.filter(carousel=True).order_by('-created_on')[:4]
     popular_articles = get_popular(Post, days=7, obj_number=5)
 
     polls_on_focus = Question.objects.filter(on_focus=True)
@@ -35,14 +36,15 @@ def Index(request):
                   {'page': page_number,
                    'post_list': post_list,
                    'polls_on_focus': polls_on_focus,
-                   'carousel_questions': carousel_questions,
+                   'carousel_articles': carousel_articles,
+                   'carousel_plots': carousel_plots,
                    'latest_question_list': latest_question_list,
                    'popular_articles': popular_articles,
                    })
 
 
 def Articles(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    latest_question_list = Question.objects.order_by('-created_on')[:5]
     popular_articles = get_popular(Post, days=7, obj_number=5)
     object_list = Post.objects.filter(status=1).order_by('-created_on')
     paginator = Paginator(object_list, 10)
@@ -57,7 +59,7 @@ def Articles(request):
 
 
 def Search(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    latest_question_list = Question.objects.order_by('-created_on')[:5]
     popular_articles = get_popular(Post, days=7, obj_number=5)
     search_terms = request.GET.get("s")
     if search_terms:
@@ -83,7 +85,7 @@ def Search(request):
 
 
 def About(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    latest_question_list = Question.objects.order_by('-created_on')[:5]
     popular_articles = get_popular(Post, days=7, obj_number=5)
     frequently_asked_questions = FAQs.objects.all()
     return render(request,
@@ -94,7 +96,7 @@ def About(request):
 
 
 def post_detail(request, slug):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    latest_question_list = Question.objects.order_by('-created_on')[:5]
     popular_articles = get_popular(Post, days=7, obj_number=5)
     template_name = 'articles/details.html'
     post = get_object_or_404(Post, slug=slug)

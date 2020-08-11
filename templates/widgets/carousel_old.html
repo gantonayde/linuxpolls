@@ -1,0 +1,70 @@
+
+      {% if carousel_questions %}
+      <!-- <div class="container mt-0 px-0"> -->
+      <div class="row mb-3">
+            <div class="col-md px-0">
+              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        
+                <ol class="carousel-indicators">
+                  {% for question in carousel_questions %}
+                        <li  data-target="#carouselExampleIndicators" data-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" {% endif %}></li>
+                  {% endfor %}
+                </ol>
+        
+                <div class="carousel-inner" role="listbox" >
+                  {% for question in carousel_questions %}
+                    {% for plot in question.plot_set.all %}
+                      <div class="carousel-item active" id="car{{ forloop.parentloop.counter0 }}">
+                        <div class="col-md" >
+                          <div class="card px-0 pb-2">
+                            <div class="card-body">
+                              <a href="{% url 'polls:detail' question.id %}" class="text-decoration-none title-link">
+                                 <h2 class="card-title text-center lp-title-wrap--line">{{question.question_text}}</h2>
+                              </a>
+                              <div id="plot-car{{question.id}}">
+                                <script>
+                                  const plotlyGraphCar{{ question.id }} = {{ plot.figure | safe }};
+                                  var config = { responsive: true };
+                                  //var scriptTag = document.scripts[document.scripts.length - 1];
+                                  //var parentTag = scriptTag.parentNode;
+                                  //console.log(parentTag.id);
+                                  Plotly.newPlot("plot-car{{question.id}}", plotlyGraphCar{{ question.id }}.data, plotlyGraphCar{{ question.id }}.layout, config);                      
+                                </script>
+                              </div> 
+                            </div>
+                          </div>            
+                        </div>
+                      </div>
+                    {% endfor %}
+                  {% endfor %}
+                <!-- Workaround for Plotly responsive scaling -->
+                <script>
+                  for (var i = 0; i < {{carousel_questions|length}}; i++) {
+                    if (i != 0) {
+                      var element = document.getElementById(`car${i}`);
+                      element.classList.remove("active");
+                    }
+                  }
+                </script>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                  <!-- <span class="carousel-control-prev-icon carousal-controls-style" aria-hidden="true"></span> -->
+                  <span><i class="fa fa-angle-left" style="font-size: 42px;" aria-hidden="true"></i></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+        
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                  <span><i class="fa fa-angle-right" style="font-size: 42px;" aria-hidden="true"></i></span>
+                  <span class="sr-only">Next</span>
+                </a>
+        
+              </div>
+            </div>
+          </div>
+      </div>
+      <!-- </div> -->
+    {% endif %}
+
+    {% block inline_javascript %}
+
+  
+    {% endblock inline_javascript %}

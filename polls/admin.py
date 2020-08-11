@@ -12,8 +12,23 @@ class VoteAdmin(admin.ModelAdmin):
 
 @admin.register(Plot)
 class PlotAdmin(admin.ModelAdmin):
-    list_display = ('question', 'plot_type', 'created_on', 'allow_updates')
-    list_filter = ("plot_type", )
+    list_display = ('question', 'plot_type', 'created_on',
+                    'allow_updates', 'carousel')
+    list_filter = ('question', 'plot_type', 'carousel')
+
+    actions = ['add_to_carousel', 'remove_from_carousel']
+
+    def add_to_carousel(self, request, queryset):
+        for plot in queryset:
+            if not plot.carousel:
+                plot.carousel = True
+                plot.save()
+    
+    def remove_from_carousel(self, request, queryset):
+        for plot in queryset:
+            if plot.carousel:
+                plot.carousel = False
+                plot.save()
 
 
 class AlwaysChangedModelForm(ModelForm):
@@ -45,20 +60,16 @@ class ChoiceInline(admin.StackedInline):
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [('Question', {
         'fields': ['question_text']
-    }), ('Date information', {
-        'fields': ['pub_date']
     }), ('Poll on focus', {
         'fields': ['on_focus']
-    }), ('Poll in carousel', {
-        'fields': ['carousel']
     })]
     inlines = [ChoiceInline, Figureinline]
     list_display = (
         'question_text',
-        'pub_date',
+        'created_on',
         'was_published_recently',
     )
-    list_filter = ['pub_date']
+    list_filter = ['created_on']
     search_fields = ['question_text']
     actions = ['reset_poll_votes', 'update_figure']
 

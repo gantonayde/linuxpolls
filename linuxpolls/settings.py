@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     # Addon apps
     'django_summernote',
     'hitcount',
+    "categories",
+    "categories.editor",
 ]
 
 MIDDLEWARE = [

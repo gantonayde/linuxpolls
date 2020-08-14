@@ -36,7 +36,7 @@
       <!-- Preview Image -->
       {% if post.image %}
         <!-- <img class="img-fluid mb-3" src="{{post.image.url}}" alt=""> -->
-        {% thumbnail post.image "900" as img %} 
+        {% thumbnail post.image "900" format="WEBP" as img %} 
           <img src="{{ img.url }}" class="img-fluid mb-3" alt="...">
         {% endthumbnail %}
       {% endif %}

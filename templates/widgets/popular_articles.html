@@ -33,7 +33,7 @@
                         <a href="{% url 'post_detail' post.slug  %}">
                             {% if post.image %}
                                 
-                                {% thumbnail post.image "380" as img %} 
+                                {% thumbnail post.image "380" format="WEBP" as img %} 
                                     <img src="{{ img.url }}" class="sidebar-img" alt="..." srcset="
                                     {{ img.url|resolution:'2x' }} 760w, {{ img.url }} 380w" sizes="(max-width: 768px) 760px, 380px">
                                 {% endthumbnail %}

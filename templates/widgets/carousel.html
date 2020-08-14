@@ -12,7 +12,7 @@
                     <div class="col-md p-0">
                       {% with item=carousel_articles.0 %}
                         <a class="lp-car-post__layout" href="{% url 'post_detail' item.slug %}">
-                          {% thumbnail item.image "x480" as img %}
+                          {% thumbnail item.image "x480" format="WEBP" as img %}
                                 <img src="{{ img.url }}" class="lp-car-img-big" alt="...">
                           {% endthumbnail %}
                           <div class="carousel-caption p-0 pb-3">
@@ -30,7 +30,7 @@
                         <div class="col-md p-0">
                           {% with item=carousel_articles.1 %}
                             <a class="lp-car-post__layout {% if carousel_articles|length > 2 %} lp-car-small {% endif %}" href="{% url 'post_detail' item.slug %}">
-                                {% thumbnail item.image "x480" as img %}
+                                {% thumbnail item.image "x480" format="WEBP" as img %}
                                   <img src="{{ img.url }}" class="lp-car-img-big {% if carousel_articles|length > 2 %} lp-car-small {% endif %}" alt="...">
                                 {% endthumbnail %}
                               <div class="carousel-caption p-0 pb-3">
@@ -50,7 +50,7 @@
                             <div class="col-md p-0">
                               {% with item=carousel_articles.2 %}
                                 <a class="lp-car-post__layout lp-car-small" href="{% url 'post_detail' item.slug %}">
-                                  {% thumbnail item.image "x480" as img %}
+                                  {% thumbnail item.image "x480" format="WEBP" as img %}
                                     <img src="{{ img.url }}" class="lp-car-img-big lp-car-small" alt="...">
                                   {% endthumbnail %}
                                   <div class="carousel-caption p-0 pb-3">
@@ -67,7 +67,7 @@
                               <div class="col-md p-0">
                                 {% with item=carousel_articles.3 %}
                                   <a class="lp-car-post__layout lp-car-small" href="{% url 'post_detail' item.slug %}">
-                                    {% thumbnail item.image "x480" as img %}
+                                    {% thumbnail item.image "x480" format="WEBP" as img %}
                                       <img src="{{ img.url }}" class="lp-car-img-big lp-car-small" alt="...">
                                     {% endthumbnail %}
                                     <div class="carousel-caption p-0 pb-3">

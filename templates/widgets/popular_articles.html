@@ -1,4 +1,5 @@
 {% if popular_articles %}
+{% load thumbnail %}
     <div class="card mb-4">
         <div class="card-body p-0">
             <div class="title-wrap lp-title-wrap--line">
@@ -7,12 +8,14 @@
             </div>
         
             {% for post in popular_articles %}
-                <div class="card mb-4">
+                <!-- <div class="card mb-4">
                     <div class="row no-gutters">
                         <div class="col-md-auto ">
                             <a href="{% url 'post_detail' post.slug  %}">
                                 {% if post.image %}
-                                <img src="{{post.image.url}}" class="sidebar-img">  
+                                    {% thumbnail post.image "130" as img %} 
+                                        <img src="{{ img.url }}" class="sidebar-img" alt="...">
+                                    {% endthumbnail %}
                                 {% endif %}
                             </a>
                         </div>
@@ -24,7 +27,24 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
+                <div class="row mb-3 no-gutters">
+                    <div class="col-lg-auto d-flex align-items-center justify-content-center">
+                        <a href="{% url 'post_detail' post.slug  %}">
+                            {% if post.image %}
+                                
+                                {% thumbnail post.image "380" as img %} 
+                                    <img src="{{ img.url }}" class="sidebar-img" alt="..." srcset="
+                                    {{ img.url|resolution:'2x' }} 760w, {{ img.url }} 380w" sizes="(max-width: 768px) 760px, 380px">
+                                {% endthumbnail %}
+                            {% endif %}
+                        </a>
+                    </div> 
+
+                    <div class="col-lg pl-2 d-flex justify-content-center-lg">
+                        <a href="{% url 'post_detail' post.slug %}" class="title-link font-weight-slightly-bold">{{ post.title }}</a>
+                    </div>
+                </div> 
             {% endfor %}
         </div>
     </div>

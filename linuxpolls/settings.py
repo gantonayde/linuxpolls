@@ -53,8 +53,9 @@ INSTALLED_APPS = [
     # Addon apps
     'django_summernote',
     'hitcount',
-    "categories",
-    "categories.editor",
+    'categories',
+    'categories.editor',
+    'sorl.thumbnail'
 ]
 
 MIDDLEWARE = [
@@ -163,6 +164,8 @@ HITCOUNT_KEEP_HIT_IN_DATABASE = {'days': 30}
 # Required by django-summernote
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
+# Thumbnail scaling
+THUMBNAIL_ALTERNATIVE_RESOLUTIONS = [1.5, 2]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -183,6 +186,7 @@ else:
     # Serve media files from Google Cloud Storage
     GS_CREDENTIALS_JSON = env('GS_CREDENTIALS_JSON')
     GS_CREDENTIALS = service_account.Credentials.from_service_account_file(os.path.join(BASE_DIR, GS_CREDENTIALS_JSON))
+    GS_CACHE_CONTROL = 'public, max-age=2630000'
     DEFAULT_FILE_STORAGE = 'linuxpolls.gcloud.GoogleCloudMediaFileStorage'
     GS_MEDIA_BUCKET_NAME = env('GS_MEDIA_BUCKET_NAME')
     MEDIA_URL = f'https://storage.googleapis.com/{GS_MEDIA_BUCKET_NAME}/'

@@ -1,4 +1,5 @@
 {% load static %}
+{% load thumbnail %}
 {% block articles_list %}
 
     {% for post in post_list %}
@@ -7,7 +8,10 @@
                 <div class="col-md-5 ">
                     <a href="{% url 'post_detail' post.slug  %}">
                         {% if post.image %}
-                        <img src="{{post.image.url}}" class="card-img-top" alt="...">  
+                            {% thumbnail post.image "380" as img %} 
+                                <img src="{{ img.url }}" class="card-img-top" alt="..." srcset="
+                                {{ img.url|resolution:'2x' }} 760w, {{ img.url }} 380w" sizes="(max-width: 768px) 760px, 380px">
+                            {% endthumbnail %}
                         {% endif %}
                     </a>
                 </div>
@@ -20,7 +24,7 @@
                         <p class="card-text">{{ post.summary|safe|truncatechars:200 }}</p>
                         <div class="row">
                             <div class="col">
-                                <p class="card-text text-muted mb-0">{{ post.created_on.date}}</p>
+                                <p class="card-text text-muted mb-0">{{ post.created_on.date }}</p>
                             </div>
                             {% if post.enable_comments %}
                                 <div class="col right">

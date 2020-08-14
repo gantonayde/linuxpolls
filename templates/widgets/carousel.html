@@ -1,4 +1,5 @@
 {% load static %}
+{% load thumbnail %}
 
 <div id="carouselExampleControls" class="carousel slide mb-5" data-ride="carousel">
     <div class="carousel-inner">
@@ -11,7 +12,9 @@
                     <div class="col-md p-0">
                       {% with item=carousel_articles.0 %}
                         <a class="lp-car-post__layout" href="{% url 'post_detail' item.slug %}">
-                          <img src="{{ item.image.url }}" class="lp-car-img-big" alt="...">
+                          {% thumbnail item.image "x480" as img %}
+                                <img src="{{ img.url }}" class="lp-car-img-big" alt="...">
+                          {% endthumbnail %}
                           <div class="carousel-caption p-0 pb-3">
                             <h3 class="card-title">{{item.title}}</h3>
                             <p class="card-text">{{ item.summary|safe|truncatechars:200}}</p>
@@ -27,7 +30,9 @@
                         <div class="col-md p-0">
                           {% with item=carousel_articles.1 %}
                             <a class="lp-car-post__layout {% if carousel_articles|length > 2 %} lp-car-small {% endif %}" href="{% url 'post_detail' item.slug %}">
-                              <img src="{{ item.image.url }}" class="lp-car-img-big {% if carousel_articles|length > 2 %} lp-car-small {% endif %}" alt="...">
+                                {% thumbnail item.image "x480" as img %}
+                                  <img src="{{ img.url }}" class="lp-car-img-big {% if carousel_articles|length > 2 %} lp-car-small {% endif %}" alt="...">
+                                {% endthumbnail %}
                               <div class="carousel-caption p-0 pb-3">
                                 {% if not carousel_articles|length > 2 %}
                                   <h3 class="card-title">{{item.title}}</h3>
@@ -45,7 +50,9 @@
                             <div class="col-md p-0">
                               {% with item=carousel_articles.2 %}
                                 <a class="lp-car-post__layout lp-car-small" href="{% url 'post_detail' item.slug %}">
-                                  <img src="{{ item.image.url }}" class="lp-car-img-big lp-car-small" alt="...">
+                                  {% thumbnail item.image "x480" as img %}
+                                    <img src="{{ img.url }}" class="lp-car-img-big lp-car-small" alt="...">
+                                  {% endthumbnail %}
                                   <div class="carousel-caption p-0 pb-3">
                                     {% if not carousel_articles|length > 3 %}
                                       <h3 class="card-title">{{item.title|truncatechars:60}}</h3>
@@ -60,7 +67,9 @@
                               <div class="col-md p-0">
                                 {% with item=carousel_articles.3 %}
                                   <a class="lp-car-post__layout lp-car-small" href="{% url 'post_detail' item.slug %}">
-                                    <img src="{{ item.image.url }}" class="lp-car-img-big lp-car-small" alt="...">
+                                    {% thumbnail item.image "x480" as img %}
+                                      <img src="{{ img.url }}" class="lp-car-img-big lp-car-small" alt="...">
+                                    {% endthumbnail %}
                                     <div class="carousel-caption p-0 pb-3">
                                       <h5 class="card-title">{{item.title|truncatechars:35}}</h5>
                                     </div>

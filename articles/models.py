@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from categories.models import Category
 from hitcount.models import HitCountMixin, HitCount
 from django.contrib.contenttypes.fields import GenericRelation
+from sorl.thumbnail import ImageField
 
 STATUS = ((0, "Draft"), (1, "Publish"))
 
@@ -16,7 +17,7 @@ class Post(models.Model, HitCountMixin):
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE)
     updated_on = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to='postimages', blank=True)
+    image = ImageField(upload_to='postimages', blank=True)
     summary = models.CharField(max_length=400, blank=True)
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)

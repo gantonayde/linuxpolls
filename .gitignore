@@ -4,3 +4,4 @@ credentials.json
 # Byte-compiled / optimized / DLL files
 *.pyc
 .vscode
+public/media/cache

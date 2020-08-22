@@ -28,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Use whitenoise to serve static files
 WHITENOISE = False
@@ -106,9 +106,13 @@ WSGI_APPLICATION = 'linuxpolls.wsgi.application'
 if DEBUG:
     DATABASES = {
          'default': {
-             'ENGINE': 'django.db.backends.sqlite3',
-             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-         }
+             'ENGINE': 'django.db.backends.postgresql',
+             'NAME': env("DEV_DATABASE_NAME"),
+             'USER': env("DEV_DATABASE_USER"),
+             'PASSWORD': env("DEV_DATABASE_PASSWORD"),
+             'HOST': env("DEV_DATABASE_HOST"),
+             'PORT': env("DEV_DATABASE_PORT"),
+             }
      }
 else:
     DATABASES = {

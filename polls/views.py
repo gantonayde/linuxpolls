@@ -1,6 +1,7 @@
 import json
 import urllib
 
+from django.conf import settings
 from django.db.models import F
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -72,9 +73,13 @@ def ajax_vote(request, question_id):
         plot = question.plot_set.get(question_id=question_id)
         plotly_plot = plot.figure
 
-        # Set to True to enable cookies
-        enable_cookie = False
-        if enable_cookie:
+        # Don't use cookies in dev mode
+        if settings.DEBUG:
+            return JsonResponse({
+                'id_data': id_data,
+                'plotly_plot': plotly_plot
+            })
+        else:
             response = JsonResponse({
                 'id_data': id_data,
                 'plotly_plot': plotly_plot
@@ -84,11 +89,6 @@ def ajax_vote(request, question_id):
                                 value=json.dumps(cookie_value),
                                 expires=last_day_of_month())
             return response
-        else:
-            return JsonResponse({
-                'id_data': id_data,
-                'plotly_plot': plotly_plot
-            })
 
 
 def greet(request, user_name):

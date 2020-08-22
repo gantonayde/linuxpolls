@@ -39,6 +39,8 @@
         {% thumbnail post.image "900" format="WEBP" as img %} 
           <img src="{{ img.url }}" class="img-fluid mb-3" alt="...">
         {% endthumbnail %}
+      {% else %}
+        <img src="{% static 'img/placeholder.png' %}" class="img-fluid mb-3">
       {% endif %}
       <div class="row m-0 p-0">
         <div class="col-auto mr-auto m-0 p-0">

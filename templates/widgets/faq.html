@@ -12,7 +12,7 @@
             </h3>
         </div>
     </div>
-    {% if forloop.counter == 1 %}
+    {% if forloop.counter == 1 or forloop.counter == 0 %}
         <div id="clp-faq{{faq.id}}" class="collapse show js-accordion-collapse" style="width: 100%;"
             aria-labelledby="h-faq{{faq.id}}">
     {% else %}

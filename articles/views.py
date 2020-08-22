@@ -87,7 +87,7 @@ def Search(request):
 def About(request):
     latest_question_list = Question.objects.order_by('-created_on')[:5]
     popular_articles = get_popular(Post, days=7, obj_number=5)
-    frequently_asked_questions = FAQs.objects.all()
+    frequently_asked_questions = FAQs.objects.all().order_by('created_on')
     return render(request,
                   'about.html',
                   {'latest_question_list': latest_question_list,

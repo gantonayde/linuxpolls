@@ -1,29 +1,24 @@
 {% load static %}
+{% if latest_question_list %}
+    <div class="card mb-4">
+        <div class="card-body p-0">
+            <div class="title-wrap lp-title-wrap--line">
+                <h5 class="lp-section-title">Latest <span class="lp-section-title-secondary">polls</span></h5>
+                <a href="{% url  'polls:index' %}" class="all-posts-url">View All</a>
+            </div>
+            {% for question in latest_question_list %}
+                <div class="row mb-3 no-gutters">
+                    <div class="col-3 d-flex align-items-center justify-content-center">
+                        <a href="{% url 'polls:detail' question.id %}">
+                        <div class="question-button" title="{{ question.question_text }}">?</div>
+                        </a>
+                    </div> 
 
-<div class="card mb-4">
-    <div class="card-body p-0">
-        <div class="title-wrap lp-title-wrap--line">
-            <h5 class="lp-section-title">Latest <span class="lp-section-title-secondary">polls</span></h5>
-            <a href="{% url  'polls:index' %}" class="all-posts-url">View All</a>
+                    <div class="col-9 pl-1 d-flex align-items-center justify-content-left">
+                        <a href="{% url 'polls:detail' question.id %}" class="title-link font-weight-slightly-bold">{{ question.question_text }}</a>
+                    </div>
+                </div> 
+            {% endfor %}        
         </div>
-        
-            {% if latest_question_list %}
-                    {% for question in latest_question_list %}
-                        <div class="row mb-3 no-gutters">
-                            <div class="col-3 d-flex align-items-center justify-content-center">
-                                <a href="{% url 'polls:detail' question.id %}">
-                                <div class="question-button" title="{{ question.question_text }}">?</div>
-                                </a>
-                            </div> 
-
-                            <div class="col-9 pl-1 d-flex align-items-center justify-content-left">
-                                <a href="{% url 'polls:detail' question.id %}" class="title-link font-weight-slightly-bold">{{ question.question_text }}</a>
-                            </div>
-                        </div> 
-                    {% endfor %}
-            {% else %}
-                <p>No polls are available.</p>
-            {% endif %}
-        
     </div>
-</div>
+{% endif %}

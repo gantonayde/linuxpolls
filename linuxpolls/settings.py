@@ -28,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Use whitenoise to serve static files
 WHITENOISE = False
@@ -103,7 +103,7 @@ WSGI_APPLICATION = 'linuxpolls.wsgi.application'
 #       }
 #  }
 
-if DEBUG:
+if not DEBUG:
     DATABASES = {
          'default': {
              'ENGINE': 'django.db.backends.postgresql',
@@ -183,7 +183,7 @@ if WHITENOISE:
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 # Media files settings
-if DEBUG:
+if not DEBUG:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'public/media/')
 else:

@@ -159,13 +159,16 @@ a.title-link{
   color: var(--dark);
 }
 
+
 a.title-link:hover, .all-posts-url:hover{
   color: var(--main-color-hover);
   text-decoration: none;
   transition: 250ms color ease;
 }
 
-
+.color-dark{
+  color: black;
+}
 
 .lp-section-title {
   text-transform: uppercase;

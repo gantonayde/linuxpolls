@@ -96,7 +96,7 @@
                     {% with plot=carousel_plots.0 %}
                       <a href="{% url 'polls:detail' plot.question.id %}" class="lp-car-post__layout">
                         <div class="carousel-caption p-0 pb-3 pt-4">
-                          <h3 class="card-title">{{plot.question.question_text}}</h3>
+                          <h3 class="card-title color-dark">{{plot.question.question_text}}</h3>
                         </div>
                         <div class="container  ">
                           <div id="plot-car{{plot.id}}">
@@ -122,9 +122,9 @@
                           <a href="{% url 'polls:detail' plot.question.id %}" class="lp-car-post__layout {% if carousel_plots|length > 2 %} lp-car-small {% endif %}">
                               <div class="carousel-caption p-0 pb-3 pt-4">
                                 {% if carousel_plots|length > 2 %}
-                                  <h4 class="card-title">{{plot.question.question_text}}</h4>
+                                  <h4 class="card-title color-dark">{{plot.question.question_text}}</h4>
                                 {% else %}
-                                  <h3 class="card-title">{{plot.question.question_text}}</h3>
+                                  <h3 class="card-title color-dark">{{plot.question.question_text}}</h3>
                                 {% endif %}
                               </div>
                               <div class="container  ">
@@ -148,7 +148,7 @@
                             {% with plot=carousel_plots.2 %}
                               <a href="{% url 'polls:detail' plot.question.id %}" class="lp-car-post__layout lp-car-small">
                                   <div class="carousel-caption p-0 pb-3 pt-4">
-                                    <h4 class="card-title">{{plot.question.question_text}}</h4>
+                                    <h4 class="card-title color-dark">{{plot.question.question_text}}</h4>
                                   </div>
                                   <div class="container  ">
                                   <div id="plot-car{{plot.id}}">
@@ -169,7 +169,7 @@
                               {% with plot=carousel_plots.3 %}
                                 <a href="{% url 'polls:detail' plot.question.id %}" class="lp-car-post__layout lp-car-small">
                                     <div class="carousel-caption p-0 pb-3 pt-4">
-                                      <h4 class="card-title">{{plot.question.question_text}}</h4>
+                                      <h4 class="card-title color-dark">{{plot.question.question_text}}</h4>
                                     </div>
                                     <div class="container  ">
                                     <div id="plot-car{{plot.id}}">

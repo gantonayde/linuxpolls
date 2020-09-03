@@ -14,13 +14,13 @@
             {% if post_list %}
                 {% if search_terms %}
                     <div class="title-wrap lp-title-wrap--line">
-                        <h4 class="lp-section-title">Search results for: <span class="lp-section-title-secondary">{{search_terms}}</span></h4>
+                        <h4 class="lp-section-title">Search results: <span class="lp-section-title-secondary">{{search_terms}}</span></h4>
                     </div>
                 {% endif %}
                 {% include 'articles/list.html' %}
             {% else %}
                     <div class="title-wrap lp-title-wrap--line">
-                        <h4 class="lp-section-title">No results found for: <span class="lp-section-title-secondary">{{search_terms}}</span></h4>
+                        <h4 class="lp-section-title">No results: <span class="lp-section-title-secondary">{{search_terms}}</span></h4>
                     </div>              
             {% endif %}
         {% endif %}

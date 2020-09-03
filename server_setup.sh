@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PROJECT_NAME='linuxpolls'
+WEBSITE_NAME='linuxpolls'
 PROJECT_DIR=`pwd`
 VENV_NAME='django_venv'
 NWORKERS=3
@@ -41,16 +42,16 @@ sudo systemctl start gunicorn
 sudo systemctl enable gunicorn
 
 # Nginx setup 
-PROJECT_NAME=${PROJECT_NAME} PROJECT_DIR=${PROJECT_DIR} DOMAIN=${DOMAIN} envsubst < deploy/nginx.conf > nginx.conf
-sudo mv nginx.conf /etc/nginx/sites-available/${PROJECT_NAME}
-sudo ln -s /etc/nginx/sites-available/${PROJECT_NAME} /etc/nginx/sites-enabled
+PROJECT_NAME=${WEBSITE_NAME} PROJECT_DIR=${PROJECT_DIR} DOMAIN=${DOMAIN} envsubst < deploy/nginx.conf > nginx.conf
+sudo mv nginx.conf /etc/nginx/sites-available/${WEBSITE_NAME}
+sudo ln -s /etc/nginx/sites-available/${WEBSITE_NAME} /etc/nginx/sites-enabled
 
 # Allow HTTPS traffic and add SSL certificate with certbot
 sudo ufw allow ssh
 sudo ufw enable 
 sudo ufw allow 'Nginx Full'
 sudo ufw delete allow 'Nginx HTTP'
-sudo certbot --nginx -d ${PROJECT_NAME}.${DOMAIN} -d www.${PROJECT_NAME}.${DOMAIN}
+sudo certbot --nginx -d ${WEBSITE_NAME}.${DOMAIN} -d www.${WEBSITE_NAME}.${DOMAIN}
 
 # Restart Gunicorn and Nginx
 sudo systemctl restart gunicorn

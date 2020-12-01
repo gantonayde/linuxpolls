@@ -1,0 +1,175 @@
+{% extends "base.html" %} 
+
+{% block content %}
+    <div class="row">
+      <div class="col-md-9 left">
+        <style>.calculator {
+            text-align: center;
+            width: 300px;
+            height: 350px;
+            margin: auto;
+          }
+          
+          .buttons {
+            width: 275px;
+            
+            text-align: center;
+            margin:10px auto;
+          }
+          
+          .button{
+            float: left;
+            height: 40px;
+            border-width: 1px;
+            width: 68px;
+            color: hsl(208, 100%, 32%);
+            background: #fff;
+            cursor: pointer;
+          }
+          
+          .textbox {
+            margin: 10px 0px 5px 0px;
+            text-align: right;
+            border: none;
+            height: 25px;
+            width: 275px;
+            background-color: hsl(208, 100%, 28%);
+          }</style>
+        <div class="calculator" name="Calc">
+            <h1>Calculator</h1>
+            <div id="display">
+                <h1 id="display_n">0</h1>
+            </div>
+            <div class="buttons">
+              <button class="button" id="clear">AC</button>
+              <button class="button btn-op" id="power">^</button>
+              <button class="button btn-op" id="modulus">%</button>
+              <button class="button btn-op" id="divide">/</button>
+              <button class="button btn-num" id="7">7</button>
+              <button class="button btn-num" id="8">8</button>
+              <button class="button btn-num" id="9">9</button>
+              <button class="button btn-op" id="multiply">*</button>
+              <button class="button btn-num" id="4">4</button>
+              <button class="button btn-num" id="5">5</button>
+              <button class="button btn-num" id="6">6</button>
+              <button class="button btn-op" id="minus">-</button>
+              <button class="button btn-num" id="1">1</button>
+              <button class="button btn-num" id="2">2</button>
+              <button class="button btn-num" id="3">3</button>
+              <button class="button btn-op" id="plus">+</button>
+              <button class="button" id="dot">.</button>
+              <button class="button btn-num" id="0">0</button>
+              <button class="button btn-op" id="Root">SQRT</button>
+              <button class="button btn-op" id="decimal">=</button>
+            </div>
+          </div>
+      </div>
+      <script>      
+       // Selectors
+        const decimal = document.getElementById("dot");
+        const clear = document.getElementById("clear");
+        const displayValElement = document.getElementById("display_n");
+        const btnNumbers = document.getElementsByClassName("btn-num");
+        const btnOperators = document.getElementsByClassName("btn-op");
+        // Value that is being shown. The default value is 0. The eval() method will take a string and run it. Our array will hold the buttons we are clicking, and we will later convert it to a string.
+        var displayVal = '0';
+        var pendingVal;  
+        var evalStringArray = [];    
+        // Updating the display field. If the value is currently equal to 0, we will reset the value so that our input does not start with a 0.
+        updateDisplayVal = (e) => {
+            var btnText = e.target.innerText;
+            if(displayVal === "0") { 
+            displayVal = ""; }
+            // Append the content of the button we clicked to our displayVal variable and display it
+            displayVal += btnText; 
+            displayValElement.innerText = displayVal;} 
+        // Perform the mathematical operations
+        performOperation = (e) => {
+        var operator = e.target.innerText;          
+            switch (operator) {
+                case '+':
+                    pendingVal = displayVal;
+                    displayVal = '0';
+                    displayValElement.innerText = displayVal;
+                    evalStringArray.push(pendingVal, '+');
+                    break;
+                case '-':
+                    pendingVal = displayVal;
+                    displayVal = '0';
+                    displayValElement.innerText = displayVal;
+                    evalStringArray.push(pendingVal, '-');
+                    break;
+                case '*':
+                    pendingVal = displayVal;
+                    displayVal = '0';
+                    displayValElement.innerText = displayVal;
+                    evalStringArray.push(pendingVal, '*');
+                    break;
+                case '/':
+                    pendingVal = displayVal;
+                    displayVal = '0';
+                    displayValElement.innerText = displayVal;
+                    evalStringArray.push(pendingVal, '/');
+                    break;
+                case '%':
+                    pendingVal = displayVal;
+                    displayVal = '0';
+                    displayValElement.innerText = displayVal;
+                    evalStringArray.push(pendingVal, '%');
+                    break;
+                case '^':
+                    pendingVal = displayVal;
+                    displayVal = '0';
+                    displayValElement.innerText = displayVal;
+                    evalStringArray.push('Math.pow('+pendingVal+',');
+                    break;
+                case 'SQRT':
+                    pendingVal = displayVal;
+                    if (pendingVal < 0){
+                        displayVal = 'Bad operation';
+                        displayValElement.innerText = displayVal;
+                        evalStringArray = []; // clear the array
+                        break;
+                        } else {
+                        displayVal = '0';
+                        displayValElement.innerText = displayVal;
+                        evalStringArray.push('Math.sqrt('+pendingVal+')');
+                        var evaluation = eval(evalStringArray.join(' '))
+                        displayVal = evaluation.toPrecision([6]) + ''; 
+                        displayValElement.innerText = displayVal;
+                        evalStringArray = []; // clear the array
+                        break;};
+                case '=':
+                    if (evalStringArray[0].includes('Math')) {
+                            evalStringArray.push(displayVal+')');    
+                        } else {
+                            evalStringArray.push(displayVal);};
+                    var evaluation = eval(evalStringArray.join(' '));
+                    displayVal = evaluation + ''; 
+                    displayValElement.innerText = displayVal;
+                    evalStringArray = []; // clear the array
+                    break;
+                default:
+                    break;}}
+        // Event listeners for the number and operator buttons
+        for (let i = 0; i < btnNumbers.length; i++) {
+            btnNumbers[i].addEventListener('click', updateDisplayVal)}
+        for (let i = 0; i < btnOperators.length; i++) {
+            btnOperators[i].addEventListener('click', performOperation);}
+        // On clicking the clear button, all values and the display are being reset 
+        clear.onclick = () => {
+            displayVal = '0';
+            pendingVal = undefined;
+            evalStringArray = [];
+            displayValElement.innerHTML = displayVal;}
+        // Not allowing two decimal points in input
+        decimal.onclick = () => { 
+            if(!displayVal.includes('.')) {
+                displayVal += '.';}
+            displayValElement.innerText = displayVal;}
+      </script>
+      <div class="col-md-3 float-right">       
+      </div>
+    </div>
+{% endblock content %}
+

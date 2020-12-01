@@ -106,3 +106,7 @@ def post_detail(request, slug):
         'popular_articles': popular_articles,
     }
     return render(request, template_name, context)
+
+
+def Calculator(request):
+    return render(request, 'calculator.html')

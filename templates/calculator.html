@@ -125,9 +125,10 @@
                     break;
                 case '^':
                     pendingVal = displayVal;
-                    displayVal = '0';
+                    displayVal = operator;
                     displayValElement.innerText = displayVal;
                     evalStringArray.push('Math.pow('+pendingVal+',');
+                    displayVal = '0';
                     break;
                 case 'SQRT':
                     pendingVal = displayVal;

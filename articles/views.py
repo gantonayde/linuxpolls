@@ -110,3 +110,7 @@ def post_detail(request, slug):
 
 def Calculator(request):
     return render(request, 'calculator.html')
+
+def Q15(request):
+    return render(request, 'q15.html')
+

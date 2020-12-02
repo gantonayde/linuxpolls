@@ -82,40 +82,46 @@
             displayVal = ""; }
             // Append the content of the button we clicked to our displayVal variable and display it
             displayVal += btnText; 
-            displayValElement.innerText = displayVal;} 
+            if (evalStringArray === undefined || evalStringArray.length == 0) {
+                displayValElement.innerText = evalStringArray.join(' ') + displayVal;}
+                else {
+            if (evalStringArray[0].includes('Math.pow')) {
+                displayValElement.innerText = displayVal;    
+            } else {
+            displayValElement.innerText = evalStringArray.join(' ') + displayVal;}} }
         // Perform the mathematical operations
         performOperation = (e) => {
         var operator = e.target.innerText;          
             switch (operator) {
                 case '+':
                     pendingVal = displayVal;
-                    displayVal = '0';
+                    displayVal = operator;
                     displayValElement.innerText = displayVal;
-                    evalStringArray.push(pendingVal, '+');
+                    evalStringArray.push(pendingVal);
                     break;
                 case '-':
                     pendingVal = displayVal;
-                    displayVal = '0';
+                    displayVal = operator;
                     displayValElement.innerText = displayVal;
-                    evalStringArray.push(pendingVal, '-');
+                    evalStringArray.push(pendingVal);
                     break;
                 case '*':
                     pendingVal = displayVal;
-                    displayVal = '0';
+                    displayVal = operator;
                     displayValElement.innerText = displayVal;
-                    evalStringArray.push(pendingVal, '*');
+                    evalStringArray.push(pendingVal);
                     break;
                 case '/':
                     pendingVal = displayVal;
-                    displayVal = '0';
+                    displayVal = operator;
                     displayValElement.innerText = displayVal;
-                    evalStringArray.push(pendingVal, '/');
+                    evalStringArray.push(pendingVal);
                     break;
                 case '%':
                     pendingVal = displayVal;
-                    displayVal = '0';
+                    displayVal = operator;
                     displayValElement.innerText = displayVal;
-                    evalStringArray.push(pendingVal, '%');
+                    evalStringArray.push(pendingVal);
                     break;
                 case '^':
                     pendingVal = displayVal;
@@ -140,7 +146,7 @@
                         evalStringArray = []; // clear the array
                         break;};
                 case '=':
-                    if (evalStringArray[0].includes('Math')) {
+                    if (evalStringArray[0].includes('Math.pow')) {
                             evalStringArray.push(displayVal+')');    
                         } else {
                             evalStringArray.push(displayVal);};

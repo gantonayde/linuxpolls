@@ -19,7 +19,7 @@ google-resumable-media==0.5.1
 googleapis-common-protos==1.52.0
 idna==2.10
 IP2Location==8.4.1
-numpy==1.19.0
+numpy==1.22.0
 pandas==1.0.5
 Pillow==7.2.0
 plotly==4.8.2
